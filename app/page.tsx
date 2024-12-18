@@ -4,7 +4,7 @@ import GlossTermsForm from "@/src/components/gloss-terms-form";
 export default function Page() {
   return (
     <div>
-      <h1>Home</h1>
+      <h1>The Code Gloss</h1>
       <div data-testid="gloss-terms-form">
         <GlossTermsForm />
       </div>

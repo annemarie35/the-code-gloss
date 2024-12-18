@@ -5,7 +5,9 @@ import Page from "@/app/page";
 
 describe("Page", () => {
   render(<Page />);
-  expect(screen.getByRole("heading", { level: 1, name: "Home" })).toBeDefined();
+  expect(
+    screen.getByRole("heading", { level: 1, name: "The Code Gloss" }),
+  ).toBeDefined();
 
   it("should contain a form", async () => {
     const wrapper = render(<Page />);
