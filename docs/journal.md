@@ -5,6 +5,15 @@
 Some error `Error: Invalid Chai property: toHaveAttribute ` with testing library, Custom jest matchers and vitest, types were not recognized... 😭 The jest setup files inferno !
 Fixed with this [solution](https://stackoverflow.com/questions/77611978/invalid-chai-property-in-vitest) but, have a failed to import problem with vite () that was caused by the fact that when I installed `└──> npm install --save-dev testing-library/jest-dom ───┘` there was no package version number but the link to the github repository, maybe there was a problem with installed version in node_modules. Whatever happened, it works now.
 
+I check then that css was working fine with tailwind, so i just add a background and some style on h1 to do so
+
+Then I add the form, don't want to use react-form-hook or another library for the moment. Saw somebody on linkedin writing that using the `useActionState` hook can be a simple way to do it. So it is ok for me to start somewhere, I will use it and test it.
+
+> The useActionState hook allows you to update component state based on the result of a form action. Essentially, it provides a way to manage state that is tied to form submissions, giving you greater control and flexibility over how your forms behave.
+[source](https://medium.com/zestgeek/understanding-the-useactionstate-hook-in-react-real-life-examples-f1d2350d4932)
+> 
+Talking about tests baby, reading [Kent C. Dodds](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library) may help.
+
 ## 18/12/2024
 - I was trying to add a router and use finally the nextjs router with adding pages in `src/pages` and `next/link`. First add the `react-router-dom` library that was redirected to `react-router` and it seems that Yagni for the moment
 - Switching from VueJs/Vitest to react testing library is a little bit painful
