@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["ui-serif", "Georgia"],
+      },
       fontSize: {
         xs: ["12px", "20px"],
         sm: ["14px", "22px"],
@@ -20,6 +23,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        black: "#191911",
         neutral: {
           50: "#fffefa",
         },
