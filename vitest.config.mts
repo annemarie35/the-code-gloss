@@ -9,10 +9,9 @@ export default defineConfig({
       "**/integration-tests/**",
       "**/node_modules/**",
       "**/dist/**",
-      "**/cypress/**",
       "**/.{idea,git,cache,output,temp}/**",
-      "./src/config/**",
     ],
     environment: "jsdom",
+    setupFiles: ["setup-tests.ts"],
   },
 });
