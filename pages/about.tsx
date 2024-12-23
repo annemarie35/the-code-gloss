@@ -1,6 +1,10 @@
+import Layout from "@/pages/layout";
+
 const About = () => (
   <div>
-    <h1>À propos</h1>
+    <Layout title="À propos">
+      <div>Plus d&#39;infos</div>
+    </Layout>
   </div>
 );
 export default About;

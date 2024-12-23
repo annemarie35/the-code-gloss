@@ -1,16 +1,11 @@
-import Link from "next/link";
-import GlossTermsForm from "@/src/components/gloss-terms-form";
+import Layout from "@/pages/layout";
 
 export default function Page() {
   return (
     <div>
-      <h1>The Code Gloss</h1>
-      <div data-testid="gloss-terms-form">
-        <GlossTermsForm />
-      </div>
-      <footer>
-        <Link href="/about">About</Link>
-      </footer>
+      <Layout title="The Code Gloss">
+        <div data-testid="gloss-terms-form"></div>
+      </Layout>
     </div>
   );
 }
