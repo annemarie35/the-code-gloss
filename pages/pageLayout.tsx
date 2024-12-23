@@ -4,7 +4,7 @@ import Header from "@/src/components/header";
 
 type MyComponentProps = React.PropsWithChildren<{ title: string }>;
 
-export default function Layout({ children, ...props }: MyComponentProps) {
+export default function PageLayout({ children, ...props }: MyComponentProps) {
   const { title } = props;
   return (
     <div className="flex flex-col h-screen">

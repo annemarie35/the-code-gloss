@@ -1,12 +1,12 @@
 import { expect, it, describe } from "vitest";
 import { render, screen } from "@testing-library/react";
-import Layout from "@/pages/layout";
+import PageLayout from "@/pages/pageLayout";
 
 describe("Layout", () => {
   render(
-    <Layout title="À propos">
+    <PageLayout title="À propos">
       (<div>Dummy</div>)
-    </Layout>,
+    </PageLayout>,
   );
 
   it("should contain a custom title", () => {

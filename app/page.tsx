@@ -1,11 +1,11 @@
-import Layout from "@/pages/layout";
+import PageLayout from "@/pages/pageLayout";
 
 export default function Page() {
   return (
     <div>
-      <Layout title="The Code Gloss">
+      <PageLayout title="The Code Gloss">
         <div data-testid="gloss-terms-form"></div>
-      </Layout>
+      </PageLayout>
     </div>
   );
 }
