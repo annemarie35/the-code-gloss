@@ -1,4 +1,4 @@
-import PageLayout from '@/pages/pageLayout'
+import PageLayout from '@/src/pages/pageLayout'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 
 export default function Page() {

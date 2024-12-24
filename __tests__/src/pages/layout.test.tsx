@@ -1,6 +1,6 @@
 import { expect, it, describe } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import PageLayout from '@/pages/pageLayout'
+import PageLayout from '@/src/pages/pageLayout'
 
 describe('Layout', () => {
     render(

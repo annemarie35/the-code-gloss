@@ -1,4 +1,4 @@
-import PageLayout from '@/pages/pageLayout'
+import PageLayout from '@/src/pages/pageLayout'
 
 const About = () => (
     <div>
