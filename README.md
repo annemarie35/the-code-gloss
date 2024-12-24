@@ -6,7 +6,7 @@ The purpose is to practice React since I didn't work with it since October 2021.
 ## Why code gloss ?
 
 I take many notes while working, sometimes a link, a word, a notion, a quote related to my everyday developer practice.
-But it is all about papers, notebooks, a public and a private TIL, and, well, I tried evernote, joplin, zetllr, mind maps, in french or english, and various tools and those are different sources of truth.
+But it is all about papers, notebooks, a public and a private TIL, and, well, I tried evernote, joplin, zetllr, mind maps, in French or nglish, and various tools and those are different sources of truth.
 
 :gem: So my goal is a definitive code glossary, the code gloss. :gem:
 
@@ -38,4 +38,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Scalingo
 
-There is a tutorial i wrote [here](https://github.com/annemarie35/TIL/blob/master/OPSERIES/SCALINGO/deployement.md)
+There is a tutorial I wrote [here](https://github.com/annemarie35/TIL/blob/master/OPSERIES/SCALINGO/deployement.md)
+
+Now I use `git push frontend-scalingo main` to push the code in production.
