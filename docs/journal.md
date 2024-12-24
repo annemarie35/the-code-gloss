@@ -8,6 +8,8 @@
 - [ ] Should I use Memo ?
 - [x] Finish installation of https://typescript-eslint.io/getting-started
 - [x] Run type checking (add husky before ?)
+- [ ] Add [renovate](https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/installing-onboarding.md) 
+- [ ] Migrate to new eslint config https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files
 
 ## Later
 
