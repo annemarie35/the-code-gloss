@@ -4,7 +4,7 @@ import Footer from '@/src/components/footer'
 
 describe('Footer', () => {
     it('renders a footer', async () => {
-        const { getByRole } = render(<Footer />)
-        expect(getByRole('link')).toHaveAttribute('href', '/about')
+        const { queryByText } = render(<Footer />)
+        expect(queryByText('Made with love @2024')).toBeTruthy()
     })
 })
