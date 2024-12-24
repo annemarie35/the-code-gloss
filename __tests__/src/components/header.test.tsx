@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Header from '@/src/components/header'
 
 describe('Header', () => {
+    const { findByText, getByTestId } = render(<Header title="Some title" />)
+
     it('renders an header with title', async () => {
-        render(<Header title="Some title" />)
-        expect(await screen.findByText('Some title')).toBeDefined()
+        expect(findByText('Some title')).toBeDefined()
+    })
+
+    it('contains a navbar', async () => {
+        expect(getByTestId('navbar')).toBeDefined()
     })
 })
