@@ -1,5 +1,18 @@
 # JOURNAL
 
+## To see next
+
+- [ ] Choose between french and english
+- [x] Add tailwind properly to project and some ~~fancy~~ glossy [css](https://nextjs.org/docs/app/getting-started/css-and-styling)
+- [ ] [Lazy loading](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading)
+- [ ] Should I use Memo ?
+- [x] Finish installation of https://typescript-eslint.io/getting-started
+- [x] Run type checking (add husky before ?)
+
+## Later
+
+- [ ] Where do I store data ? First a file read/write with fs and then add a database with knex as a query builder or another (should ask the React community) https://github.com/vercel/next.js/tree/canary/examples/with-knex
+
 ## 24/12/2024
 
 Add some style to the pages, improve the nav venue and make tailwind work on all pages.
@@ -37,16 +50,3 @@ Then I add the form, don't want to use react-form-hook or another library for th
     - Typescript
     - ...to continue
 - Attend a very nice [workshop](https://www.next-level.run/webinar-web-perf-bundle-optimisation) focused on three essential tools for optimizing your JavaScript code, efficiently managing your bundles and improving the performance of your React applications with Chrome's profiler, stats.json and Bundle Analyzer and React Profiling. See [https://www.fasterize.com/fr/blog/vitesse-chargement-chiffres-cles-web-performance/](https://www.fasterize.com/fr/blog/vitesse-chargement-chiffres-cles-web-performance/)
-
-## To see next
-
-- [ ] Choose between french and english
-- [ ] Add tailwind properly to project and some ~~fancy~~ glossy [css](https://nextjs.org/docs/app/getting-started/css-and-styling)
-- [ ] [Lazy loading](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading)
-- [ ] Should I use Memo ?
-- [ ] Finish installation of https://typescript-eslint.io/getting-started
-- [ ] Run type checking (add husky before ?)
-
-## Later
-
-- [ ] Where do i store data ? First a file read/write with fs and then add a database with knex as a query builder or another (should ask the React community) https://github.com/vercel/next.js/tree/canary/examples/with-knex
