@@ -1,12 +1,12 @@
-import PageLayout from "@/pages/pageLayout";
-import GlossTermsForm from "@/src/components/gloss-terms-form";
+import PageLayout from '@/pages/pageLayout'
+import GlossTermsForm from '@/src/components/gloss-terms-form'
 
 export default function Page() {
-  return (
-    <div>
-      <PageLayout title="The Code Gloss">
-        <GlossTermsForm />
-      </PageLayout>
-    </div>
-  );
+    return (
+        <div>
+            <PageLayout title="The Code Gloss">
+                <GlossTermsForm />
+            </PageLayout>
+        </div>
+    )
 }
