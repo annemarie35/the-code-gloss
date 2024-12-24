@@ -8,13 +8,15 @@
         "format": "prettier --write --ignore-path .gitignore .",
         "start": "next start",
         "lint": "next lint",
+        "lint:fix": "eslint --fix --cache .",
         "test": "vitest --exclude \"*/integration-tests\"",
-        "test:integration": "npx playwright test"
+        "test:integration": "npx playwright test",
+        "type-check": "npx tsc --build "
     },
     "lint-staged": {
         "*.{ts, tsx}": [
             "npm run format",
-            "npm run lint"
+            "npm run lint:fix"
         ],
         "*.{json,html,yml}": [
             "npm run format"

@@ -1,5 +1,15 @@
 # JOURNAL
 
+## 24/12/2024
+
+Now that I have some components and the beginning of the form, let's go back to tools. Just finished the config for **prettier** and add **husky** to pre-commit.
+I keep using next lint instead of **eslint** for the moment, see that [discussion about the difference between next lint and eslint](https://github.com/vercel/next.js/discussions/36440) for config if I decide to change that.
+
+Wondering what is that .mjs extension
+
+> The .mjs extension makes the file use the ES modules (ESM) format. Node interprets .js files in the CommonJS (CJS) format by default, but if you have "type": "module" in your package.json, you can also use eslint.config.js.
+> [source](https://typescript-eslint.io/getting-started/)
+
 ## 23/12/2024
 
 Some error `Error: Invalid Chai property: toHaveAttribute ` with testing library, Custom jest matchers and vitest, types were not recognized... 😭 The jest setup files inferno !
