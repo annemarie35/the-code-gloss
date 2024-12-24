@@ -2,6 +2,9 @@
 
 ## 24/12/2024
 
+Add some style to the pages, improve the nav venue and make tailwind work on all pages.
+Still something not working with tailwind on production [https://the-code-gloss.osc-fr1.scalingo.io](https://the-code-gloss.osc-fr1.scalingo.io)
+
 Now that I have some components and the beginning of the form, let's go back to tools. Just finished the config for **prettier** and add **husky** to pre-commit.
 I keep using next lint instead of **eslint** for the moment, see that [discussion about the difference between next lint and eslint](https://github.com/vercel/next.js/discussions/36440) for config if I decide to change that.
 

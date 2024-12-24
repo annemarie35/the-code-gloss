@@ -1,3 +1,3 @@
 export default function Footer() {
-    return <footer>Made with love @2024</footer>
+    return <footer className="bg-red-100 text-center	">Made with love @2024</footer>
 }

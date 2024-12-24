@@ -8,13 +8,14 @@ type MyComponentProps = React.PropsWithChildren<{ title?: string }>
 export default function PageLayout({ children, ...props }: MyComponentProps) {
     const { title } = props
     return (
-        <div className="flex flex-col h-screen bg-[#FFFDEA] px-10">
-            <p className="text-[#EB6393] text-4xl ml-3">The</p>
-            <p className="text-[#C4338E] text-4xl ml-10">Code</p>
-            <p className="text-[#D53815] text-4xl">Gloss</p>
-            <p className="text-[#780068] text-4xl ml-5">!!!</p>
+        <div className="bg-[#FFFDEA] px-10 h-screen">
+            <div className="pb-4">
+                <p className="text-[#EB6393] text-4xl ml-3">The</p>
+                <p className="text-[#C4338E] text-4xl ml-10">Code</p>
+                <p className="text-[#D53815] text-4xl">Gloss</p>
+            </div>
             <Header title={title ?? ''} />
-            <div>{children}</div>
+            <div className="py-8">{children}</div>
             <Footer />
         </div>
     )
