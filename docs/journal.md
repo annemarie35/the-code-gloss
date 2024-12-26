@@ -8,22 +8,33 @@
 - [ ] Should I use Memo ?
 - [x] Finish installation of https://typescript-eslint.io/getting-started
 - [x] Run type checking (add husky before ?)
-- [ ] Add [renovate](https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/installing-onboarding.md) 
+- [ ] Add [renovate](https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/installing-onboarding.md)
 - [ ] Migrate to new eslint config https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files
 - [ ] Add github action for deployement
 - [ ] Add Zod validation, well, first use cases that needs Zod^
-- [ ]
 
 ## Later
 
 - [ ] Where do I store data ? First a file read/write with fs and then add a database with knex as a query builder or another (should ask the React community) https://github.com/vercel/next.js/tree/canary/examples/with-knex
 
 ## 26/12/2024
+
 - enabled dependabot for project https://github.com/annemarie35/the-code-gloss/settings/security_analysis
-- I've been reading, cleaning notes, try for organise my toughts and how to progress with this app. 
-  - Adding an api call after submitting the form ? Well, finish the form before
-  - Start a small Hapi server + a postgresql for training ? Add docker ? I have already done that in some past work experience and not sure if it worth it for the moment
-  - Working on architecture ? Like in this tutorial https://medium.com/@martin_42533/building-a-clean-next-js-app-with-hexagonal-architecture-and-redux-7c898ac26e66  (well, I don't think I need Redux for the moment)
+- I've been reading, cleaning notes, try for organise my toughts and how to progress with this app.
+    - Adding an api call after submitting the form ? Well, finish the form before
+    - Start a small Hapi server + a postgresql for training ? Add docker ? I have already done that in some past work experience and not sure if it worth it for the moment
+    - Working on architecture ? Like in this tutorial https://medium.com/@martin_42533/building-a-clean-next-js-app-with-hexagonal-architecture-and-redux-7c898ac26e66 (well, I don't think I need Redux for the moment)
+- Add a postgres database to project to store data
+- Add Knex to make db queries
+- Allways a pleasure to have import errors like this https://github.com/oven-sh/bun/issues/7886, can't build with knex module
+    - adding as suggested https://github.com/vercel/next.js/discussions/26420 this below in next.config.ts did not work so i add to install all required modules for knex...
+    ```js
+    const nextConfig: NextConfig = {
+      experimental: {
+          externalDir: true
+      }
+    }
+    ```
 
 ## 24/12/2024
 
