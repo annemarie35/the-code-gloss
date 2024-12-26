@@ -10,6 +10,6 @@ describe('Layout', () => {
     )
 
     it('should contain a custom title', () => {
-        expect(screen.getByRole('heading', { level: 1, name: 'À propos' })).toBeDefined()
+        expect(screen.getByRole('heading', { level: 2, name: 'À propos' })).toBeDefined()
     })
 })

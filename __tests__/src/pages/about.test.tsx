@@ -6,6 +6,6 @@ import About from '@/src/pages/about'
 describe('About', () => {
     it('should render About page', () => {
         render(<About />)
-        expect(screen.getByRole('heading', { level: 1, name: 'À propos' })).toBeDefined()
+        expect(screen.getByRole('heading', { level: 2, name: 'À propos' })).toBeDefined()
     })
 })

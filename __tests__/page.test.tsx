@@ -7,7 +7,7 @@ import Page from '@/app/page'
 describe('Page', () => {
     render(<Page />)
     it('should contain a title', () => {
-        expect(screen.getByRole('heading', { level: 1, name: '✨ Make your code base shine ✨' })).toBeDefined()
+        expect(screen.getByRole('heading', { level: 2, name: '✨ Make your code base shine ✨' })).toBeDefined()
     })
 
     it('should contain a form', async () => {
