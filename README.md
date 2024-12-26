@@ -15,6 +15,12 @@ My favorite is a simple markdown file now, my own property (exporting files from
 
 So, the code gloss will be a simple form for the moment.
 
+## Start database
+
+You need to have [Docker](https://www.docker.com/) installed on your machine.
+
+Run `npm run start-database`
+
 ## Getting Started
 
 First, run the development server:
@@ -24,8 +30,6 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Create and run a migration with knex
 

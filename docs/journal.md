@@ -10,8 +10,12 @@
 - [x] Run type checking (add husky before ?)
 - [ ] Add [renovate](https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/installing-onboarding.md)
 - [ ] Migrate to new eslint config https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files
-- [ ] Add github action for deployement
-- [ ] Add Zod validation, well, first use cases that needs Zod^
+- [ ] Add GitHub action for deployment
+- [ ] Add Zod validation, well, first use cases that needs Zod^^
+- [ ] Add seeds to feed database
+- [ ] Test with test container
+- [ ] Data Fetching from db (to be removed -> api call plus maybe a backend cause we don't want secrets in client side)
+- [ ] Add test to form after reading some documentation on how to do it the better way
 
 ## Later
 
@@ -73,3 +77,7 @@ Then I add the form, don't want to use react-form-hook or another library for th
     - Typescript
     - ...to continue
 - Attend a very nice [workshop](https://www.next-level.run/webinar-web-perf-bundle-optimisation) focused on three essential tools for optimizing your JavaScript code, efficiently managing your bundles and improving the performance of your React applications with Chrome's profiler, stats.json and Bundle Analyzer and React Profiling. See [https://www.fasterize.com/fr/blog/vitesse-chargement-chiffres-cles-web-performance/](https://www.fasterize.com/fr/blog/vitesse-chargement-chiffres-cles-web-performance/)
+
+# Done
+
+- [x] Where do I store data ? First a file read/write with fs and then add a database with knex as a query builder or another (should ask the React community) https://github.com/vercel/next.js/tree/canary/examples/with-knex
