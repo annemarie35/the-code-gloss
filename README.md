@@ -27,7 +27,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Create and run a migration with knex
+
+- add a migration file with an explicit name, example "update_users_name_column_to_text_type" `knex migrate:make migration_name`
+- add the code to create query
+- run the migration with `npx knex migrate:latest `
+- rollback migration if needed with `knex migrate:rollback`
+
+[source](https://knexjs.org/guide/migrations.html#migration-cli)
+
+## Learn More about Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
