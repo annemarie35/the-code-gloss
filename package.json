@@ -7,6 +7,7 @@
         "build": "next build",
         "format": "prettier --write --ignore-path .gitignore .",
         "start": "next start",
+        "start-database": "docker compose up --force-recreate --renew-anon-volumes postgresql",
         "lint": "next lint",
         "lint:fix": "eslint --fix --cache .",
         "test": "vitest --exclude \"*/integration-tests\"",
@@ -24,6 +25,7 @@
     },
     "dependencies": {
         "next": "15.1.0",
+        "pg": "^8.13.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
