@@ -8,4 +8,8 @@ describe('About', () => {
         render(<About />)
         expect(screen.getByRole('heading', { level: 2, name: 'À propos' })).toBeDefined()
     })
+
+    it('should contain 6 paragraphs', async () => {
+        expect(screen.getAllByTestId('paragraph').length).toBe(6)
+    })
 })
