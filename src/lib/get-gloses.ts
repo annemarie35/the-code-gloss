@@ -1,5 +1,5 @@
-import { databaseClient } from '@/lib/database-client'
 import { notFound } from 'next/navigation'
+import { databaseClient } from '@/src/lib/database-client'
 
 type Glose = {
     id: string
