@@ -22,8 +22,13 @@
 - Always fun with react testing library, got this error https://github.com/testing-library/dom-testing-library/issues/716
     - the form is [standard html form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)
     - it was fixed by adding `aria-labelledby` to label
-- Move folders to src and rearrange files structure
-- Add some text on about page, so I start to create some reusable ui components
+- :recycle: Move folders to src and rearrange files structure
+- :lipstick: Add some text on about page, so I start to create some reusable ui components
+- :monocle_face: Since I move app and layout pages, the build is broken `You are attempting to export "metadata" from a component marked with "use client", which is disallowed.` -> https://github.com/vercel/next.js/discussions/51002
+- then another error on build `webpack config.resolve.alias was incorrectly overridden. https://nextjs.org/docs/messages/invalid-resolve-alias` 
+  - go further with:
+    - https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns
+    - https://nextjs.org/docs/app/building-your-application/optimizing/metadata#static-metadata
 
 ## 26/12/2024
 
@@ -34,7 +39,7 @@
     - Working on architecture ? Like in this tutorial https://medium.com/@martin_42533/building-a-clean-next-js-app-with-hexagonal-architecture-and-redux-7c898ac26e66 (well, I don't think I need Redux for the moment)
 - Add a postgres database to project to store data
 - Add Knex to make db queries
-- Allways a pleasure to have import errors like this https://github.com/oven-sh/bun/issues/7886, can't build with knex module
+- :clown_face: Always a pleasure to have import errors like this https://github.com/oven-sh/bun/issues/7886, can't build with knex module
     - adding as suggested https://github.com/vercel/next.js/discussions/26420 this below in next.config.ts did not work so i add to install all required modules for knex...
     ```js
     const nextConfig: NextConfig = {
