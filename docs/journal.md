@@ -39,6 +39,7 @@
       }
     }
     ```
+- Fetch data from db on home page
 
 ## 24/12/2024
 
