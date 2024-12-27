@@ -17,9 +17,11 @@
 - [ ] Data Fetching from db (to be removed -> api call plus maybe a backend cause we don't want secrets in client side)
 - [ ] Add test to form after reading some documentation on how to do it the better way
 
-## Later
+## 27/12/2024
 
-- [ ] Where do I store data ? First a file read/write with fs and then add a database with knex as a query builder or another (should ask the React community) https://github.com/vercel/next.js/tree/canary/examples/with-knex
+- Allways fun with react testing library, got this error https://github.com/testing-library/dom-testing-library/issues/716
+    - the form is [standard html form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)
+    - it was fixed by adding `aria-labelledby` to label
 
 ## 26/12/2024
 

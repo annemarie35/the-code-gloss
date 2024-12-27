@@ -18,6 +18,12 @@ describe('Gloss Form Terms', () => {
         ).toBeInTheDocument()
     })
 
+    it('should display a add title input', () => {
+        const { getByLabelText } = render(<GlossTermsForm />)
+
+        expect(getByLabelText('Title')).toBeInTheDocument()
+    })
+
     it('should display a success message on submit', async () => {
         const { getByRole, getByText } = render(<GlossTermsForm />)
         const submitButton = getByRole('button')

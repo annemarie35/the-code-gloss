@@ -1,5 +1,4 @@
 'use client'
-
 import { useActionState } from 'react'
 
 type InitialState = {
@@ -23,15 +22,38 @@ export default function GlossTermsForm() {
 
     return (
         <>
-            <h2>Ajouter un nouveau terme</h2>
+            <h3 className="py-4 text-lg">Ajouter un nouveau terme</h3>
             <form action={formAction} data-testid="gloss-terms-form">
-                <input type="text" name="toto" placeholder="Event sourcing..." />
-                <button type="submit" disabled={isPending}>
-                    {' '}
-                    {isPending ? 'Loading' : 'Ajouter'}
-                </button>
-                {error && <div> {error}</div>}
-                {message && <div>{message}</div>}
+                <div className="flex flex-col gap-2 rounded-lg shadow-md p-4">
+                    <div className="mx-2">
+                        <label id="title" htmlFor="glose-title" aria-labelledby="title">
+                            Title
+                        </label>
+                        <input type="text" name="glose-title" placeholder="Event sourcing..." />
+                    </div>
+                    <div className="mx-2">
+                        <label htmlFor="glose-description">Description</label>
+                        <input
+                            type="text"
+                            name="glose-description"
+                            placeholder="The fundamental idea of Event Sourcing is that..."
+                        />
+                    </div>
+                    <div className="mx-2">
+                        <label htmlFor="glose-tags">Tags</label>
+                        <input type="text" name="glose-tags" placeholder="DDD, code..." />
+                    </div>
+                    <div>
+                        <button type="submit" disabled={isPending}>
+                            {' '}
+                            {isPending ? 'Loading' : 'Ajouter'}
+                        </button>
+                    </div>
+                    <div>
+                        {error && <div> {error}</div>}
+                        {message && <div>{message}</div>}
+                    </div>
+                </div>
             </form>
         </>
     )
