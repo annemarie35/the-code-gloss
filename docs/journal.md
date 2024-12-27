@@ -19,9 +19,11 @@
 
 ## 27/12/2024
 
-- Allways fun with react testing library, got this error https://github.com/testing-library/dom-testing-library/issues/716
+- Always fun with react testing library, got this error https://github.com/testing-library/dom-testing-library/issues/716
     - the form is [standard html form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)
     - it was fixed by adding `aria-labelledby` to label
+- Move folders to src and rearrange files structure
+- Add some text on about page, so I start to create some reusable ui components
 
 ## 26/12/2024
 
