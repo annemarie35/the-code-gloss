@@ -13,4 +13,8 @@ describe('Page', () => {
     it('should contain a form', async () => {
         expect(screen.getAllByTestId('gloss-terms-form')).toBeDefined()
     })
+
+    it('should contain a title for gloses section', () => {
+        expect(screen.getByRole('heading', { level: 3, name: 'Gloses' })).toBeDefined()
+    })
 })

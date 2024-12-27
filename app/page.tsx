@@ -6,6 +6,7 @@ export default function Page() {
         <div>
             <PageLayout title="✨ Make your code base shine ✨">
                 <GlossTermsForm />
+                <h3 className="py-4 text-lg">Gloses</h3>
             </PageLayout>
         </div>
     )
