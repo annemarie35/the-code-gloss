@@ -29,6 +29,9 @@
   - go further with:
     - https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns
     - https://nextjs.org/docs/app/building-your-application/optimizing/metadata#static-metadata
+- `Unexpected end of JSON input` https://github.com/webpack/webpack/issues/18963 -> upgraded to node v23.3.0
+- new error with import of `./src/styles/globals.css`
+  Global CSS cannot be imported from files other than your Custom <App>.
 
 ## 26/12/2024
 

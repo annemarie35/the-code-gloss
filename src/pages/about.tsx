@@ -1,6 +1,7 @@
-import PageLayout from '@/src/pages/pageLayout'
 import React from 'react'
 import { Paragraph } from '@/src/components/ui/paragraph'
+import PageLayout from '@/src/pages/pageLayout'
+
 const textsToDisplay: string[] = [
     'Je prends beaucoup de notes en travaillant, parfois un lien, un mot, une notion, une citation liés à ma pratique quotidienne de développeuse.',
     "Mais il s'agit de papiers, de carnets, d'un TIL public et d'un TIL privé, et, j'ai essayé evernote, joplin, zetllr, des cartes mentales, en français ou en anglais, et divers outils et ce sont des sources de vérité différentes.",
