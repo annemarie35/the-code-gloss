@@ -16,6 +16,10 @@
 - [ ] Test with test container
 - [ ] Data Fetching from db (to be removed -> api call plus maybe a backend cause we don't want secrets in client side)
 - [ ] Add test to form after reading some documentation on how to do it the better way
+- [ ] Fix type-checking in husky (path problem)
+
+## 30/12/2024
+- Add and fix tests (improve mocking)
 
 ## 27/12/2024
 
@@ -25,13 +29,19 @@
 - :recycle: Move folders to src and rearrange files structure
 - :lipstick: Add some text on about page, so I start to create some reusable ui components
 - :monocle_face: Since I move app and layout pages, the build is broken `You are attempting to export "metadata" from a component marked with "use client", which is disallowed.` -> https://github.com/vercel/next.js/discussions/51002
-- then another error on build `webpack config.resolve.alias was incorrectly overridden. https://nextjs.org/docs/messages/invalid-resolve-alias` 
-  - go further with:
-    - https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns
-    - https://nextjs.org/docs/app/building-your-application/optimizing/metadata#static-metadata
+- then another error on build `webpack config.resolve.alias was incorrectly overridden. https://nextjs.org/docs/messages/invalid-resolve-alias`
+    - go further with:
+        - https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns
+        - https://nextjs.org/docs/app/building-your-application/optimizing/metadata#static-metadata
 - `Unexpected end of JSON input` https://github.com/webpack/webpack/issues/18963 -> upgraded to node v23.3.0
 - new error with import of `./src/styles/globals.css`
   Global CSS cannot be imported from files other than your Custom <App>.
+- playing with api and use state action
+    - https://www.youtube.com/watch?v=GgyP0_b-WPY
+    - fetch
+    - https://dev.to/rashidshamloo/api-data-fetching-in-react-nextjs-289d
+    - need to be cleaned ^^
+    -
 
 ## 26/12/2024
 

@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation'
+'use server'
 import { databaseClient } from '@/src/lib/database-client'
 
-type Glose = {
+export type Glose = {
     id: string
     title: string
     description: string
@@ -9,8 +9,7 @@ type Glose = {
     tags: string
 }
 export const getGloses = async (): Promise<Glose[]> => {
-    const gloses = await databaseClient.select('*').from('gloses')
+    const gloses = await databaseClient.select('*')
 
-    if (!gloses) notFound()
     return gloses
 }
