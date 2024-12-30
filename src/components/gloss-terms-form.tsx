@@ -33,6 +33,7 @@ export default function GlossTermsForm() {
                         name="glose-title"
                         placeholder="Event sourcing..."
                         className="py-2 px-3 rounded-sm"
+                        aria-label="title"
                     />
                 </div>
                 <div>
@@ -44,13 +45,20 @@ export default function GlossTermsForm() {
                         name="glose-description"
                         placeholder="The fundamental idea of Event Sourcing is that..."
                         className="py-2 px-3 rounded-sm"
+                        aria-label="description"
                     />
                 </div>
                 <div>
                     <label htmlFor="glose-tags" aria-labelledby="tags" className="mr-4">
                         Tags
                     </label>
-                    <input type="text" name="glose-tags" placeholder="DDD, code..." className="py-2 px-3 rounded-sm" />
+                    <input
+                        type="text"
+                        name="glose-tags"
+                        placeholder="DDD, code..."
+                        className="py-2 px-3 rounded-sm"
+                        aria-label="tags"
+                    />
                 </div>
                 <div>
                     <button

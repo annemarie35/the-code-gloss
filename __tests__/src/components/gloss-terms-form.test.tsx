@@ -1,12 +1,11 @@
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 describe('Gloss Form Terms', () => {
-    afterEach(() => {
+    beforeEach(() => {
         cleanup()
-        // TODO Maybe move to setup files, prevents from render in each it section that causes the component to be renders a lot of times, then the `getMultipleElementsFoundError` appears
     })
 
     it('should display a title', () => {
@@ -25,20 +24,37 @@ describe('Gloss Form Terms', () => {
         expect(getByLabelText('Title')).toBeInTheDocument()
     })
 
-    it('should display a success message on submit', async () => {
-        vi.mock('@/src/actions/glosesActions', async (importOriginal) => {
-            return {
-                ...(await importOriginal<typeof import('@/src/actions/glosesActions')>()),
-                addGlossTerm: vi.fn().mockResolvedValue({ message: 'Nouveau terme ajouté avec succès', error: null })
-            }
+    describe('on submit', () => {
+        it('should persist glose and display a success message on submit containing glose title', async () => {
+            global.fetch = vi.fn()
+
+            vi.mock('fetch', () => vi.fn().mockResolvedValueOnce('toto'))
+            const { getByRole, getByText } = render(<GlossTermsForm />)
+            const gloseTitleInput = getByRole('textbox', { name: /title/i })
+            const gloseDescriptionInput = getByRole('textbox', { name: /description/i })
+            const gloseTagsInput = getByRole('textbox', { name: /tags/i })
+
+            await userEvent.type(gloseTitleInput, 'TDD')
+            await userEvent.type(gloseDescriptionInput, 'Created by Kent Beck')
+            await userEvent.type(gloseTagsInput, 'XP')
+
+            const submitButton = getByRole('button')
+
+            const user = userEvent.setup()
+            await user.click(submitButton)
+
+            expect(getByText('Nouveau terme TDD ajouté avec succès')).toBeInTheDocument()
+
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost:3000/api/gloses',
+                expect.objectContaining({
+                    method: 'POST',
+                    headers: new Headers(),
+                    mode: 'cors',
+                    body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
+                    // toMatchObject issue
+                })
+            )
         })
-
-        const { getByRole, getByText } = render(<GlossTermsForm />)
-        const submitButton = getByRole('button')
-
-        const user = userEvent.setup()
-        await user.click(submitButton)
-
-        expect(getByText('Nouveau terme ajouté avec succès')).toBeInTheDocument()
     })
 })
