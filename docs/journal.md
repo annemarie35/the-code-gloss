@@ -17,12 +17,16 @@
 - [ ] Data Fetching from db (to be removed -> api call plus maybe a backend cause we don't want secrets in client side)
 - [ ] Add test to form after reading some documentation on how to do it the better way
 - [ ] Fix type-checking in husky (path problem)
+- [ ] Continue hhtp client improvements https://blog.logrocket.com/modern-api-data-fetching-methods-react/
 
 ## 30/12/2024
+
 - Add and fix tests (improve mocking)
 - Extract fetch call to an http client instead of callint from actions
 - Testing api call in forms is a nightmare...
-- Discovered a bug with knex, once a I made an insert, select * returns the answer from the insert 🤡
+- Discovered a bug with knex, once a I made an insert, select \* returns the answer from the insert 🤡
+- Mock action 
+  - The problem with that was that I couldn't unmock for testing mocked api call
 
 ## 27/12/2024
 

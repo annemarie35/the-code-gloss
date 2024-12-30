@@ -22,3 +22,18 @@ addGloseTermSpy = vi.spyOn(GlosesActions, 'addGlossTerm')
 ```
 
 [source](https://dev.to/erikpuk/how-to-mock-a-third-party-es6-export-in-vitest-38ff)
+
+## Mock action 
+The problem with that was that I couldn't unmock for testing mocked api call
+```javascript
+// This below don't works
+vi.clearAllMocks()
+vi.doUnmock('@/src/actions/glosesActions')
+vi.resetModules()
+vi.mock('@/src/actions/glosesActions', async (importOriginal) => {
+    return {
+        ...(await importOriginal<typeof import('@/src/actions/glosesActions')>()),
+        addGlossTerm: vi.fn().mockResolvedValue({ message: 'Nouveau terme ajouté avec succès', error: null })
+    }
+})
+```
