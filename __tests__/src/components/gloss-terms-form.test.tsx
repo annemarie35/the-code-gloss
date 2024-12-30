@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,6 +11,7 @@ describe('Gloss Form Terms', () => {
 
     it('should display a title', () => {
         const { getByRole } = render(<GlossTermsForm />)
+
         expect(
             getByRole('heading', {
                 name: /Ajouter un nouveau terme/i
@@ -25,11 +26,19 @@ describe('Gloss Form Terms', () => {
     })
 
     it('should display a success message on submit', async () => {
+        vi.mock('@/src/actions/glosesActions', async (importOriginal) => {
+            return {
+                ...(await importOriginal<typeof import('@/src/actions/glosesActions')>()),
+                addGlossTerm: vi.fn().mockResolvedValue({ message: 'Nouveau terme ajouté avec succès', error: null })
+            }
+        })
+
         const { getByRole, getByText } = render(<GlossTermsForm />)
         const submitButton = getByRole('button')
 
         const user = userEvent.setup()
         await user.click(submitButton)
+
         expect(getByText('Nouveau terme ajouté avec succès')).toBeInTheDocument()
     })
 })
