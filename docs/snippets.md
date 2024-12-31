@@ -23,8 +23,10 @@ addGloseTermSpy = vi.spyOn(GlosesActions, 'addGlossTerm')
 
 [source](https://dev.to/erikpuk/how-to-mock-a-third-party-es6-export-in-vitest-38ff)
 
-## Mock action 
+## Mock action
+
 The problem with that was that I couldn't unmock for testing mocked api call
+
 ```javascript
 // This below don't works
 vi.clearAllMocks()

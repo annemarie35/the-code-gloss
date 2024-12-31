@@ -7,7 +7,11 @@ describe('createGlose', () => {
     it('Should persist glose', async () => {
         vi.mock('knex', () => ({
             default: vi.fn().mockReturnValue(() => {
-                return { insert: () => 'Inserted !' }
+                return {
+                    insert: () => {
+                        return { returning: () => [{ title: 'TDD' }] }
+                    }
+                }
             })
         }))
 

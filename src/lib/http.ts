@@ -14,10 +14,12 @@ const logger: Logger = pino({
 export const httpClient = async ({ url, requestConfig }: HttpClient) => {
     try {
         const response = await fetch(url, requestConfig)
+        console.log(`HTTP response: ${JSON.stringify(response)}`)
+
         if (response.ok) {
             return await response.json()
         } else {
-            // Do something to manage properly errors code
+            // TODO something to manage properly errors code https://github.com/annemarie35/the-code-gloss/issues/10
         }
     } catch (error) {
         logger.error(error)
