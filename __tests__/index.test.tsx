@@ -1,27 +1,45 @@
-import { expect, it, describe, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { expect, it, describe, vi, beforeEach } from 'vitest'
+import { render } from '@testing-library/react'
 
 import React from 'react'
 import Page from '@/src/pages'
 
+import { createFetchResponse } from '@/__tests__/helpers'
+import { Glose } from '@/src/lib/get-gloses'
+
 describe('Page', () => {
-    global.fetch = vi.fn()
+    beforeEach(() => {})
 
-    function createFetchResponse(data: []) {
-        return { json: () => new Promise((resolve) => resolve(data)) }
-    }
-    vi.mock('fetch', () => vi.fn().mockResolvedValue(createFetchResponse([])))
+    const gloses: Glose[] = [
+        {
+            created_at: 'date',
+            description: 'Invented by Alistair Cockburn in 2005',
+            id: 8,
+            tags: 'Craft, Architecture',
+            title: 'Hexagonale architecture'
+        }
+    ]
 
-    render(<Page />)
-    it('should contain a title', () => {
-        expect(screen.getByRole('heading', { level: 2, name: '✨ Make your code base shine ✨' })).toBeDefined()
-    })
+    describe('Render properly', () => {
+        const toto = createFetchResponse({ data: gloses, ok: true, status: 200 })
+        global.fetch = vi.fn().mockResolvedValue(createFetchResponse(toto))
 
-    it('should contain a form', async () => {
-        expect(screen.getAllByTestId('gloss-terms-form')).toBeDefined()
-    })
+        const { getByRole, getAllByTestId, getByText } = render(<Page />)
 
-    it('should contain a title for gloses section', () => {
-        expect(screen.getByRole('heading', { level: 3, name: 'Gloses' })).toBeDefined()
+        it.only('should contain a title', () => {
+            expect(getByRole('heading', { level: 2, name: '✨ Make your code base shine ✨' })).toBeDefined()
+        })
+
+        it('should contain a form', async () => {
+            expect(getAllByTestId('gloss-terms-form')).toBeDefined()
+        })
+
+        it('should contain a title for gloses section', () => {
+            expect(getByRole('heading', { level: 3, name: 'Gloses' })).toBeDefined()
+        })
+
+        it('should contain a glose', async () => {
+            expect(getByText(/Hexagonale architecture/i)).toBeInTheDocument()
+        })
     })
 })
