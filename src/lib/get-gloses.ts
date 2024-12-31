@@ -2,7 +2,7 @@
 import { databaseClient } from '@/src/lib/database-client'
 
 export type Glose = {
-    id: string
+    id: number
     title: string
     description: string
     created_at: string
