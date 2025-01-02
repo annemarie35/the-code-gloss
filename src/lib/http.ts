@@ -19,9 +19,11 @@ export const httpClient = async ({ url, requestConfig }: HttpClient) => {
         if (response.ok) {
             return await response.json()
         } else {
+            throw new Error('Erreur dans récupérations des gloses')
             // TODO something to manage properly errors code https://github.com/annemarie35/the-code-gloss/issues/10
         }
     } catch (error) {
+        throw new Error(' encore une erreur dans le catch de http client')
         logger.error(error)
     }
 }
