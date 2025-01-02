@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Glose } from '@/src/lib/get-gloses'
 import { createFetchResponse } from '@/__tests__/helpers'
+import { Glose } from '@/src/lib/database/get-gloses'
 
 describe('Test helpers', () => {
     describe('createFetchResponse', () => {

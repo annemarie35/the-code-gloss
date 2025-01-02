@@ -1,6 +1,5 @@
 'use server'
-
-import { insert } from '@/src/lib/insert-gloses-db'
+import { insert } from '@/src/lib/database/insert-gloses-db'
 
 type GloseForm = {
     title: string

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createGlose } from '@/src/lib/create-glose'
 
-import * as mod from '@/src/lib/insert-gloses-db'
+import * as mod from '@/src/lib/database/insert-gloses-db'
+import { createGlose } from '@/src/lib/database/create-glose'
 
 describe('createGlose', () => {
     it('Should persist glose', async () => {
