@@ -1,8 +1,8 @@
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import PageLayout from '@/src/pages/pageLayout'
 import { Glose } from '@/src/lib/get-gloses'
-import { httpClient } from '@/src/lib/http'
 import { useEffect, useState } from 'react'
+import { getAllGlosesTerms } from '@/src/actions/glosesActions'
 
 export default function Page() {
     const [data, setData] = useState([])
@@ -11,24 +11,13 @@ export default function Page() {
 
     useEffect(() => {
         const fetchDataForPosts = async () => {
-            try {
-                const gloses = await httpClient({
-                    url: 'http://localhost:3000/api/gloses',
-                    requestConfig: {
-                        method: 'GET',
-                        headers: new Headers(),
-                        mode: 'cors'
-                    }
-                })
-                setData(gloses)
-            } catch (err) {
-                console.log('une errrur ?N?', err)
+            const { gloses, error } = await getAllGlosesTerms()
+            setLoading(false)
+            if (error) {
                 setError('Une erreur est survenue.')
-            } finally {
-                setLoading(false)
             }
+            setData(gloses)
         }
-
         fetchDataForPosts()
     }, [])
     return (

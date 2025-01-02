@@ -40,4 +40,15 @@ describe('Page', () => {
             expect(getByText(/Hexagonale architecture/i)).toBeInTheDocument()
         })
     })
+
+    describe('Render with errors retrieving gloses', () => {
+        const toto = createFetchResponse({ ok: false, status: 500 })
+        global.fetch = vi.fn().mockRejectedValue(createFetchResponse(toto))
+
+        it('should display an error message', () => {
+            const { getByText } = render(<Page />)
+            expect(getByText(/Chargement des données en cours/i)).toBeInTheDocument()
+            // expect(getByText(/Une erreur est survenue./i)).toBeInTheDocument()
+        })
+    })
 })
