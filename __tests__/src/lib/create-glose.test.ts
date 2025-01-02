@@ -1,10 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createGlose } from '@/src/lib/create-glose'
 
-import * as mod from '@/src/lib/insert-gloses-db'
+import * as mod from '@/src/lib/database/insert-gloses-db'
+import { createGlose } from '@/src/lib/database/create-glose'
 
 describe('createGlose', () => {
     it('Should persist glose', async () => {
+        vi.useFakeTimers()
+        const date = new Date(2000, 1, 1, 13)
+        vi.setSystemTime(date)
         vi.mock('knex', () => ({
             default: vi.fn().mockReturnValue(() => {
                 return {
@@ -19,13 +22,15 @@ describe('createGlose', () => {
         await createGlose({
             title: 'Title',
             description: 'Description',
-            tags: ['Tag']
+            tags: ['Tag'],
+            created_at: '2000-02-01T12:00:00.000Z'
         })
 
         expect(insertDatabaseSpy).toHaveBeenLastCalledWith({
             title: 'Title',
             description: 'Description',
-            tags: ['Tag']
+            tags: ['Tag'],
+            created_at: '2000-02-01T12:00:00.000Z'
         })
     })
 })

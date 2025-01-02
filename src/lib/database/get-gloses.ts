@@ -1,5 +1,5 @@
 'use server'
-import { databaseClient } from '@/src/lib/database-client'
+import { databaseClient } from '@/src/lib/database/database-client'
 
 export type Glose = {
     id: number

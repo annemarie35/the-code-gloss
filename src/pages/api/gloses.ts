@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getGloses, Glose } from '@/src/lib/get-gloses'
-import { createGlose } from '@/src/lib/create-glose'
+import { getGloses, Glose } from '@/src/lib/database/get-gloses'
+import { createGlose } from '@/src/lib/database/create-glose'
 
 type ResponseData = {
     message?: string

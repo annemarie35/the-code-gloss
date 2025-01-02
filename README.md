@@ -15,7 +15,7 @@ My favorite is a simple markdown file now, my own property (exporting files from
 
 So, the code gloss will be a simple form for the moment.
 
-## Start database
+## Start database & run migrations
 
 You need to have [Docker](https://www.docker.com/) installed on your machine.
 
@@ -37,6 +37,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - add the code to create query
 - run the migration with `npx knex migrate:latest`
 - rollback migration if needed with `knex migrate:rollback`
+
+## Create and add seeds
+
+- create a new seed file `npx knex seed:make add_gloses`
+- run the seed `knex seed:run`
 
 [source](https://knexjs.org/guide/migrations.html#migration-cli)
 

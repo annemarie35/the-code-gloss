@@ -4,20 +4,9 @@ import { render } from '@testing-library/react'
 import React from 'react'
 import Page from '@/src/pages'
 
-import { createFetchResponse } from '@/__tests__/helpers'
-import { Glose } from '@/src/lib/get-gloses'
+import { createFetchResponse, gloses } from '@/__tests__/helpers'
 
 describe('Page', () => {
-    const gloses: Glose[] = [
-        {
-            created_at: 'date',
-            description: 'Invented by Alistair Cockburn in 2005',
-            id: 8,
-            tags: 'Craft, Architecture',
-            title: 'Hexagonale architecture'
-        }
-    ]
-
     describe('Render properly', () => {
         const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
         global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
