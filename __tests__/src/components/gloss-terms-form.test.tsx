@@ -2,9 +2,23 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createFetchResponse } from '@/__tests__/helpers'
+import { Glose } from '@/src/lib/get-gloses'
 
 describe('Gloss Form Terms', () => {
+    const gloses: Glose[] = [
+        {
+            created_at: 'date',
+            description: 'Invented by Alistair Cockburn in 2005',
+            id: 8,
+            tags: 'Craft, Architecture',
+            title: 'Hexagonale architecture'
+        }
+    ]
+
     beforeEach(() => {
+        const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
+        global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
         cleanup()
     })
 
@@ -26,9 +40,6 @@ describe('Gloss Form Terms', () => {
 
     describe('on submit', () => {
         it('should persist glose and display a success message on submit containing glose title', async () => {
-            global.fetch = vi.fn()
-
-            vi.mock('fetch', () => vi.fn().mockResolvedValueOnce('toto'))
             const { getByRole, getByText } = render(<GlossTermsForm />)
             const gloseTitleInput = getByRole('textbox', { name: /title/i })
             const gloseDescriptionInput = getByRole('textbox', { name: /description/i })
@@ -52,7 +63,7 @@ describe('Gloss Form Terms', () => {
                     headers: new Headers(),
                     mode: 'cors',
                     body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
-                    // toMatchObject issue
+                    // objectContaining to fix toMatchObject issue
                 })
             )
         })
