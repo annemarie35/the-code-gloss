@@ -22,8 +22,12 @@
 
 ## TODO NEXT
 
+- https://stackoverflow.com/questions/47015693/how-to-fix-throw-of-exception-caught-locally
+- clean/reset mocks in tests with before each
+
+## 02/01/2025
+- some refactoring on api call and managing errors
 - test failure api call in index page
-- clean/erset mocks in tests with before each
 
 ## 31/12/2024
 

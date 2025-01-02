@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - add a migration file with an explicit name, example "update_users_name_column_to_text_type" `knex migrate:make migration_name`
 - add the code to create query
-- run the migration with `npx knex migrate:latest `
+- run the migration with `npx knex migrate:latest`
 - rollback migration if needed with `knex migrate:rollback`
 
 [source](https://knexjs.org/guide/migrations.html#migration-cli)

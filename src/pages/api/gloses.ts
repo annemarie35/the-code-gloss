@@ -9,27 +9,30 @@ type ResponseData = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-    let toto: ApiResponse
+    let toto: CreateGloseResponse
+    let statusCode: number
+    // TODO Clean that or move to node server
     if (req.method === 'POST') {
         // if (!req.body.title) {
         //     throw new Error('Missing required field')
         //     res.status(400).json({ error: 'une erreur' })
         // }
         await createGlose(JSON.parse(req.body))
+        statusCode = 201
         toto = { message: 'Glose ajouté avec succès', gloses: [] }
-        res.status(200).json(toto)
+        res.status(statusCode).json(toto)
     } else {
         const gloses = await getGloses()
+        statusCode = 200
         // need adapter for front
-        toto = {
+        res.status(statusCode).json({
             message: 'Voici vos gloses',
             gloses
-        }
-        res.status(200).json(toto)
+        })
     }
 }
 
-type ApiResponse = {
+type CreateGloseResponse = {
     message: string
     gloses: Glose[]
 }
