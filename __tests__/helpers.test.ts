@@ -19,7 +19,7 @@ describe('Test helpers', () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             // TODO Fixme
-            expect(await response.json()).toEqual(gloses)
+            expect(await response.json()).toEqual({ gloses })
             expect(response.ok).toEqual(true)
             expect(response.status).toEqual(200)
         })

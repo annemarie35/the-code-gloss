@@ -14,10 +14,10 @@ export default function Page() {
         const fetchDataForPosts = async () => {
             const { gloses, error } = await getAllGlosesTerms()
             setLoading(false)
+            setData(gloses)
             if (error) {
                 setError('Une erreur est survenue.')
             }
-            setData(gloses)
         }
         fetchDataForPosts()
     }, [])

@@ -19,8 +19,8 @@ describe('Page', () => {
     ]
 
     describe('Render properly', () => {
-        const toto = createFetchResponse({ data: gloses, ok: true, status: 200 })
-        global.fetch = vi.fn().mockResolvedValue(createFetchResponse(toto))
+        const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
+        global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
 
         const { getByRole, getAllByTestId, getByText } = render(<Page />)
 
@@ -42,8 +42,8 @@ describe('Page', () => {
     })
 
     describe('Render with errors retrieving gloses', () => {
-        const toto = createFetchResponse({ ok: false, status: 500 })
-        global.fetch = vi.fn().mockRejectedValue(createFetchResponse(toto))
+        const errorFetchResponse = createFetchResponse({ ok: false, status: 500 })
+        global.fetch = vi.fn().mockRejectedValue(createFetchResponse(errorFetchResponse))
 
         it('should display an error message', () => {
             const { getByText } = render(<Page />)

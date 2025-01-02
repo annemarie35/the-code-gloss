@@ -30,7 +30,7 @@ export async function addGlossTerm(previousState: InitialState, formData: FormDa
 
 export async function getAllGlosesTerms(): Promise<Gloses> {
     try {
-        const gloses = await httpClient({
+        const { gloses } = await httpClient({
             url: 'http://localhost:3000/api/gloses',
             requestConfig: {
                 method: 'GET',
