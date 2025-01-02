@@ -12,7 +12,7 @@ export default function Page() {
     useEffect(() => {
         const fetchDataForPosts = async () => {
             try {
-                const { gloses } = await httpClient({
+                const gloses = await httpClient({
                     url: 'http://localhost:3000/api/gloses',
                     requestConfig: {
                         method: 'GET',
@@ -21,8 +21,8 @@ export default function Page() {
                     }
                 })
                 setData(gloses)
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (err) {
+                console.log('une errrur ?N?', err)
                 setError('Une erreur est survenue.')
             } finally {
                 setLoading(false)

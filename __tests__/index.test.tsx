@@ -1,4 +1,4 @@
-import { expect, it, describe, vi, beforeEach } from 'vitest'
+import { expect, it, describe, vi } from 'vitest'
 import { render } from '@testing-library/react'
 
 import React from 'react'
@@ -8,8 +8,6 @@ import { createFetchResponse } from '@/__tests__/helpers'
 import { Glose } from '@/src/lib/get-gloses'
 
 describe('Page', () => {
-    beforeEach(() => {})
-
     const gloses: Glose[] = [
         {
             created_at: 'date',
@@ -26,7 +24,7 @@ describe('Page', () => {
 
         const { getByRole, getAllByTestId, getByText } = render(<Page />)
 
-        it.only('should contain a title', () => {
+        it('should contain a title', () => {
             expect(getByRole('heading', { level: 2, name: '✨ Make your code base shine ✨' })).toBeDefined()
         })
 
