@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react'
 import { getAllGlosesTerms } from '@/src/actions/glosesActions'
 
 export default function Page() {
-    const [data, setData] = useState([])
+    const initialState: Glose[] = []
+    const [data, setData] = useState(initialState)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
