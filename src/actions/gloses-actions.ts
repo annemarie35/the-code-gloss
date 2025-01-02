@@ -24,7 +24,7 @@ export async function addGlossTerm(previousState: InitialState, formData: FormDa
         return { message: `Nouveau terme ${formData.get('glose-title') as string} ajouté avec succès`, error: null }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-        return { message: null, error: 'Une erreur est survenue' }
+        return { message: null, error: "Une erreur est survenue dans l'ajout d'un nouveau terme" }
     }
 }
 
@@ -39,9 +39,9 @@ export async function getAllGlosesTerms(): Promise<Gloses> {
             }
         })
         return { message: null, error: null, gloses }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-        console.log('error in getAllGlosesTerms', err)
-        return { message: null, error: 'Une erreur est survenue', gloses: [] }
+        return { message: null, error: 'Une erreur est survenue en récupérant la liste des gloses', gloses: [] }
     }
 }
 
