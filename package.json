@@ -8,6 +8,7 @@
         "format": "prettier --write --ignore-path .gitignore .",
         "start": "next start",
         "start-database": "docker compose up --force-recreate --renew-anon-volumes postgresql",
+        "init-database": "npx knex migrate:latest && knex seed:run",
         "lint": "next lint",
         "lint:fix": "eslint --fix --cache .",
         "test": "vitest --exclude \"*/integration-tests\"",

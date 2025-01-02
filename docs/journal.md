@@ -26,6 +26,7 @@
 - clean/reset mocks in tests with before each
 
 ## 02/01/2025
+
 - some refactoring on api call and managing errors
 - test failure api call in index page
 
