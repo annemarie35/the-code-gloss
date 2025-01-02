@@ -9,7 +9,11 @@ export type Glose = {
     tags: string
 }
 export const getGloses = async (): Promise<Glose[]> => {
-    const gloses = await databaseClient.select('*')
-
-    return gloses
+    try {
+        const gloses = await databaseClient.select('*')
+        return gloses
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+        throw new Error('Database error')
+    }
 }
