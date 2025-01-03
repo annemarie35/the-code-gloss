@@ -1,5 +1,5 @@
 'use server'
-import { insert } from '@/src/lib/database/insert-gloses-db'
+import { insertGloseDbQuery } from '@/src/lib/database/insert-gloses-db-query'
 
 type GloseForm = {
     title: string
@@ -9,5 +9,5 @@ type GloseForm = {
 }
 export async function createGlose(glose: GloseForm) {
     glose.created_at = new Date().toISOString()
-    await insert(glose)
+    await insertGloseDbQuery(glose)
 }

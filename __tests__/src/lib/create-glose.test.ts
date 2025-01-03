@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import * as mod from '@/src/lib/database/insert-gloses-db'
+import * as mod from '@/src/lib/database/insert-gloses-db-query'
 import { createGlose } from '@/src/lib/database/create-glose'
 
 describe('createGlose', () => {
@@ -32,7 +32,7 @@ describe('createGlose', () => {
             })
         }))
 
-        const insertDatabaseSpy = vi.spyOn(mod, 'insert')
+        const insertDatabaseSpy = vi.spyOn(mod, 'insertGloseDbQuery')
         await createGlose({
             title: 'Title',
             description: 'Description',
