@@ -5,8 +5,22 @@ import { createGlose } from '@/src/lib/database/create-glose'
 
 describe('createGlose', () => {
     it('Should persist glose', async () => {
+        console.log(JSON.stringify(new Date(2006, 0, 2, 15, 4, 5)))
+        console.log(new Date(2006, 0, 2, 15, 4, 5).toUTCString())
+        console.log(
+            JSON.stringify(
+                new Date(
+                    Date.parse(new Date(2006, 0, 2, 15, 4, 5).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }))
+                )
+            )
+        )
+
         vi.useFakeTimers()
-        const date = new Date(2000, 1, 1, 13)
+        // const date = new Date('1995-12-17T03:24:00)').toUTCString()
+        const date = new Date(
+            Date.parse(new Date(2006, 0, 2, 15, 4, 5).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }))
+        )
+
         vi.setSystemTime(date)
         vi.mock('knex', () => ({
             default: vi.fn().mockReturnValue(() => {
@@ -22,15 +36,14 @@ describe('createGlose', () => {
         await createGlose({
             title: 'Title',
             description: 'Description',
-            tags: ['Tag'],
-            created_at: '2000-02-01T12:00:00.000Z'
+            tags: ['Tag']
         })
 
         expect(insertDatabaseSpy).toHaveBeenLastCalledWith({
             title: 'Title',
             description: 'Description',
             tags: ['Tag'],
-            created_at: '2000-02-01T12:00:00.000Z'
+            created_at: date.toISOString()
         })
     })
 })
