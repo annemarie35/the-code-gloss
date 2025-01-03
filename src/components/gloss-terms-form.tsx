@@ -1,6 +1,6 @@
 'use client'
 import { useActionState } from 'react'
-import { addGlossTerm } from '@/src/actions/glosesActions'
+import { addGlossTerm } from '@/src/actions/gloses-actions'
 
 export type InitialState = {
     message: string | null

@@ -25,6 +25,10 @@
 - https://stackoverflow.com/questions/47015693/how-to-fix-throw-of-exception-caught-locally
 - clean/reset mocks in tests with before each
 
+## 03/01/2025
+
+- working on testing actions create et getall gloses for success and failing cases
+
 ## 02/01/2025
 
 - some refactoring on api call and managing errors

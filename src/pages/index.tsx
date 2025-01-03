@@ -1,7 +1,7 @@
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import PageLayout from '@/src/pages/pageLayout'
 import { useEffect, useState } from 'react'
-import { getAllGlosesTerms } from '@/src/actions/glosesActions'
+import { getAllGlosesTerms } from '@/src/actions/gloses-actions'
 import { Glose } from '@/src/lib/database/get-gloses'
 
 export default function Page() {
