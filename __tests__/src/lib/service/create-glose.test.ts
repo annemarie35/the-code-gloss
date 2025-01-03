@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import * as mod from '@/src/lib/database/insert-gloses-db-query'
-import { createGlose } from '@/src/lib/database/create-glose'
+import { createGlose } from '@/src/lib/service/create-glose'
 
 describe('createGlose', () => {
     it('Should persist glose', async () => {
