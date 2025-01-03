@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getGloses, Glose } from '@/src/lib/database/get-gloses'
-import { createGlose } from '@/src/lib/database/create-glose'
+import { Glose } from '@/src/lib/database/get-gloses-db-query'
+import { createGlose } from '@/src/lib/service/create-glose'
+import { getGlose } from '@/src/lib/service/get-gloses'
 
 type ResponseData = {
     message?: string
@@ -9,30 +10,26 @@ type ResponseData = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-    let toto: CreateGloseResponse
+    let createOrGetGloseResponse: CreateOrGetGloseResponse
     let statusCode: number
-    // TODO Clean that or move to node server
     if (req.method === 'POST') {
-        // if (!req.body.title) {
-        //     throw new Error('Missing required field')
-        //     res.status(400).json({ error: 'une erreur' })
-        // }
         await createGlose(JSON.parse(req.body))
         statusCode = 201
-        toto = { message: 'Glose ajouté avec succès', gloses: [] }
-        res.status(statusCode).json(toto)
+        createOrGetGloseResponse = { message: 'Glose ajouté avec succès', gloses: [] }
+        res.status(statusCode).json(createOrGetGloseResponse)
     } else {
-        const gloses = await getGloses()
+        const gloses = await getGlose()
         statusCode = 200
         // need adapter for front
-        res.status(statusCode).json({
+        createOrGetGloseResponse = {
             message: 'Voici vos gloses',
             gloses
-        })
+        }
+        res.status(statusCode).json(createOrGetGloseResponse)
     }
 }
 
-type CreateGloseResponse = {
+type CreateOrGetGloseResponse = {
     message: string
     gloses: Glose[]
 }

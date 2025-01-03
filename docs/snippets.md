@@ -1,5 +1,5 @@
 Mock a function called in a component with
-`const gloses = await getGloses()`
+`const gloses = await getGlosesDbQuery()`
 
 Mock vith vitest :
 
@@ -10,7 +10,7 @@ import * as mod from '@/lib/get-gloses'
     vi.mock('@/lib/get-gloses', async (importOriginal) => {
         return {
             ...(await importOriginal<typeof import('@/lib/get-gloses')>()),
-            getGloses: vi.fn().mockResolvedValue([])
+            getGlosesDbQuery: vi.fn().mockResolvedValue([])
         }
     })
 

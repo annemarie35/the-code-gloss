@@ -2,7 +2,7 @@ import GlossTermsForm from '@/src/components/gloss-terms-form'
 import PageLayout from '@/src/pages/pageLayout'
 import { useEffect, useState } from 'react'
 import { getAllGlosesTerms } from '@/src/actions/gloses-actions'
-import { Glose } from '@/src/lib/database/get-gloses'
+import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
 export default function Page() {
     const initialState: Glose[] = []
