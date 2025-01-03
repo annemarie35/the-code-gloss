@@ -1,4 +1,4 @@
-import { Glose } from '@/src/lib/database/get-gloses'
+import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
 export function createFetchResponse(options: Partial<Template> = {}) {
     return {

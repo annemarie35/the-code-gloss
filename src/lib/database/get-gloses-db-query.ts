@@ -8,7 +8,7 @@ export type Glose = {
     created_at: string
     tags: string
 }
-export const getGloses = async (): Promise<Glose[]> => {
+export const getGlosesDbQuery = async (): Promise<Glose[]> => {
     try {
         const gloses = await databaseClient.select('*')
         return gloses
