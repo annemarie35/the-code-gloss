@@ -19,11 +19,13 @@
 - [ ] Fix type-checking in husky (path problem)
 - [ ] Delete branch after merge
 - [ ] Continue hhtp client improvements https://blog.logrocket.com/modern-api-data-fetching-methods-react/
+- [ ] Use a node server as appi ?
 
 ## TODO NEXT
 
 - https://stackoverflow.com/questions/47015693/how-to-fix-throw-of-exception-caught-locally
 - clean/reset mocks in tests with before each
+- do not import types from db ?
 
 ## 03/01/2025
 
