@@ -1,11 +1,12 @@
 import handler from '@/src/pages/api/gloses'
 import { describe, expect, it, vi } from 'vitest'
-import * as mod2 from '@/src/lib/service/get-gloses'
-import * as mod from '@/src/lib/service/create-glose'
+import * as getGlosesMod from '@/src/lib/service/get-gloses'
+import * as createGloseMod from '@/src/lib/service/create-glose'
 
 describe('Glose api', () => {
     it('should get gloses when request method is GET', async () => {
-        const getGlosesSpy = vi.spyOn(mod2, 'getGlose')
+        const getGlosesSpy = vi.spyOn(getGlosesMod, 'getGlose')
+        vi.mock('@/src/lib/database/get-gloses-db-query')
 
         const request = {
             method: 'GET'
@@ -30,8 +31,8 @@ describe('Glose api', () => {
         const date = new Date(2000, 1, 1, 13)
         vi.setSystemTime(date)
 
-        vi.mock('@/src/lib/database/get-gloses-db-query')
-        const createGlosesSpy = vi.spyOn(mod, 'createGlose')
+        vi.mock('@/src/lib/database/insert-gloses-db-query')
+        const createGlosesSpy = vi.spyOn(createGloseMod, 'createGlose')
 
         const request = {
             method: 'POST',
@@ -49,11 +50,6 @@ describe('Glose api', () => {
         // @ts-expect-error
         // TODO Type for request
         await handler(request, res)
-        expect(createGlosesSpy).toHaveBeenCalledWith({
-            title: 'TDD',
-            description: 'Created by Kent Beck',
-            tags: 'XP',
-            created_at: '2000-02-01T12:00:00.000Z'
-        })
+        expect(createGlosesSpy).toHaveBeenCalledWith({ title: 'TDD', description: 'Created by Kent Beck', tags: 'XP' })
     })
 })

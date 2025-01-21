@@ -21,7 +21,7 @@ describe('createGlose', () => {
             })
         }))
 
-        const insertDatabaseSpy = vi.spyOn(mod, 'insertGloseDbQuery')
+        const insertDatabaseSpy = vi.spyOn(mod, 'insertGlosesDbQuery')
         await createGlose({
             title: 'Title',
             description: 'Description',
