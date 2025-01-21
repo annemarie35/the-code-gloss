@@ -20,6 +20,7 @@ So, the code gloss will be a simple form for the moment.
 You need to have [Docker](https://www.docker.com/) installed on your machine.
 
 Run `npm run start-database`
+Then `npm run init-database`
 
 ## Getting Started
 
