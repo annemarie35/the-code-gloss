@@ -23,13 +23,18 @@
 
 ## TODO NEXT
 
-- https://stackoverflow.com/questions/47015693/how-to-fix-throw-of-exception-caught-locally
+- https://stackoverflow.com/questions/47015693/how-to-fix-throw-[globals.css](../src/styles/globals.css)of-exception-caught-locally
 - clean/reset mocks in tests with before each
 - do not import types from db ?
+
+## 21/01/2025
+
+- fix test on faking timer
 
 ## 03/01/2025
 
 - working on testing actions create et getall gloses for success and failing cases
+- https://stackoverflow.com/questions/77734117/cache-response-data-in-nextjs-api-route
 
 ## 02/01/2025
 

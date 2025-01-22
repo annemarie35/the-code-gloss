@@ -22,10 +22,10 @@ describe('Get gloses', () => {
         }))
 
         const getGlosesDbQuerySpy = vi.spyOn(mod, 'getGlosesDbQuery')
-        const toto = await getGlose()
+        const gloses = await getGlose()
 
         expect(getGlosesDbQuerySpy).toHaveBeenLastCalledWith()
-        expect(toto).toEqual([
+        expect(gloses).toEqual([
             {
                 id: 1,
                 title: 'TDD',

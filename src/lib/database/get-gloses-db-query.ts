@@ -10,7 +10,8 @@ export type Glose = {
 }
 export const getGlosesDbQuery = async (): Promise<Glose[]> => {
     try {
-        const gloses = await databaseClient.select('*')
+        const gloses = databaseClient.select('*')
+        // act like if last knex query is still in memory so it is not a select that is done when page is refresh, it create some more entries
         return gloses
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
