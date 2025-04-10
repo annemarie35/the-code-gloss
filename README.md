@@ -60,4 +60,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 There is a tutorial I wrote [here](https://github.com/annemarie35/TIL/blob/master/OPSERIES/SCALINGO/deployement.md)
 
 Now I use `git push frontend-scalingo main` to push the code in production.
-

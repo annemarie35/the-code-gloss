@@ -2,8 +2,6 @@ import Footer from '@/src/components/footer'
 import Header from '@/src/components/header'
 import React from 'react'
 
-import '../styles/globals.css'
-
 type MyComponentProps = React.PropsWithChildren<{ title?: string }>
 
 export default function PageLayout({ children, ...props }: MyComponentProps) {

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { getAllGlosesTerms } from '@/src/actions/gloses-actions'
 import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
+import '../styles/globals.css'
+
 export default function Page() {
     const initialState: Glose[] = []
     const [data, setData] = useState(initialState)

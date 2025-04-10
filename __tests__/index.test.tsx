@@ -2,9 +2,9 @@ import { expect, it, describe, vi } from 'vitest'
 import { render } from '@testing-library/react'
 
 import React from 'react'
-import Page from '@/src/pages'
 
 import { createFetchResponse, gloses } from '@/__tests__/helpers'
+import Page from '@/src/pages/_app'
 
 describe('Page', () => {
     describe('Render properly', () => {
@@ -37,7 +37,7 @@ describe('Page', () => {
         it('should display an error message', () => {
             const { getByText } = render(<Page />)
             expect(getByText(/Chargement des données en cours/i)).toBeInTheDocument()
-            // expect(getByText(/Une erreur est survenue./i)).toBeInTheDocument()
+            expect(getByText(/Une erreur est survenue./i)).toBeInTheDocument()
         })
     })
 })
