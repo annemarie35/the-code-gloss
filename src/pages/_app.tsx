@@ -5,6 +5,7 @@ import { getAllGlosesTerms } from '@/src/actions/gloses-actions'
 import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
 import '../styles/globals.css'
+import GlossTermsList from '@/src/components/gloss-terms-list'
 
 export default function Page() {
     const initialState: Glose[] = []
@@ -16,22 +17,19 @@ export default function Page() {
         const fetchDataForPosts = async () => {
             const { gloses, error } = await getAllGlosesTerms()
             setLoading(false)
-            setData(gloses)
             if (error) {
                 setError('Une erreur est survenue.')
             }
+            setData(gloses)
         }
         fetchDataForPosts()
     }, [])
+
     return (
         <div>
             <PageLayout title="✨ Make your code base shine ✨">
                 <GlossTermsForm />
-                <h3 className="py-4 text-lg">Gloses</h3>
-                {loading && <div>{'Chargement des données en cours'}</div>}
-                {/*TODO Extract to a DisplayGlosesComponent*/}
-                <div>{data && data.map((glose: Glose) => <p key={glose.id}>{glose.title}</p>)}</div>
-                <p>{error}</p>
+                <GlossTermsList loading={loading} glosesList={data} error={error} />
             </PageLayout>
         </div>
     )
