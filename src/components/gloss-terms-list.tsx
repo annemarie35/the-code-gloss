@@ -1,12 +1,6 @@
 import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
 export default function GlossTermsList({ loading = false, glosesList = [], error = '' }: GlossTermsListProps) {
-    console.log({
-        loading,
-        glosesList,
-        error
-    })
-
     return (
         <>
             <h3 className="py-4 text-lg">Gloses</h3>

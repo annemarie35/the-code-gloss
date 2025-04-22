@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Glose } from '@/src/lib/database/get-gloses-db-query'
 import { createGlose } from '@/src/lib/service/create-glose'
-import { getGlose } from '@/src/lib/service/get-gloses'
+import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
 
 type ResponseData = {
     message?: string
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         createOrGetGloseResponse = { message: 'Glose ajouté avec succès', gloses: [] }
         res.status(statusCode).json(createOrGetGloseResponse)
     } else {
-        const gloses = await getGlose()
+        const gloses = await getGlosesInMemory()
         statusCode = 200
         // need adapter for front
         createOrGetGloseResponse = {

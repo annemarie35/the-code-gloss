@@ -13,7 +13,6 @@ import * as mod from '@/lib/get-gloses'
             getGlosesDbQuery: vi.fn().mockResolvedValue([])
         }
     })
-
 ```
 
 ```javascript
@@ -38,4 +37,39 @@ vi.mock('@/src/actions/glosesActions', async (importOriginal) => {
         addGlossTerm: vi.fn().mockResolvedValue({ message: 'Nouveau terme ajouté avec succès', error: null })
     }
 })
+```
+
+## Mock Postgres
+
+```javascript
+vi.mock('pg', () => {
+    const Client = vi.fn()
+    Client.prototype.connect = vi.fn()
+    Client.prototype.query = vi.fn()
+    Client.prototype.end = vi.fn()
+
+    return { Client }
+})
+```
+
+[source](https://vitest.dev/guide/mocking.html)
+
+## Mock Knex
+
+```js
+vi.mock('knex', () => ({
+    default: vi.fn().mockReturnValue(() => {
+        return {
+            select: () => [
+                {
+                    id: 1,
+                    title: 'TDD',
+                    description: 'Created by Kent Beck',
+                    tags: 'XP',
+                    created_at: '2000-02-01T12:00:00.000Z'
+                }
+            ]
+        }
+    })
+}))
 ```

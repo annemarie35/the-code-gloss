@@ -1,30 +1,36 @@
 import { describe, expect, it, vi } from 'vitest'
+import { Pool } from 'pg'
 
-import * as mod from '@/src/lib/database/get-gloses-db-query'
-import { getGlose } from '@/src/lib/service/get-gloses'
+import * as mod from '@/infra/database/repositories'
+import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
 
 describe('Get gloses', () => {
     it('Should get all gloses', async () => {
-        vi.mock('knex', () => ({
-            default: vi.fn().mockReturnValue(() => {
-                return {
-                    select: () => [
-                        {
-                            id: 1,
-                            title: 'TDD',
-                            description: 'Created by Kent Beck',
-                            tags: 'XP',
-                            created_at: '2000-02-01T12:00:00.000Z'
-                        }
-                    ]
-                }
+        vi.mock('pg', () => {
+            const Pool = vi.fn()
+            Pool.prototype.connect = vi.fn()
+            Pool.prototype.query = vi.fn().mockReturnValue({
+                rows: [
+                    {
+                        id: 1,
+                        title: 'TDD',
+                        description: 'Created by Kent Beck',
+                        tags: 'XP',
+                        created_at: '2000-02-01T12:00:00.000Z'
+                    }
+                ]
             })
-        }))
+            Pool.prototype.end = vi.fn()
 
-        const getGlosesDbQuerySpy = vi.spyOn(mod, 'getGlosesDbQuery')
-        const gloses = await getGlose()
+            return { Pool }
+        })
 
-        expect(getGlosesDbQuerySpy).toHaveBeenLastCalledWith()
+        const getGlosesDbQuerySpy = vi.spyOn(mod, 'selectAllGloses')
+        const gloses = await getGlosesInMemory()
+
+        expect(Pool).toBeCalledTimes(1)
+
+        expect(getGlosesDbQuerySpy).toHaveBeenCalledOnce()
         expect(gloses).toEqual([
             {
                 id: 1,

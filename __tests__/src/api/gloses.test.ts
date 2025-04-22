@@ -1,12 +1,12 @@
 import handler from '@/src/pages/api/gloses'
 import { describe, expect, it, vi } from 'vitest'
-import * as getGlosesMod from '@/src/lib/service/get-gloses'
 import * as createGloseMod from '@/src/lib/service/create-glose'
+import * as getGlosesModTOI from '../../../src/lib/service/get-gloses'
 
-describe('Glose api', () => {
+describe('Gloses API', () => {
     it('should get gloses when request method is GET', async () => {
-        const getGlosesSpy = vi.spyOn(getGlosesMod, 'getGlose')
-        vi.mock('@/src/lib/database/get-gloses-db-query')
+        const getGlosesInMemorySpy = vi.spyOn(getGlosesModTOI, 'getGlosesInMemory')
+        vi.mock('@/src/lib/service/get-gloses')
 
         const request = {
             method: 'GET'
@@ -23,7 +23,8 @@ describe('Glose api', () => {
         // @ts-expect-error
         // TODO Type for request
         await handler(request, res)
-        expect(getGlosesSpy).toHaveBeenCalledOnce()
+        expect(getGlosesInMemorySpy).toHaveBeenCalledOnce()
+        expect(res.status).toHaveBeenLastCalledWith(200)
     })
 
     it('should create a glose when request method is POST', async () => {

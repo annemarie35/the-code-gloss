@@ -1,8 +1,8 @@
 'use server'
 
-import { getGlosesDbQuery } from '@/src/lib/database/get-gloses-db-query'
+import { selectAllGloses } from '@/infra/database/repositories'
 
-export async function getGlose() {
-    const gloses = await getGlosesDbQuery()
+export async function getGlosesInMemory() {
+    const gloses = await selectAllGloses()
     return gloses
 }
