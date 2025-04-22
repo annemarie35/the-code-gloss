@@ -19,13 +19,18 @@ describe('Gloss terms List', () => {
 
     describe('When gloses are not loaded yet', () => {
         beforeEach(() => {
-            render(<GlossTermsList loading={true} glosesList={[]} error={'Une erreur est survenue.'} />)
+            render(<GlossTermsList loading={true} glosesList={[]} error={''} />)
         })
 
         it('display a waiting message', () => {
             expect(screen.queryByText(/Chargement des données en cours/i)).toBeInTheDocument()
         })
+    })
 
+    describe('When there is a problem while fetching gloses', () => {
+        beforeEach(() => {
+            render(<GlossTermsList loading={true} glosesList={[]} error={'Une erreur est survenue.'} />)
+        })
         it('should display an error message', () => {
             expect(screen.getByText(/Une erreur est survenue./i)).toBeInTheDocument()
         })
