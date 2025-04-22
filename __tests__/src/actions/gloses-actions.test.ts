@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { addGlossTerm, getAllGlosesTerms } from '@/src/actions/gloses-actions'
 import { InitialState } from '@/src/components/gloss-terms-form'
-import { createFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
 
 describe('Gloses actions', () => {
     describe('addGlossTerm', async () => {
@@ -23,8 +23,8 @@ describe('Gloses actions', () => {
         }
 
         it('should add a gloss term', async () => {
-            const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
-            global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
+            const fetchResponse = createMockFetchResponse({ data: gloses, ok: true, status: 200 })
+            global.fetch = vi.fn().mockResolvedValue(createMockFetchResponse(fetchResponse))
 
             // Type https://medium.com/@turingvang/typescript-2-8-3-type-must-have-a-symbol-iterator-method-that-returns-an-iterator-c240961216d4
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -48,8 +48,8 @@ describe('Gloses actions', () => {
 
         describe('with error on inserting', async () => {
             it('should return an error message', async () => {
-                const fetchResponse = createFetchResponse({ ok: true, status: 200 })
-                global.fetch = vi.fn().mockRejectedValue(createFetchResponse(fetchResponse))
+                const fetchResponse = createMockFetchResponse({ ok: true, status: 200 })
+                global.fetch = vi.fn().mockRejectedValue(createMockFetchResponse(fetchResponse))
 
                 // Type https://medium.com/@turingvang/typescript-2-8-3-type-must-have-a-symbol-iterator-method-that-returns-an-iterator-c240961216d4
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -65,8 +65,8 @@ describe('Gloses actions', () => {
 
     describe('getAllGlosesTerms', async () => {
         it('should get all gloss terms', async () => {
-            const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
-            global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
+            const fetchResponse = createMockFetchResponse({ data: gloses, ok: true, status: 200 })
+            global.fetch = vi.fn().mockResolvedValue(createMockFetchResponse(fetchResponse))
             const response = await getAllGlosesTerms()
             expect(response).toEqual({
                 error: null,
@@ -85,8 +85,8 @@ describe('Gloses actions', () => {
 
         describe('with error on inserting', async () => {
             it('should return an error message', async () => {
-                const fetchResponse = createFetchResponse({ ok: true, status: 200 })
-                global.fetch = vi.fn().mockRejectedValue(createFetchResponse(fetchResponse))
+                const fetchResponse = createMockFetchResponse({ ok: true, status: 200 })
+                global.fetch = vi.fn().mockRejectedValue(createMockFetchResponse(fetchResponse))
 
                 const response = await getAllGlosesTerms()
                 expect(response).toEqual({

@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
 
 describe('Gloss Form Terms', () => {
     beforeEach(() => {
-        const fetchResponse = createFetchResponse({ data: gloses, ok: true, status: 200 })
-        global.fetch = vi.fn().mockResolvedValue(createFetchResponse(fetchResponse))
+        const fetchResponse = createMockFetchResponse({ data: gloses, ok: true, status: 200 })
+        global.fetch = vi.fn().mockResolvedValue(createMockFetchResponse(fetchResponse))
         cleanup()
     })
 

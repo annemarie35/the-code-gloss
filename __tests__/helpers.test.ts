@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { createFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
 
 describe('Test helpers', () => {
     describe('createFetchResponse', () => {
         it('should mock a fetch response with data', async () => {
-            const response = createFetchResponse({ data: gloses, ok: true })
+            const response = createMockFetchResponse({ data: gloses, ok: true })
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             // TODO Fixme
@@ -14,7 +14,7 @@ describe('Test helpers', () => {
         })
 
         it('should mock a fetch response in error', async () => {
-            const response = createFetchResponse({ ok: false })
+            const response = createMockFetchResponse({ ok: false })
             expect(response).toEqual({ json: undefined, ok: false, status: 500 })
         })
     })

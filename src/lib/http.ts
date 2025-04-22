@@ -14,7 +14,6 @@ const logger: Logger = pino({
 export const httpClient = async ({ url, requestConfig }: HttpClient) => {
     try {
         const response = await fetch(url, requestConfig)
-        console.log(`HTTP response: ${JSON.stringify(response)}`)
 
         if (response.ok) {
             return await response.json()

@@ -45,7 +45,7 @@ export async function getAllGlosesTerms(): Promise<Gloses> {
     }
 }
 
-type Gloses = {
+export type Gloses = {
     message: null | string
     gloses: Glose[]
     error: null | string

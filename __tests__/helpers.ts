@@ -1,6 +1,6 @@
 import { Glose } from '@/src/lib/database/get-gloses-db-query'
 
-export function createFetchResponse(options: Partial<Template> = {}) {
+export function createMockFetchResponse(options: Partial<Template> = {}) {
     return {
         json: options.ok ? () => new Promise((resolve) => resolve({ gloses: options.data })) : undefined,
         ok: true,
