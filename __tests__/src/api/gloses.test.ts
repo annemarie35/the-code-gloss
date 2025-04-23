@@ -1,6 +1,6 @@
 import handler from '@/src/pages/api/gloses'
 import { describe, expect, it, vi } from 'vitest'
-import * as createGloseMod from '@/src/lib/service/create-glose'
+import * as addGloseMod from '@/src/lib/service/add-glose'
 import * as getGlosesModTOI from '../../../src/lib/service/get-gloses'
 
 describe('Gloses API', () => {
@@ -32,8 +32,10 @@ describe('Gloses API', () => {
         const date = new Date(2000, 1, 1, 13)
         vi.setSystemTime(date)
 
+        vi.mock('@/src/lib/service/add-glose')
+
         vi.mock('@/src/lib/database/insert-gloses-db-query')
-        const createGlosesSpy = vi.spyOn(createGloseMod, 'createGlose')
+        const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
 
         const request = {
             method: 'POST',
@@ -51,6 +53,10 @@ describe('Gloses API', () => {
         // @ts-expect-error
         // TODO Type for request
         await handler(request, res)
-        expect(createGlosesSpy).toHaveBeenCalledWith({ title: 'TDD', description: 'Created by Kent Beck', tags: 'XP' })
+        expect(createGlosesSpy).toHaveBeenCalledWith({
+            title: 'TDD',
+            description: 'Created by Kent Beck',
+            tags: 'XP'
+        })
     })
 })

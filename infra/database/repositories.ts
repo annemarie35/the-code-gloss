@@ -1,10 +1,13 @@
-import { SELECT_ALL } from '@/infra/database/sql_queries'
+import { INSERT_GLOSE, SELECT_ALL } from '@/infra/database/sql_queries'
 
-import { query, end } from '@/infra/database/connectionPool'
-import { Glose } from '@/src/lib/database/get-gloses-db-query'
+import { query } from '@/infra/database/connectionPool'
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
-export const selectAllGloses = async (): Promise<Glose[]> => {
+export const selectAllGloses = async (): Promise<GloseComplete[]> => {
     const { rows } = await query(SELECT_ALL('public'))
-    await end()
     return rows
+}
+
+export const insertGlose = async (glose: Omit<GloseComplete, 'id'>): Promise<undefined> => {
+    await query(INSERT_GLOSE('public'), [glose.description, glose.title, glose.tags, glose.created_at])
 }

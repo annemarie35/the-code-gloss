@@ -13,5 +13,5 @@ const pool = new Pool({
     allowExitOnIdle: false
 })
 
-export const query = (text: string, params?: never) => pool.query(text, params)
+export const query = (queryTextOrConfig: string, values?: never | string[]) => pool.query(queryTextOrConfig, values)
 export const end = async () => await pool.end()

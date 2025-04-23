@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import * as mod from '@/src/lib/database/insert-gloses-db-query'
-import { createGlose } from '@/src/lib/service/create-glose'
+import * as mod from '@/src/lib/service//add-glose'
+import { AddGlose } from '@/src/lib/service/add-glose'
 
 describe('createGlose', () => {
     it('Should persist glose', async () => {
@@ -11,27 +11,29 @@ describe('createGlose', () => {
         )
 
         vi.setSystemTime(date)
-        vi.mock('knex', () => ({
-            default: vi.fn().mockReturnValue(() => {
-                return {
-                    insert: () => {
-                        return { returning: () => [{ title: 'TDD' }] }
-                    }
-                }
+        vi.mock('pg', () => {
+            const Pool = vi.fn()
+            Pool.prototype.connect = vi.fn()
+            Pool.prototype.query = vi.fn().mockReturnValue({
+                rowsCount: 1
             })
-        }))
+            Pool.prototype.end = vi.fn()
 
-        const insertDatabaseSpy = vi.spyOn(mod, 'insertGlosesDbQuery')
-        await createGlose({
+            return { Pool }
+        })
+
+        const insertDatabaseSpy = vi.spyOn(mod, 'AddGlose')
+        await AddGlose({
             title: 'Title',
             description: 'Description',
-            tags: ['Tag']
+            tags: 'Tag',
+            created_at: ''
         })
 
         expect(insertDatabaseSpy).toHaveBeenLastCalledWith({
             title: 'Title',
             description: 'Description',
-            tags: ['Tag'],
+            tags: 'Tag',
             created_at: date.toISOString()
         })
     })
