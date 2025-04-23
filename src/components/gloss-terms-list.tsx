@@ -1,11 +1,11 @@
-import { Glose } from '@/src/lib/database/get-gloses-db-query'
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 export default function GlossTermsList({ loading = false, glosesList = [], error = '' }: GlossTermsListProps) {
     return (
         <>
             <h3 className="py-4 text-lg">Gloses</h3>
             {loading && <div>{'Chargement des données en cours'}</div>}
-            <div>{glosesList && glosesList.map((glose: Glose) => <p key={glose.id}>{glose.title}</p>)}</div>
+            <div>{glosesList && glosesList.map((glose: GloseComplete) => <p key={glose.id}>{glose.title}</p>)}</div>
             <p>{error}</p>
         </>
     )
@@ -13,6 +13,6 @@ export default function GlossTermsList({ loading = false, glosesList = [], error
 
 type GlossTermsListProps = {
     loading: boolean
-    glosesList: Glose[]
+    glosesList: GloseComplete[]
     error: string
 }

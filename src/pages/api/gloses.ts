@@ -1,13 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Glose } from '@/src/lib/database/get-gloses-db-query'
 import { createGlose } from '@/src/lib/service/create-glose'
 import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
-
-type ResponseData = {
-    message?: string
-    gloses?: Glose[]
-    error?: string
-}
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     let createOrGetGloseResponse: CreateOrGetGloseResponse
@@ -31,5 +25,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 type CreateOrGetGloseResponse = {
     message: string
-    gloses: Glose[]
+    gloses: GloseComplete[]
+}
+
+type ResponseData = {
+    message?: string
+    gloses?: GloseComplete[]
+    error?: string
 }

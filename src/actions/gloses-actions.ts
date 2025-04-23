@@ -1,7 +1,7 @@
 'use server'
 import { InitialState } from '@/src/components/gloss-terms-form'
 import { httpClient } from '@/src/lib/http'
-import { Glose } from '@/src/lib/database/get-gloses-db-query'
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 export async function addGlossTerm(previousState: InitialState, formData: FormData): Promise<InitialState> {
     const customHeaders = new Headers()
@@ -47,6 +47,6 @@ export async function getAllGlosesTerms(): Promise<Gloses> {
 
 export type Gloses = {
     message: null | string
-    gloses: Glose[]
+    gloses: GloseComplete[]
     error: null | string
 }

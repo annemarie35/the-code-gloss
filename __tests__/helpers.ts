@@ -1,4 +1,4 @@
-import { Glose } from '@/src/lib/database/get-gloses-db-query'
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 export function createMockFetchResponse(options: Partial<Template> = {}) {
     return {
@@ -17,7 +17,7 @@ type Template = {
     json?: (() => Promise<unknown>) | undefined | (() => Data)
 }
 
-export const gloses: Glose[] = [
+export const gloses: GloseComplete[] = [
     {
         created_at: '2025-01-02T15:52:46.963Z',
         description: 'Invented by Alistair Cockburn in 2005',
