@@ -36,8 +36,14 @@ services:
             - '5432:5432'
         #    https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#customizable-environment-variables
         environment:
-            - POSTGRESQL_USERNAME=username
-            - POSTGRESQL_PASSWORD=password123
-            - POSTGRESQL_POSTGRES_PASSWORD=password123
+            - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
+            - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+            - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
         volumes:
             - ./database-configurations/eight-connexions/:/bitnami/postgresql/conf/
+            - ./infra/database/scripts/:/tmp/scripts/
+        healthcheck:
+            test: 'psql --dbname "host=localhost port=5432 dbname=postgres user=username password=password123"'
+            interval: 1s
+            timeout: 10s
+            retries: 20
