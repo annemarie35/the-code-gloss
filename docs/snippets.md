@@ -73,3 +73,30 @@ vi.mock('knex', () => ({
     })
 }))
 ```
+
+## Mock Fs path with Typescript
+
+TypeScript ne reconnaît pas la méthode mockReturnValue sur path.resolve car il ne sait pas que path a été transformé en mock.
+
+```typescript
+import { MockedObject } from 'vitest'
+
+import fs from 'fs'
+vi.mock('fs')
+
+mockedFs.existsSync.mockReturnValue(true)
+mockedFs.readFileSync.mockReturnValue(JSON.stringify(testData))
+```
+
+Alternative : typer seulement la fonction resolve
+
+```typescript
+import path from 'path'
+import { vi, MockedFunction } from 'vitest'
+
+vi.mock('path')
+
+const mockedResolve = path.resolve as MockedFunction<typeof path.resolve>
+
+mockedResolve.mockReturnValue('/fake/path/data.json')
+```

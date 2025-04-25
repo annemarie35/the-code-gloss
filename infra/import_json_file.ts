@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 
-export const importJsonFile = (filePath) => {
+export const importJsonFile = (filePath: string) => {
     const dataFilePath = path.resolve(process.cwd(), filePath)
 
     console.log(`Search for the data file at: ${dataFilePath}`)
