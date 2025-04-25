@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi, MockedObject } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { importJsonFile } from '../../infra/import_json_file.js'
+import { importJsonFile } from '@/infra/import_json_file'
 
 describe('importFile with data to seed db with', () => {
     vi.mock('fs')
@@ -18,41 +18,34 @@ describe('importFile with data to seed db with', () => {
         vi.restoreAllMocks()
     })
 
-    const testData = [
-        { id: 1, name: 'Test 1' },
-        { id: 2, name: 'Test 2' }
-    ]
-
-    path.resolve.mockReturnValue('/fake/path/data.json')
-    fs.existsSync.mockReturnValue(true)
-    fs.readFileSync.mockReturnValue(JSON.stringify(testData))
+    const mockedPath = path as MockedObject<typeof path>
+    const mockedFs = fs as MockedObject<typeof fs>
 
     it('read and return json file properly', () => {
-        // Données de test
         const testData = [
             { id: 1, name: 'Test 1' },
             { id: 2, name: 'Test 2' }
         ]
-
-        path.resolve.mockReturnValue('/fake/path/data.json')
-        fs.existsSync.mockReturnValue(true)
-        fs.readFileSync.mockReturnValue(JSON.stringify(testData))
+        mockedPath.resolve.mockReturnValue('/fake/path/data.json')
+        mockedFs.existsSync.mockReturnValue(true)
+        mockedFs.readFileSync.mockReturnValue(JSON.stringify(testData))
 
         const result = importJsonFile('data.json')
 
-        // Vérifications
         expect(path.resolve).toHaveBeenCalledWith('/fake/cwd', 'data.json')
         expect(fs.existsSync).toHaveBeenCalledWith('/fake/path/data.json')
         expect(fs.readFileSync).toHaveBeenCalledWith('/fake/path/data.json', 'utf8')
+
         expect(result).toEqual(testData)
+
         expect(console.log).toHaveBeenCalledTimes(2)
         expect(console.log).toHaveBeenNthCalledWith(1, 'Search for the data file at: /fake/path/data.json')
-        expect(console.log).toHaveBeenNthCalledWith(2, 'Start database update with 2 entries...')
+        expect(console.log).toHaveBeenNthCalledWith(2, 'File with 2 entries successfully imported!')
     })
 
     it('throws error if file with seeds is missing', () => {
-        path.resolve.mockReturnValue('/fake/path/missing.json')
-        fs.existsSync.mockReturnValue(false)
+        mockedPath.resolve.mockReturnValue('/fake/path/missing.json')
+        mockedFs.existsSync.mockReturnValue(false)
 
         expect(() => importJsonFile('missing.json')).toThrow(
             'The data file does not exist at the location: /fake/path/missing.json'
@@ -61,10 +54,9 @@ describe('importFile with data to seed db with', () => {
 
     it('throws error if file data is not an array', () => {
         const testData = { key: 'value' }
-
-        path.resolve.mockReturnValue('/fake/path/invalid.json')
-        fs.existsSync.mockReturnValue(true)
-        fs.readFileSync.mockReturnValue(JSON.stringify(testData))
+        mockedPath.resolve.mockReturnValue('/fake/path/invalid.json')
+        mockedFs.existsSync.mockReturnValue(true)
+        mockedFs.readFileSync.mockReturnValue(JSON.stringify(testData))
 
         expect(() => importJsonFile('invalid.json')).toThrow('The JSON file must contain an array of entries')
     })

@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "allowImportingTsExtensions": true,
         "allowJs": true,
         "esModuleInterop": true,
         "incremental": true,
@@ -25,3 +26,6 @@
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
     "exclude": ["node_modules", ".next/*"]
 }
+
+
+//https://ermakovich.ru/posts/typescript-top-level-await/

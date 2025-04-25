@@ -1,3 +1,6 @@
+import { importJsonFile } from '../../../infra/import_json_file.ts'
+import type { Seeds } from '../../../infra/import_json_file.ts'
+
 export async function createAndSeedDatabase({
     dataFilePath,
     importingFileFunction
@@ -13,13 +16,10 @@ export async function createAndSeedDatabase({
 
 type createAndSeedDatabaseDependencies = {
     dataFilePath: string
-    importingFileFunction(dataFilePath: string): () => Seeds
+    importingFileFunction: (dataFilePath: string) => Seeds
 }
 
-type Seeds = Seed[]
-
-type Seed = {
-    description: string
-    tags: string
-    title: string
-}
+await createAndSeedDatabase({
+    dataFilePath: 'infra/database/scripts/seeds.json',
+    importingFileFunction: importJsonFile
+})
