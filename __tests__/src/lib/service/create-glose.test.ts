@@ -13,11 +13,9 @@ describe('createGlose', () => {
         vi.setSystemTime(date)
         vi.mock('pg', () => {
             const Pool = vi.fn()
-            Pool.prototype.connect = vi.fn()
             Pool.prototype.query = vi.fn().mockReturnValue({
                 rowsCount: 1
             })
-            Pool.prototype.end = vi.fn()
 
             return { Pool }
         })
