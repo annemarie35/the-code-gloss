@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-import { createAndSeedDatabase } from '../../../../infra/database/scripts/create_gloses_and_seeds.js'
+import { createAndSeedDatabase } from '@/infra/database/scripts/create_gloses_and_seeds'
 
 describe('CreateAndSeedDatabase', () => {
     describe('Main function', () => {
-        let importingFileFunctionSpy = vi.fn()
+        const importingFileFunctionSpy = vi.fn()
         beforeEach(() => {
             vi.resetAllMocks()
             vi.spyOn(console, 'error').mockImplementation(() => {})
