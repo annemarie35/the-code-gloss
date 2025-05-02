@@ -1,6 +1,7 @@
-import { Pool } from 'pg'
+import pkg from 'pg'
+const { Pool } = pkg
 
-const pool = new Pool({
+export const pgConnectionPool = new Pool({
     host: process.env.POSTGRESQL_HOST,
     port: Number(process.env.POSTGRESQL_PORT),
     database: process.env.POSTGRESQL_DATABASE,
@@ -13,6 +14,7 @@ const pool = new Pool({
     allowExitOnIdle: false
 })
 
-export const query = (queryTextOrConfig: string, values?: never | string[]) => pool.query(queryTextOrConfig, values)
-export const end = async () => await pool.end()
-// TODO use end when app is shut down
+export const query: PgPoolQuery = (queryTextOrConfig: string, values: unknown[]) =>
+    pgConnectionPool.query(queryTextOrConfig, values)
+
+export type PgPoolQuery = (sqlQuery: string, values: unknown[]) => Promise<pkg.QueryResult<pkg.QueryResultRow>>

@@ -14,8 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     } else {
         const gloses = await getGlosesInMemory()
         statusCode = 200
-        // need adapter for front
-        createOrGetGloseResponse = {
+        const createOrGetGloseResponse = {
             message: 'Voici vos gloses',
             gloses
         }

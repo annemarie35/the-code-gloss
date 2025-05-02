@@ -11,13 +11,21 @@ describe('createGlose', () => {
         )
 
         vi.setSystemTime(date)
+
         vi.mock('pg', () => {
-            const Pool = vi.fn()
-            Pool.prototype.query = vi.fn().mockReturnValue({
+            const mockQuery = vi.fn().mockReturnValue({
                 rowsCount: 1
             })
+            const MockPool = vi.fn(() => ({
+                query: mockQuery
+            }))
 
-            return { Pool }
+            const pkg = { Pool: MockPool }
+
+            return {
+                default: pkg,
+                Pool: MockPool
+            }
         })
 
         const insertDatabaseSpy = vi.spyOn(mod, 'AddGlose')

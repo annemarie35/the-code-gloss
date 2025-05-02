@@ -2,9 +2,10 @@ import { INSERT_GLOSE, SELECT_ALL } from '@/infra/database/sql_queries'
 
 import { query } from '@/infra/database/connectionPool'
 import { GloseComplete } from '@/src/core/domain/models/Glose'
+import type { QueryResultRow } from 'pg'
 
-export const selectAllGloses = async (): Promise<GloseComplete[]> => {
-    const { rows } = await query(SELECT_ALL('public'))
+export const selectAllGloses = async (): Promise<QueryResultRow[]> => {
+    const { rows } = await query(SELECT_ALL('public'), [])
     return rows
 }
 

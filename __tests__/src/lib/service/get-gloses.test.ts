@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Pool } from 'pg'
+import pkg from 'pg'
+const { Pool } = pkg
 
 import * as mod from '@/infra/database/repositories'
 import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
@@ -7,9 +8,7 @@ import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
 describe('Get gloses', () => {
     it('Should get all gloses', async () => {
         vi.mock('pg', () => {
-            const Pool = vi.fn()
-            Pool.prototype.connect = vi.fn()
-            Pool.prototype.query = vi.fn().mockReturnValue({
+            const mockQuery = vi.fn().mockReturnValue({
                 rows: [
                     {
                         id: 1,
@@ -20,11 +19,17 @@ describe('Get gloses', () => {
                     }
                 ]
             })
-            Pool.prototype.end = vi.fn()
+            const MockPool = vi.fn(() => ({
+                query: mockQuery
+            }))
 
-            return { Pool }
+            const pkg = { Pool: MockPool }
+
+            return {
+                default: pkg,
+                Pool: MockPool
+            }
         })
-
         const getGlosesDbQuerySpy = vi.spyOn(mod, 'selectAllGloses')
         const gloses = await getGlosesInMemory()
 
