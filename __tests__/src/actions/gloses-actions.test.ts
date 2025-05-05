@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { addGlossTerm, getAllGlosesTerms } from '@/src/actions/gloses-actions'
 import { InitialState } from '@/src/components/gloss-terms-form'
-import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers.ts'
 
 describe('Gloses actions', () => {
     describe('addGlossTerm', async () => {

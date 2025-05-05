@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers'
 
 describe('Gloss Form Terms', () => {
     beforeEach(() => {

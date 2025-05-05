@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import React from 'react'
 
-import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers'
 import Page from '@/src/pages/_app'
 
 describe('Page', () => {

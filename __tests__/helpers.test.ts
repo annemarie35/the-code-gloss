@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createMockFetchResponse, gloses } from '@/__tests__/helpers'
+import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers.ts'
 
 describe('Test helpers', () => {
     describe('createFetchResponse', () => {
