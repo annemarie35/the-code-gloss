@@ -31,7 +31,7 @@
 services:
     postgresql:
         container_name: postgresql
-        image: docker.io/bitnami/postgresql:16
+        image: docker.io/bitnami/postgresql:latest
         ports:
             - '5432:5432'
         #    https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#customizable-environment-variables
