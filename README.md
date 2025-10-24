@@ -15,12 +15,21 @@ My favorite is a simple markdown file now, my own property (exporting files from
 
 So, the code gloss will be a simple form for the moment.
 
+## Prerequisites
+
+Install [Direnv](https://direnv.net/)
+Docker
+NodeJs
+
 ## Start database & run migrations
 
-You need to have [Docker](https://www.docker.com/) installed on your machine.
+Feed env variables with `direnv allow`
 
-Run `npm run start-database`
-Then `npm run init-database`
+You need to have [Docker](https://www.docker.com/) installed on your machine and running.
+
+Run `npm run start:database` start docker postgres container
+Then `npm run create:database` create database
+Then `npm run seed:database` seed database with some data
 
 ## Getting Started
 
