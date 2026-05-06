@@ -29,8 +29,19 @@
 
 ## 06/05/2026
 
-Tous les tests passent — 18 fichiers, 44 tests. Voici un résumé des corrections :
+- Ajout de vice dans les github actions
+- Pr dependabot mergée -> mise à jour du code
 
+### Résumé de la correction :
+- _app.tsx → remplacé par le vrai wrapper Next.js (App({ Component, pageProps })). C'est là que
+  vit l'import de globals.css (qui s'applique à toutes les pages).
+- index.tsx → créé avec le contenu de la page d'accueil (formulaire + liste).
+- __tests__/index.test.tsx → import mis à jour vers index au lieu de _app.
+
+Sans index.tsx, Next.js ne savait pas quelle page servir sur /, ce qui provoquait l'erreur de
+navigation hard vers la même URL.
+
+### Tous les tests passent — 18 fichiers, 44 tests. Voici un résumé des corrections :
 1. import_json_file.test.ts : vi.mock('fs') et vi.mock('path') sans factory ne créent pas de vrais vi.fn() dans Vitest 4. Ajout de factories
    explicites avec les méthodes nécessaires (existsSync, readFileSync, resolve). Les mocks sont également déplacés au niveau module (hors du
    describe).
