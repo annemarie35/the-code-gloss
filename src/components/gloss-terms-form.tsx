@@ -1,5 +1,5 @@
 'use client'
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { addGlossTerm } from '@/src/actions/gloses-actions'
 
 export type InitialState = {
@@ -15,6 +15,11 @@ const initialState: InitialState = {
 export default function GlossTermsForm() {
     const [state, formAction, isPending] = useActionState(addGlossTerm, initialState)
     const { message, error } = state
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [tags, setTags] = useState('')
+
+    const isFormValid = title.trim() !== '' && description.trim() !== '' && tags.trim() !== ''
 
     return (
         <>
@@ -34,6 +39,9 @@ export default function GlossTermsForm() {
                         placeholder="Event sourcing..."
                         className="py-2 px-3 rounded-sm"
                         aria-label="title"
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
                 <div>
@@ -46,6 +54,9 @@ export default function GlossTermsForm() {
                         placeholder="The fundamental idea of Event Sourcing is that..."
                         className="py-2 px-3 rounded-sm"
                         aria-label="description"
+                        required
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
                 <div>
@@ -58,13 +69,16 @@ export default function GlossTermsForm() {
                         placeholder="DDD, code..."
                         className="py-2 px-3 rounded-sm"
                         aria-label="tags"
+                        required
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
                     />
                 </div>
                 <div>
                     <button
                         type="submit"
-                        disabled={isPending}
-                        className="bg-[#C4338E] text-white mt-4 py-2 px-4 rounded content-end"
+                        disabled={isPending || !isFormValid}
+                        className="bg-[#C4338E] text-white mt-4 py-2 px-4 rounded content-end disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {' '}
                         {isPending ? 'Loading' : 'Ajouter'}

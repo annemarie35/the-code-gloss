@@ -27,6 +27,53 @@ describe('Gloss Form Terms', () => {
         expect(getByLabelText('Title')).toBeInTheDocument()
     })
 
+    describe('submit button', () => {
+        it('should be disabled when all fields are empty', () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled when only title is filled', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled when only title and description are filled', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
+            await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be enabled when all fields are filled', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
+            await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeEnabled()
+        })
+
+        it('should be disabled again when a field is cleared after being filled', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+            const titleInput = getByRole('textbox', { name: /title/i })
+
+            await userEvent.type(titleInput, 'TDD')
+            await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+            await userEvent.clear(titleInput)
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+    })
+
     describe('on submit', () => {
         it('should persist glose and display a success message on submit containing glose title', async () => {
             const { getByRole, getByText } = render(<GlossTermsForm />)
