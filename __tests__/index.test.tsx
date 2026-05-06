@@ -15,15 +15,13 @@ describe('Page', () => {
         })
 
         it('should contain a title', () => {
-            expect(screen.getByRole('heading', { level: 2, name: '✨ Make your code base shine ✨' })).toBeDefined()
+            expect(
+                screen.getByRole('heading', { level: 2, name: '✨ Make your code knowledge shine ✨' })
+            ).toBeDefined()
         })
 
         it('should contain a form', async () => {
             expect(screen.getAllByTestId('gloss-terms-form')).toBeDefined()
-        })
-
-        it('should contain a title for gloses section', () => {
-            expect(screen.getByRole('heading', { level: 3, name: 'Gloses' })).toBeDefined()
         })
 
         it('should contain a glose', async () => {

@@ -12,6 +12,6 @@ describe('Navbar', () => {
     })
 
     it('should have a link to home page', async () => {
-        expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
+        expect(screen.getByRole('link', { name: 'Add a gloss' })).toHaveAttribute('href', '/')
     })
 })

@@ -25,7 +25,7 @@ export default function Page() {
 
     return (
         <div>
-            <PageLayout title="✨ Make your code base shine ✨">
+            <PageLayout title="✨ Make your code knowledge shine ✨">
                 <GlossTermsForm />
                 <GlossTermsList loading={loading} glosesList={data} error={error} />
             </PageLayout>

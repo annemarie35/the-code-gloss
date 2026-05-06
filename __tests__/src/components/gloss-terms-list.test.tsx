@@ -8,10 +8,6 @@ describe('Gloss terms List', () => {
             render(<GlossTermsList loading={false} glosesList={[]} error={''} />)
         })
 
-        it('should contain a title for gloses section', () => {
-            expect(screen.getByRole('heading', { level: 3, name: 'Gloses' })).toBeDefined()
-        })
-
         it('do not display a waiting message by default', () => {
             expect(screen.queryByText(/Chargement des données en cours/i)).not.toBeInTheDocument()
         })

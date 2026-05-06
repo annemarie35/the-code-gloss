@@ -16,7 +16,7 @@ describe('Gloss Form Terms', () => {
 
         expect(
             getByRole('heading', {
-                name: /Ajouter un nouveau terme/i
+                name: /Add a new gloss/i
             })
         ).toBeInTheDocument()
     })

@@ -23,7 +23,7 @@ export default function GlossTermsForm() {
 
     return (
         <>
-            <h3 className="py-4 text-lg">Ajouter un nouveau terme</h3>
+            <h3 className="py-4 text-lg">Add a new gloss</h3>
             <form
                 action={formAction}
                 data-testid="gloss-terms-form"
