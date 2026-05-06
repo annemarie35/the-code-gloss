@@ -3,10 +3,22 @@ import fs from 'fs'
 import path from 'path'
 import { importJsonFile } from '@/infra/import_json_file'
 
-describe('importFile with data to seed db with', () => {
-    vi.mock('fs')
-    vi.mock('path')
+vi.mock('fs', () => ({
+    default: {
+        existsSync: vi.fn(),
+        readFileSync: vi.fn()
+    },
+    existsSync: vi.fn(),
+    readFileSync: vi.fn()
+}))
+vi.mock('path', () => ({
+    default: {
+        resolve: vi.fn()
+    },
+    resolve: vi.fn()
+}))
 
+describe('importFile with data to seed db with', () => {
     beforeEach(() => {
         vi.resetAllMocks()
         vi.spyOn(process, 'cwd').mockReturnValue('/fake/cwd')

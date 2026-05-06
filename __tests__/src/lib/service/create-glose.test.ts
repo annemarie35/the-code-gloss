@@ -3,6 +3,22 @@ import { describe, expect, it, vi } from 'vitest'
 import * as mod from '@/src/lib/service//add-glose'
 import { AddGlose } from '@/src/lib/service/add-glose'
 
+vi.mock('pg', () => {
+    const mockQuery = vi.fn().mockReturnValue({
+        rowsCount: 1
+    })
+    const MockPool = vi.fn(function () {
+        return { query: mockQuery }
+    })
+
+    const pkg = { Pool: MockPool }
+
+    return {
+        default: pkg,
+        Pool: MockPool
+    }
+})
+
 describe('createGlose', () => {
     it('Should persist glose', async () => {
         vi.useFakeTimers()
@@ -11,22 +27,6 @@ describe('createGlose', () => {
         )
 
         vi.setSystemTime(date)
-
-        vi.mock('pg', () => {
-            const mockQuery = vi.fn().mockReturnValue({
-                rowsCount: 1
-            })
-            const MockPool = vi.fn(() => ({
-                query: mockQuery
-            }))
-
-            const pkg = { Pool: MockPool }
-
-            return {
-                default: pkg,
-                Pool: MockPool
-            }
-        })
 
         const insertDatabaseSpy = vi.spyOn(mod, 'AddGlose')
         await AddGlose({

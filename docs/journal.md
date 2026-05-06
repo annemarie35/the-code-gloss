@@ -27,6 +27,19 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 06/05/2026
+
+Tous les tests passent — 18 fichiers, 44 tests. Voici un résumé des corrections :
+
+1. import_json_file.test.ts : vi.mock('fs') et vi.mock('path') sans factory ne créent pas de vrais vi.fn() dans Vitest 4. Ajout de factories
+   explicites avec les méthodes nécessaires (existsSync, readFileSync, resolve). Les mocks sont également déplacés au niveau module (hors du
+   describe).
+2. gloses-actions.test.ts et gloss-terms-form.test.tsx : headers: new Headers() dans expect.objectContaining ne correspondait pas aux headers
+   réels (qui contiennent Accept: application/json). Suppression de cette propriété de l'assertion.
+3. get-gloses.test.ts et create-glose.test.ts : vi.mock('pg', ...) était appelé à l'intérieur d'un bloc it(). Vitest 4 exige que les mocks
+   soient au niveau module pour être correctement hissés. De plus, le constructeur MockPool utilisait une arrow function incompatible avec new —
+   remplacé par une fonction classique.
+
 ## 21/01/2025
 
 - fix test on faking timer

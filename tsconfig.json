@@ -5,7 +5,7 @@
         "esModuleInterop": true,
         "incremental": true,
         "isolatedModules": true,
-        "jsx": "preserve",
+        "jsx": "react-jsx",
         "lib": ["dom", "dom.iterable", "esnext"],
         "module": "esnext",
         "moduleResolution": "bundler",
@@ -26,6 +26,4 @@
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
     "exclude": ["node_modules", ".next/*"]
 }
-
-
 //https://ermakovich.ru/posts/typescript-top-level-await/

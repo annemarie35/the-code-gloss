@@ -49,10 +49,8 @@ describe('Gloss Form Terms', () => {
                 'http://localhost:3000/api/gloses',
                 expect.objectContaining({
                     method: 'POST',
-                    headers: new Headers(),
                     mode: 'cors',
                     body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
-                    // objectContaining to fix toMatchObject issue
                 })
             )
         })

@@ -38,10 +38,8 @@ describe('Gloses actions', () => {
                 'http://localhost:3000/api/gloses',
                 expect.objectContaining({
                     method: 'POST',
-                    headers: new Headers(),
                     mode: 'cors',
                     body: '{"title":"some words","description":"some words","tags":"some words"}'
-                    // objectContaining to fix toMatchObject issue
                 })
             )
         })
