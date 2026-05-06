@@ -1,4 +1,5 @@
-name: Security with Vice
+name: Security
+
 on:
     push:
         branches: [main]
@@ -10,8 +11,17 @@ permissions:
     security-events: write
 
 jobs:
-    vice:
+    vice-audit:
+        name: VICE Security Audit
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v6
-            - uses: Webba-Creative-Technologies/vice@v3
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Run VICE audit
+              uses: ./
