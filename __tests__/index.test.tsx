@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers'
-import Page from '@/src/pages/_app'
+import Page from '@/src/pages/index'
 
 describe('Page', () => {
     describe('Render properly', () => {
