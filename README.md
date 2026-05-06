@@ -24,12 +24,12 @@ NodeJs
 ## Start database & run migrations
 
 Feed env variables with `direnv allow`
-
+[package.json](package.json)
 You need to have [Docker](https://www.docker.com/) installed on your machine and running.
 
-Run `npm run start:database` start docker postgres container
-Then `npm run create:database` create database
-Then `npm run seed:database` seed database with some data
+Run `w` to start docker postgres container
+Then `npm run create:database` to create database
+Then `seed:database:pg` or `seed:database:pg` to seed database with some data
 
 ## Getting Started
 
