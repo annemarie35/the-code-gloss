@@ -55,17 +55,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 [source](https://knexjs.org/guide/migrations.html#migration-cli)
 
-## Learn More about Next.js
+~~## Deploy on Scalingo~~
 
-To learn more about Next.js, take a look at the following resources:
+~~There is a tutorial I wrote [here](https://github.com/annemarie35/TIL/blob/master/OPSERIES/SCALINGO/deployement.md)~~
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Scalingo
-
-There is a tutorial I wrote [here](https://github.com/annemarie35/TIL/blob/master/OPSERIES/SCALINGO/deployement.md)
-
-Now I use `git push frontend-scalingo main` to push the code in production.
+~~Now I use `git push frontend-scalingo main` to push the code in production.~~
