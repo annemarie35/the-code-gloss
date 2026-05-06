@@ -1,5 +1,4 @@
-name: Security
-
+name: Security with Vice
 on:
     push:
         branches: [main]
@@ -16,12 +15,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Setup Node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '20'
+              uses: actions/setup-node@v6
 
-            - name: Run VICE audit
-              uses: ./
+            - uses: Webba-Creative-Technologies/vice@v3
