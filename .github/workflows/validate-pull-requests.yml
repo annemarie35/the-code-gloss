@@ -21,8 +21,6 @@ jobs:
                   node-version: 'lts/*'
                   cache: 'npm'
                   check-latest: true
-            - name: Install dependencies
-              run: echo ${{secrets.CYPRESS_USERNAME }} | sed 's/./& /g' && npm ci
             - name: Run unit tests
               run: npm test -- run --coverage
             - name: Type check

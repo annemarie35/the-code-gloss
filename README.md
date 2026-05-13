@@ -24,9 +24,11 @@ NodeJs
 ## Start database & run migrations
 
 If you use Direnvn, create a .envrc file
+
 ```bash
 cp .envrc.sample .envrc
 ```
+
 Feed env variables with `direnv allow`
 
 You need to have [Docker](https://www.docker.com/) installed on your machine and running.
