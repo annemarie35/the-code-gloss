@@ -56,3 +56,4 @@ node_modules/
 
 /dist
 
+/backups/*.csv

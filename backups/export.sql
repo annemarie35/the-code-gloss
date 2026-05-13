@@ -1,0 +1,4 @@
+COPY (
+  SELECT *
+  FROM gloses
+) TO STDOUT WITH CSV HEADER ENCODING 'UTF8' \g 'gloses.csv'

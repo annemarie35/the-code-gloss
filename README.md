@@ -23,11 +23,15 @@ NodeJs
 
 ## Start database & run migrations
 
+If you use Direnvn, create a .envrc file
+```bash
+cp .envrc.sample .envrc
+```
 Feed env variables with `direnv allow`
-[package.json](package.json)
+
 You need to have [Docker](https://www.docker.com/) installed on your machine and running.
 
-Run `w` to start docker postgres container
+Run `docker compose up` to start docker postgres container
 Then `npm run create:database` to create database
 Then `seed:database:pg` or `seed:database:pg` to seed database with some data
 

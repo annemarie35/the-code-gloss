@@ -1,0 +1,2 @@
+
+\COPY gloses FROM 'gloses.csv' WITH CSV HEADER ENCODING 'UTF8';
