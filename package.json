@@ -20,7 +20,7 @@
         "type-check": "npx tsc --build "
     },
     "lint-staged": {
-        "*.{ts, tsx}": [
+        "*.{ts,tsx}": [
             "npm run format",
             "npm run lint:fix"
         ],

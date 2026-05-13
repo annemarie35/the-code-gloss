@@ -27,7 +27,7 @@ describe('Gloses API', () => {
         expect(res.status).toHaveBeenLastCalledWith(200)
     })
 
-    it('should create a glose when request method is POST', async () => {
+    it('should create a glose when request method is POST with valid origin', async () => {
         vi.useFakeTimers()
         const date = new Date(2000, 1, 1, 13)
         vi.setSystemTime(date)
@@ -39,6 +39,7 @@ describe('Gloses API', () => {
 
         const request = {
             method: 'POST',
+            headers: { origin: 'http://localhost:3000', host: 'localhost:3000' },
             body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
         }
         const res = {
@@ -58,5 +59,35 @@ describe('Gloses API', () => {
             description: 'Created by Kent Beck',
             tags: 'XP'
         })
+    })
+
+    it('should return 403 when POST request has no origin header', async () => {
+        const request = {
+            method: 'POST',
+            headers: { host: 'localhost:3000' },
+            body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
+        }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        await handler(request, res)
+        expect(res.status).toHaveBeenCalledWith(403)
+    })
+
+    it('should return 403 when POST request has mismatched origin', async () => {
+        const request = {
+            method: 'POST',
+            headers: { origin: 'http://evil.com', host: 'localhost:3000' },
+            body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
+        }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        await handler(request, res)
+        expect(res.status).toHaveBeenCalledWith(403)
     })
 })
