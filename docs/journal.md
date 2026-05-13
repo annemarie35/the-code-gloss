@@ -27,6 +27,9 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 13/05/2026
+-  `psql $POSTGRESQL_DATABASE_URL -f infra/database/scripts/add_themes_to_gloses.sql`
+
 ## 06/05/2026
 
 - Ajout de vice dans les github actions
