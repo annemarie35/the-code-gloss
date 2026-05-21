@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
                     {
                         key: 'Content-Security-Policy',
                         value: ContentSecurityPolicy
+                    },
+                    {
+                        key: 'Strict-Transport-Security',
+                        value: 'max-age=63072000; includeSubDomains; preload'
                     }
                 ]
             }
