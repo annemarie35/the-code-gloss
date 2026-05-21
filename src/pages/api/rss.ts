@@ -1,7 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
+import { rateLimit, getIp } from '@/src/lib/rate-limiter'
+
+const RSS_LIMIT = 30
+const WINDOW_MS = 60_000
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (!rateLimit(getIp(req), RSS_LIMIT, WINDOW_MS)) {
+        return res.status(429).send('Too Many Requests')
+    }
     const gloses = await getGlosesInMemory()
 
     const items = gloses

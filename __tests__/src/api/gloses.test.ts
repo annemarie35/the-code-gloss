@@ -2,6 +2,12 @@ import handler from '@/src/pages/api/gloses'
 import { describe, expect, it, vi } from 'vitest'
 import * as addGloseMod from '@/src/lib/service/add-glose'
 import * as getGlosesModTOI from '../../../src/lib/service/get-gloses'
+import * as rateLimiterMod from '@/src/lib/rate-limiter'
+
+vi.mock('@/src/lib/rate-limiter', () => ({
+    rateLimit: vi.fn().mockReturnValue(true),
+    getIp: vi.fn().mockReturnValue('127.0.0.1')
+}))
 
 describe('Gloses API', () => {
     it('should get gloses when request method is GET', async () => {
@@ -89,5 +95,31 @@ describe('Gloses API', () => {
         // @ts-expect-error
         await handler(request, res)
         expect(res.status).toHaveBeenCalledWith(403)
+    })
+
+    it('should return 429 when POST rate limit is exceeded', async () => {
+        vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+        const request = {
+            method: 'POST',
+            headers: { origin: 'http://localhost:3000', host: 'localhost:3000' },
+            body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
+        }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // @ts-expect-error -- partial request mock, type not needed for this test
+        await handler(request, res)
+        expect(res.status).toHaveBeenCalledWith(429)
+    })
+
+    it('should return 429 when GET rate limit is exceeded', async () => {
+        vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+        const request = { method: 'GET' }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // @ts-expect-error -- partial request mock, type not needed for this test
+        await handler(request, res)
+        expect(res.status).toHaveBeenCalledWith(429)
     })
 })
