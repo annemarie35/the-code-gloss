@@ -41,6 +41,7 @@ describe('createGlose', () => {
             title: 'Title',
             description: 'Description',
             tags: 'Tag',
+            themes: [],
             created_at: date.toISOString()
         })
     })
