@@ -12,4 +12,5 @@ type Glose = {
     description: string
     tags: string
     created_at: string
+    themes: string[]
 }

@@ -9,14 +9,16 @@ const mockCards: GloseComplete[] = [
         title: 'Test Card 1',
         description: 'Description du test card 1',
         created_at: new Date('2023-05-10').toString(),
-        tags: 'Test, React'
+        tags: 'Test, React',
+        themes: []
     },
     {
         id: 2,
         title: 'Test Card 2',
         description: 'Description du test card 2',
         created_at: new Date('2023-06-15').toString(),
-        tags: 'TypeScript'
+        tags: 'TypeScript',
+        themes: []
     }
 ]
 
@@ -78,14 +80,16 @@ describe('CardGrid Component', () => {
                     title: 'Test Card 1',
                     description: 'Description du test card 1',
                     created_at: '2023-05-10T00:00:00.000Z',
-                    tags: 'Test, React'
+                    tags: 'Test, React',
+                    themes: []
                 },
                 {
                     id: 2,
                     title: 'Test Card 2',
                     description: 'Description du test card 2',
                     created_at: '2023-06-15T00:00:00.000Z',
-                    tags: 'TypeScript'
+                    tags: 'TypeScript',
+                    themes: []
                 }
             ]
             const response = transformData(rawData)

@@ -1,9 +1,14 @@
 import handler from '@/src/pages/api/rss'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import * as getGlosesMod from '@/src/lib/service/get-gloses'
+import * as rateLimiterMod from '@/src/lib/rate-limiter'
 import { gloses } from '@/__tests__/test-helpers'
 
 vi.mock('@/src/lib/service/get-gloses')
+vi.mock('@/src/lib/rate-limiter', () => ({
+    rateLimit: vi.fn().mockReturnValue(true),
+    getIp: vi.fn().mockReturnValue('127.0.0.1')
+}))
 
 describe('RSS API', () => {
     let res: { setHeader: ReturnType<typeof vi.fn>; status: ReturnType<typeof vi.fn>; send: ReturnType<typeof vi.fn> }
@@ -62,5 +67,14 @@ describe('RSS API', () => {
         const xml: string = res.status.mock.results[0].value.send.mock.calls[0][0]
         expect(xml).toContain('<channel>')
         expect(xml).not.toContain('<item>')
+    })
+
+    it('should return 429 when rate limit is exceeded', async () => {
+        vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+
+        // @ts-expect-error -- partial request mock, type not needed for this test
+        await handler({}, res)
+
+        expect(res.status).toHaveBeenCalledWith(429)
     })
 })

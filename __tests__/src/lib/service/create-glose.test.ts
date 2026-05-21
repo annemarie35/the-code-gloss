@@ -33,13 +33,15 @@ describe('createGlose', () => {
             title: 'Title',
             description: 'Description',
             tags: 'Tag',
-            created_at: ''
+            created_at: '',
+            themes: []
         })
 
         expect(insertDatabaseSpy).toHaveBeenLastCalledWith({
             title: 'Title',
             description: 'Description',
             tags: 'Tag',
+            themes: [],
             created_at: date.toISOString()
         })
     })
