@@ -28,7 +28,8 @@
 - do not import types from db ?
 
 ## 13/05/2026
--  `psql $POSTGRESQL_DATABASE_URL -f infra/database/scripts/add_themes_to_gloses.sql`
+
+- `psql $POSTGRESQL_DATABASE_URL -f infra/database/scripts/add_themes_to_gloses.sql`
 
 ## 06/05/2026
 

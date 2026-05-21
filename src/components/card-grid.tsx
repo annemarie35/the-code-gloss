@@ -25,7 +25,8 @@ const defaultCardsData: GloseComplete[] = [
         title: 'Hexagonale architecture',
         description: 'Invented by Alistair Cockburn in 2005',
         created_at: '2023-05-10T00:00:00.000Z',
-        tags: 'Craft, Architecture'
+        tags: 'Craft, Architecture',
+        themes: []
     }
 ]
 

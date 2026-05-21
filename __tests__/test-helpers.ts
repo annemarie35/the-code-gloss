@@ -23,6 +23,7 @@ export const gloses: GloseComplete[] = [
         description: 'Invented by Alistair Cockburn in 2005',
         id: 8,
         tags: 'Craft, Architecture',
-        title: 'Hexagonale architecture'
+        title: 'Hexagonale architecture',
+        themes: ['CRAFT']
     }
 ]
