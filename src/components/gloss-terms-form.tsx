@@ -1,6 +1,7 @@
 'use client'
 import { useActionState, useState } from 'react'
 import { addGlossTerm } from '@/src/actions/gloses-actions'
+import { THEMES } from '@/src/core/domain/models/Glose'
 
 export type InitialState = {
     message: string | null
@@ -18,8 +19,9 @@ export default function GlossTermsForm() {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [tags, setTags] = useState('')
+    const [theme, setTheme] = useState('')
 
-    const isFormValid = title.trim() !== '' && description.trim() !== '' && tags.trim() !== ''
+    const isFormValid = title.trim() !== '' && description.trim() !== '' && tags.trim() !== '' && theme !== ''
 
     return (
         <>
@@ -73,6 +75,27 @@ export default function GlossTermsForm() {
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
                     />
+                </div>
+                <div>
+                    <label htmlFor="glose-theme" className="mr-4">
+                        Theme
+                    </label>
+                    <select
+                        id="glose-theme"
+                        name="glose-theme"
+                        aria-label="theme"
+                        required
+                        value={theme}
+                        onChange={(e) => setTheme(e.target.value)}
+                        className="py-2 px-3 rounded-sm"
+                    >
+                        <option value="">-- Select a theme --</option>
+                        {THEMES.map((t) => (
+                            <option key={t} value={t}>
+                                {t}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div>
                     <button

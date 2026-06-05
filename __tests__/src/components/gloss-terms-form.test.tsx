@@ -3,6 +3,7 @@ import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers'
+import { THEMES } from '@/src/core/domain/models/Glose'
 
 describe('Gloss Form Terms', () => {
     beforeEach(() => {
@@ -25,6 +26,31 @@ describe('Gloss Form Terms', () => {
         const { getByLabelText } = render(<GlossTermsForm />)
 
         expect(getByLabelText('Title')).toBeInTheDocument()
+    })
+
+    describe('theme select', () => {
+        it('should display a theme select with all available themes', () => {
+            const { getByRole, getAllByRole } = render(<GlossTermsForm />)
+
+            const select = getByRole('combobox', { name: /theme/i })
+            expect(select).toBeInTheDocument()
+
+            const options = getAllByRole('option')
+            const themeOptions = options.filter((o) => o.getAttribute('value') !== '')
+            expect(themeOptions).toHaveLength(THEMES.length)
+            THEMES.forEach((theme) => {
+                expect(select).toHaveTextContent(theme)
+            })
+        })
+
+        it('should allow selecting a theme', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            const select = getByRole('combobox', { name: /theme/i })
+            await userEvent.selectOptions(select, 'CRAFT')
+
+            expect(select).toHaveValue('CRAFT')
+        })
     })
 
     describe('submit button', () => {
@@ -57,6 +83,7 @@ describe('Gloss Form Terms', () => {
             await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
             await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
             await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+            await userEvent.selectOptions(getByRole('combobox', { name: /theme/i }), 'CRAFT')
 
             expect(getByRole('button', { name: /ajouter/i })).toBeEnabled()
         })
@@ -68,6 +95,7 @@ describe('Gloss Form Terms', () => {
             await userEvent.type(titleInput, 'TDD')
             await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
             await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+            await userEvent.selectOptions(getByRole('combobox', { name: /theme/i }), 'CRAFT')
             await userEvent.clear(titleInput)
 
             expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
@@ -84,6 +112,7 @@ describe('Gloss Form Terms', () => {
             await userEvent.type(gloseTitleInput, 'TDD')
             await userEvent.type(gloseDescriptionInput, 'Created by Kent Beck')
             await userEvent.type(gloseTagsInput, 'XP')
+            await userEvent.selectOptions(getByRole('combobox', { name: /theme/i }), 'CRAFT')
 
             const submitButton = getByRole('button')
 
