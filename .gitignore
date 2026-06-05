@@ -2,13 +2,6 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
 
 # testing
 /coverage
@@ -19,6 +12,8 @@
 
 # production
 /build
+/dist
+/backups
 
 # misc
 .DS_Store
@@ -27,26 +22,18 @@
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
 # env files (can opt-in for committing if needed)
 .env
 .env.local
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
 
+# Tests files
+/playwright-report/
+/playwright/.cache/
+test-results/
 
 # eslint
 .eslintcache
@@ -54,6 +41,6 @@ node_modules/
 # direnv
 .envrc
 
-/dist
-
-/backups/*.csv
+# Claude's Friends
+.agents/
+.claude/
