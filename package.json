@@ -10,6 +10,7 @@
         "start": "next start",
         "start:database": "docker compose up --wait --detach",
         "create:database": "docker exec postgresql psql --dbname \"host=localhost port=5432 user=username password=password123 dbname=postgres\" --file=/tmp/scripts/create_gloses_table.sql",
+        "migrate:create-people": "docker exec postgresql psql --dbname \"host=localhost port=5432 user=username password=password123 dbname=postgres\" --file=/tmp/scripts/create_people_table.sql",
         "seed:database:pg": "docker exec postgresql psql --dbname \"host=localhost port=5432 user=username password=password123 dbname=postgres\" --file=/tmp/scripts/gloses_seeds.sql",
         "seed:database:ts": "npx ts-node infra/database/scripts/create_gloses_and_seeds.ts",
         "lint": "eslint .",
