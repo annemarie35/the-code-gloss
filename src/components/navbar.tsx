@@ -6,6 +6,7 @@ export default function Navbar() {
             <div className="flex flex-row gap-4 p-4 items-center" data-testid="navbar">
                 <Link href="/about">About</Link>
                 <Link href="/">Add a gloss</Link>
+                <Link href="/people">Add a person</Link>
             </div>
         </>
     )
