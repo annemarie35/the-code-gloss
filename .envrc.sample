@@ -5,3 +5,7 @@ export POSTGRESQL_HOST=localhost
 export POSTGRESQL_PORT=5432
 export POSTGRESQL_DATABASE=postgres
 export POSTGRESQL_DATABASE_URL='postgresql://username:password123@localhost:5432/postgres'
+
+# Testcontainers (Colima)
+export TESTCONTAINERS_HOST_OVERRIDE=localhost
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
