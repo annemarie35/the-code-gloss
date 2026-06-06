@@ -44,3 +44,9 @@ test-results/
 # Claude's Friends
 .agents/
 .claude/
+
+# Private documentation
+/private-doc
+
+# Vice
+.github/vice-badge.json
