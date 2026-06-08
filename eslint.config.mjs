@@ -1,5 +1,6 @@
 import coreWebVitals from 'eslint-config-next/core-web-vitals'
 import nextTypescript from 'eslint-config-next/typescript'
+import unusedImports from 'eslint-plugin-unused-imports'
 
 const isReactRule = (key) => key.startsWith('react/') || key.startsWith('react-hooks/')
 
@@ -15,6 +16,13 @@ const eslintConfig = [
         return config
     }),
     ...nextTypescript,
+    {
+        plugins: { 'unused-imports': unusedImports },
+        rules: {
+            'unused-imports/no-unused-imports': 'error',
+            '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+        }
+    },
     { ignores: ['**/node_modules/', '**/.next/'] }
 ]
 
