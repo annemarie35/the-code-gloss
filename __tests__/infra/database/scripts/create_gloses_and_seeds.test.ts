@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, afterEach, beforeEach, MockedObject } from 'vitest'
 
 import { createAndSeedDatabase } from '@/infra/database/scripts/create_gloses_and_seeds'
-import { query } from '../../../../infra/database/connectionPool'
-import { importJsonFile } from '@/infra/import_json_file.ts'
+import { query } from '@/infra/database/connectionPool'
+import { importJsonFile } from '@/infra/import_json_file'
+
+vi.mock('pg')
 
 describe('CreateAndSeedDatabase', () => {
     describe('Main function', () => {
-        vi.mock('pg')
         let importingFileFunctionMock: MockedObject<typeof importJsonFile>
         let queryMock: MockedObject<typeof query>
 
