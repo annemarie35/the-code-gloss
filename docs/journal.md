@@ -13,7 +13,7 @@
 - [ ] Add GitHub action for deployment
 - [ ] Add Zod validation, well, first use cases that needs Zod^^
 - [ ] Add seeds to feed database
-- [ ] Test with test container
+- [x] Test with test container
 - [ ] Data Fetching from db (to be removed -> api call plus maybe a backend cause we don't want secrets in client side)
 - [ ] Add test to form after reading some documentation on how to do it the better way
 - [ ] Fix type-checking in husky (path problem)
@@ -26,6 +26,11 @@
 - https://stackoverflow.com/questions/47015693/how-to-fix-throw-[globals.css](../src/styles/globals.css)of-exception-caught-locally
 - clean/reset mocks in tests with before each
 - do not import types from db ?
+
+## 16/06/2026
+
+- affiche la liste des personnesfor p
+- installation de la librairie https://lacrafterie.tech/barad-dur/. Barad-Dur est un outil CLI écrit en Rust qui analyse la santé de vos dépôts Git en profondeur. Il ne se contente pas de mesurer la qualité du code : il évalue aussi la dynamique d'équipe, la dette temporelle, et la robustesse organisationnelle.
 
 ## 13/05/2026
 
