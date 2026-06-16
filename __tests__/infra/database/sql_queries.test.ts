@@ -4,7 +4,7 @@ import pkg from 'pg'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { INSERT_PERSON } from '@/infra/database/sql_queries'
+import { INSERT_PERSON, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
 
 const { Pool } = pkg
 
@@ -46,6 +46,12 @@ describe('Sql Queries', () => {
             ])
 
             expect(result.rowCount).toBe(1)
+        })
+
+        it('should select all people', async () => {
+            const result = await pool.query(SELECT_ALL_PEOPLE('public'))
+
+            expect(result.rows.length).toBeGreaterThanOrEqual(1)
         })
     })
 })
