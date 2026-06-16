@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import pkg from 'pg'
-import { insertPerson } from '@/infra/repositories/person_repository'
+import { insertPerson, selectAllPeople } from '@/infra/repositories/person_repository'
 import { query } from '@/infra/database/connectionPool'
-import { INSERT_PERSON } from '@/infra/database/sql_queries'
+import { INSERT_PERSON, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
 
 const mockQueryResult: pkg.QueryResult<pkg.QueryResultRow> = {
     rows: [],
@@ -67,6 +67,32 @@ describe('person_repository', () => {
             queryMock.mockRejectedValue(new Error('db connection failed'))
 
             await expect(insertPerson(person)).rejects.toThrow('db connection failed')
+        })
+    })
+
+    describe('selectAllPeople', () => {
+        it('should call query with SELECT_ALL_PEOPLE', async () => {
+            queryMock.mockResolvedValue({ ...mockQueryResult, rows: [], command: 'SELECT' })
+
+            await selectAllPeople()
+
+            expect(queryMock).toHaveBeenCalledOnce()
+            expect(queryMock).toHaveBeenCalledWith(SELECT_ALL_PEOPLE('public'), [])
+        })
+
+        it('should return rows from query result', async () => {
+            const mockRows = [{ id: 1, first_name: 'Ada', last_name: 'Lovelace' }]
+            queryMock.mockResolvedValue({ ...mockQueryResult, rows: mockRows, command: 'SELECT' })
+
+            const result = await selectAllPeople()
+
+            expect(result).toEqual(mockRows)
+        })
+
+        it('should propagate errors thrown by query', async () => {
+            queryMock.mockRejectedValue(new Error('db connection failed'))
+
+            await expect(selectAllPeople()).rejects.toThrow('db connection failed')
         })
     })
 })
