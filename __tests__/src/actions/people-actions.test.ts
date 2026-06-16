@@ -1,7 +1,23 @@
 import { describe, expect, it, vi } from 'vitest'
-import { addPerson } from '@/src/actions/people-actions'
+import { addPerson, getAllPeople } from '@/src/actions/people-actions'
 import { InitialState } from '@/src/components/people-form'
 import { createMockFetchResponse } from '@/__tests__/test-helpers.ts'
+import { Person } from '@/src/core/domain/Types/Person'
+
+const people: Person[] = [
+    {
+        id: 1,
+        first_name: 'Ada',
+        last_name: 'Lovelace',
+        nickname: 'ada_codes',
+        blog_url: 'https://ada.dev',
+        linkedin_url: 'https://linkedin.com/in/ada',
+        biography: 'First programmer',
+        year_of_birth: 1815,
+        tags: 'pioneer, math',
+        created_at: '2000-02-01T12:00:00.000Z'
+    }
+]
 
 describe('People actions', () => {
     describe('addPerson', async () => {
@@ -68,6 +84,44 @@ describe('People actions', () => {
                 expect(response).toEqual({
                     error: "Une erreur est survenue dans l'ajout d'une personne",
                     message: null
+                })
+            })
+        })
+    })
+
+    describe('getAllPeople', async () => {
+        it('should get all people', async () => {
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                status: 200,
+                json: () => Promise.resolve({ people })
+            })
+
+            const response = await getAllPeople()
+            expect(response).toEqual({
+                error: null,
+                message: null,
+                people
+            })
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost:3000/api/people',
+                expect.objectContaining({
+                    method: 'GET',
+                    headers: new Headers(),
+                    mode: 'cors'
+                })
+            )
+        })
+
+        describe('with error on fetching', async () => {
+            it('should return an error message', async () => {
+                global.fetch = vi.fn().mockRejectedValue(new Error('network error'))
+
+                const response = await getAllPeople()
+                expect(response).toEqual({
+                    error: 'Une erreur est survenue en récupérant la liste des personnes',
+                    message: null,
+                    people: []
                 })
             })
         })

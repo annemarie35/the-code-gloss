@@ -1,6 +1,30 @@
 'use server'
 import { InitialState } from '@/src/components/people-form'
 import { httpClient } from '@/src/lib/http'
+import { Person } from '@/src/core/domain/Types/Person'
+
+export async function getAllPeople(): Promise<People> {
+    try {
+        const { people } = await httpClient({
+            url: 'http://localhost:3000/api/people',
+            requestConfig: {
+                method: 'GET',
+                headers: new Headers(),
+                mode: 'cors'
+            }
+        })
+        return { message: null, error: null, people }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+        return { message: null, error: 'Une erreur est survenue en récupérant la liste des personnes', people: [] }
+    }
+}
+
+export type People = {
+    message: null | string
+    people: Person[]
+    error: null | string
+}
 
 export async function addPerson(previousState: InitialState, formData: FormData): Promise<InitialState> {
     const customHeaders = new Headers()
