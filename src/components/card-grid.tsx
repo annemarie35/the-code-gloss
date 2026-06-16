@@ -76,7 +76,6 @@ export const transformData = (gloses: GloseComplete[]) => {
 
 export default function CardGrid({ cards = defaultCardsData }: CardGridProps) {
     const transformedCards = transformData(cards)
-    //console.log(JSON.stringify(transformedCards, null, 2))
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
