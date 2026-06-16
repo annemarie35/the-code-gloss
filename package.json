@@ -19,6 +19,7 @@
         "test:db": "vitest --config vitest.config.db.mts",
         "test:integration": "npx playwright test",
         "test:coverage": "vitest --coverage",
+        "test:watch": "npm run test -- --watch",
         "type-check": "npx tsc --build "
     },
     "lint-staged": {
