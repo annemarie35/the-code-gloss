@@ -1,6 +1,7 @@
 import handler from '@/src/pages/api/people'
 import { describe, expect, it, vi } from 'vitest'
 import * as addPersonMod from '@/src/core/domain/usecases/add-person.ts'
+import * as getPeopleMod from '@/src/lib/service/get-people'
 import * as rateLimiterMod from '@/src/lib/rate-limiter'
 
 vi.mock('@/src/lib/rate-limiter', () => ({
@@ -82,8 +83,32 @@ describe('People API', () => {
         expect(res.status).toHaveBeenCalledWith(429)
     })
 
-    it('should return 405 for non-POST methods', async () => {
+    it('should get people when request method is GET', async () => {
+        const getPeopleInMemorySpy = vi.spyOn(getPeopleMod, 'getPeopleInMemory').mockResolvedValue([])
+
         const request = { method: 'GET' }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // @ts-expect-error -- partial request mock
+        await handler(request, res)
+        expect(getPeopleInMemorySpy).toHaveBeenCalledOnce()
+        expect(res.status).toHaveBeenCalledWith(200)
+    })
+
+    it('should return 429 when GET rate limit is exceeded', async () => {
+        vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+        const request = { method: 'GET' }
+        const res = {
+            status: vi.fn().mockReturnValue({ json: vi.fn() })
+        }
+        // @ts-expect-error -- partial request mock
+        await handler(request, res)
+        expect(res.status).toHaveBeenCalledWith(429)
+    })
+
+    it('should return 405 for unsupported methods', async () => {
+        const request = { method: 'DELETE' }
         const res = {
             status: vi.fn().mockReturnValue({ json: vi.fn() })
         }
