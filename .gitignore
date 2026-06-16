@@ -50,3 +50,6 @@ test-results/
 
 # Vice
 .github/vice-badge.json
+
+# Barad-dur code analysis https://lab.frogg.it/Edouard_Mangel/barad-dur
+.repository-analysis/
