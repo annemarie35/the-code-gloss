@@ -24,6 +24,7 @@ export default function FeedsPage() {
 
     async function loadFeed(url: string) {
         const { feed, error } = await getFeed(url)
+
         if (error || !feed) {
             setError(`Impossible de charger : ${url}`)
             return
