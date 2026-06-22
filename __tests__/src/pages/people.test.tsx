@@ -4,7 +4,8 @@ import React from 'react'
 import PeoplePage from '@/src/pages/people'
 
 vi.mock('@/src/actions/people-actions', () => ({
-    getAllPeople: vi.fn().mockResolvedValue({ people: [], error: null, message: null })
+    getAllPeople: vi.fn().mockResolvedValue({ people: [], error: null, message: null }),
+    addPerson: vi.fn().mockResolvedValue({ message: null, error: null })
 }))
 
 describe('People', () => {
