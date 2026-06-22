@@ -53,19 +53,19 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Create and run a migration with knex
+~~## Create and run a migration with knex~~
 
-- add a migration file with an explicit name, example "update_users_name_column_to_text_type" `npx knex migrate:make migration_name`
-- add the code to create query
-- run the migration with `npx knex migrate:latest`
-- rollback migration if needed with `npx knex migrate:rollba[package.json](package.json)ck`
+~~- add a migration file with an explicit name, example "update_users_name_column_to_text_type" `npx knex migrate:make migration_name`~~
+~~- add the code to create query~~
+~~- run the migration with `npx knex migrate:latest`~~
+~~- rollback migration if needed with `npx knex migrate:rollba[package.json](package.json)`~~
 
-## Create and add seeds
+~~## Create and add seeds~~
 
-- create a new seed file `npx knex seed:make add_gloses`
-- run the seed `npx knex seed:run`
+~~- create a new seed file `npx knex seed:make add_gloses`~~
+~~- run the seed `npx knex seed:run`~~
 
-[source](https://knexjs.org/guide/migrations.html#migration-cli)
+~~[source](https://knexjs.org/guide/migrations.html#migration-cli)~~
 
 ~~## Deploy on Scalingo~~
 
