@@ -106,6 +106,59 @@ npx knex seed:run                      # run seeds
 - **CSP headers** are configured in `next.config.ts` — do not remove them
 - No `.env` files should be committed; use `.envrc` with direnv
 
+## Architecture Conventions
+
+Before creating any new file, read an existing similar file to understand the pattern.
+
+### Layered architecture — always follow this flow:
+
+```
+Page (src/pages/)
+  → Action (src/actions/*-actions.ts)        # wraps API calls using httpClient
+    → API route (src/pages/api/<resource>.ts) # thin, delegates to service
+      → Service (src/lib/service/get-*.ts)   # business logic
+        → Repository (infra/repositories/)   # database access
+```
+
+### Naming rules
+
+- **API routes**: named after the resource (`gloses.ts`, `people.ts`, `feeds.ts`) — never `fetch-something.ts` or `get-something.ts`
+- **Services**: `src/lib/service/get-<resource>.ts` or `add-<resource>.ts`
+- **Actions**: `src/actions/<resource>-actions.ts`
+- **Domain types**: `src/core/domain/models/<Resource>.ts` or `Types/<Resource>.ts`
+
+### Each layer's responsibility
+
+- **API routes**: validate input, apply rate limiting, call service, return HTTP response — no business logic
+- **Services**: fetch/transform data, marked `'use server'`
+- **Actions**: call `httpClient` from `src/lib/http.ts`, handle errors, return typed result
+- **Pages**: call actions in `useEffect`, manage local state with `useState`
+
+### Tests — mandatory
+
+Every new file must have a corresponding test file created at the same time. No exceptions.
+
+Test files mirror the source path under `__tests__/`:
+
+| Source file | Test file |
+|---|---|
+| `src/pages/about.tsx` | `__tests__/src/pages/about.test.tsx` |
+| `src/pages/api/gloses.ts` | `__tests__/src/api/gloses.test.ts` |
+| `src/lib/service/get-gloses.ts` | `__tests__/src/lib/service/get-gloses.test.ts` |
+| `src/actions/gloses-actions.ts` | `__tests__/src/actions/gloses-actions.test.ts` |
+| `src/components/navbar.tsx` | `__tests__/src/components/navbar.test.tsx` |
+| `src/core/domain/models/Glose.ts` | `__tests__/src/core/domain/models/Glose.test.ts` |
+
+Note: API routes map to `__tests__/src/api/` (not `__tests__/src/pages/api/`).
+
+### Never
+
+- Export types from API route files — put them in `src/core/domain/`
+- Put parsing or business logic inside an API route
+- Call `fetch()` directly from a page — use an action
+- Import from `src/pages/api/` in pages or components
+- Create a source file without its test file
+
 ## Branch Strategy
 
 - Main branch: `main`
