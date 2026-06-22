@@ -18,4 +18,12 @@ describe('Navbar', () => {
     it('should have a link to people page', async () => {
         expect(screen.getByRole('link', { name: 'Add a person' })).toHaveAttribute('href', '/people')
     })
+
+    it('should have a link to feeds page', async () => {
+        expect(screen.getByRole('link', { name: 'Feeds' })).toHaveAttribute('href', '/feeds')
+    })
+
+    it('should have a link to rss page', async () => {
+        expect(screen.getByRole('link', { name: 'RSS' })).toHaveAttribute('href', '/rss')
+    })
 })

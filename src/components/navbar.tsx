@@ -7,6 +7,7 @@ export default function Navbar() {
                 <Link href="/about">About</Link>
                 <Link href="/">Add a gloss</Link>
                 <Link href="/people">Add a person</Link>
+                <Link href="/feeds">Feeds</Link>
                 <Link href="/rss" aria-label="RSS">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
