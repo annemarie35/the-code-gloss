@@ -25,6 +25,7 @@ So, the code gloss will be a simple form for the moment.
 Install [Direnv](https://direnv.net/)
 Docker
 NodeJs
+[Just](https://just.maciejwalkowiak.com/)
 
 ## Start database & run migrations
 
@@ -57,7 +58,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - add a migration file with an explicit name, example "update_users_name_column_to_text_type" `npx knex migrate:make migration_name`
 - add the code to create query
 - run the migration with `npx knex migrate:latest`
-- rollback migration if needed with `npx knex migrate:rollback`
+- rollback migration if needed with `npx knex migrate:rollba[package.json](package.json)ck`
 
 ## Create and add seeds
 
