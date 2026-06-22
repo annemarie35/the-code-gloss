@@ -140,13 +140,13 @@ Every new file must have a corresponding test file created at the same time. No 
 
 Test files mirror the source path under `__tests__/`:
 
-| Source file | Test file |
-|---|---|
-| `src/pages/about.tsx` | `__tests__/src/pages/about.test.tsx` |
-| `src/pages/api/gloses.ts` | `__tests__/src/api/gloses.test.ts` |
-| `src/lib/service/get-gloses.ts` | `__tests__/src/lib/service/get-gloses.test.ts` |
-| `src/actions/gloses-actions.ts` | `__tests__/src/actions/gloses-actions.test.ts` |
-| `src/components/navbar.tsx` | `__tests__/src/components/navbar.test.tsx` |
+| Source file                       | Test file                                        |
+| --------------------------------- | ------------------------------------------------ |
+| `src/pages/about.tsx`             | `__tests__/src/pages/about.test.tsx`             |
+| `src/pages/api/gloses.ts`         | `__tests__/src/api/gloses.test.ts`               |
+| `src/lib/service/get-gloses.ts`   | `__tests__/src/lib/service/get-gloses.test.ts`   |
+| `src/actions/gloses-actions.ts`   | `__tests__/src/actions/gloses-actions.test.ts`   |
+| `src/components/navbar.tsx`       | `__tests__/src/components/navbar.test.tsx`       |
 | `src/core/domain/models/Glose.ts` | `__tests__/src/core/domain/models/Glose.test.ts` |
 
 Note: API routes map to `__tests__/src/api/` (not `__tests__/src/pages/api/`).
