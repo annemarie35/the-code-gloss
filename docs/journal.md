@@ -27,6 +27,18 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 24/06/2026
+
+- Ajout de la possibilité de supprimer une personne depuis sa carte dans `PeopleGrid`
+    - Nouveau bouton "Supprimer" affiché via une prop `onDelete?: (id: number) => void`
+    - Stack complète implémentée : SQL → repository → usecase → API route (DELETE) → action → `PeopleList` → `PeopleGrid` → page `people.tsx`
+    - La personne est retirée du state local après suppression sans recharger la liste
+- Refactoring : renommage de `card-grid.tsx` en `gloss-grid.tsx`
+    - Composant `CardGrid` → `GlossGrid`, types et variables internes mis à jour
+    - Import mis à jour dans `gloss-terms-list.tsx`
+- Ajout de reviewdog dans les GitHub Actions pour annoter les PRs avec les erreurs ESLint directement sur les lignes du diff
+- Mise à jour du `.gitignore` pour ignorer `infra/database/scripts/backups/gloses.csv`
+
 ## 16/06/2026
 
 - affiche la liste des personnesfor p
