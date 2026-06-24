@@ -30,7 +30,7 @@ export const httpClient = async ({ url, requestConfig }: HttpClient) => {
 type HttpClient = {
     url: string
     requestConfig: {
-        method: 'POST' | 'GET'
+        method: 'POST' | 'GET' | 'DELETE'
         headers: Headers
         mode: 'cors'
         body?: BodyInit
