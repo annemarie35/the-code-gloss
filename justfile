@@ -59,5 +59,12 @@ format:
 type-check:
     npm run type-check
 
+# Database backup
+db-export:
+    cd infra/database/scripts/backups && bash export.sh
+
+db-import:
+    cd infra/database/scripts/backups && bash import.sh
+
 # Check everything
 check: format lint-fix type-check test
