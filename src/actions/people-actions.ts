@@ -26,6 +26,31 @@ export type People = {
     error: null | string
 }
 
+export type DeletePersonResult = {
+    message: null | string
+    error: null | string
+}
+
+export async function deletePerson(id: number): Promise<DeletePersonResult> {
+    const customHeaders = new Headers()
+    customHeaders.append('Accept', 'application/json')
+
+    try {
+        await httpClient({
+            url: `http://localhost:3000/api/people?id=${id}`,
+            requestConfig: {
+                method: 'DELETE',
+                headers: customHeaders,
+                mode: 'cors'
+            }
+        })
+        return { message: 'Personne supprimée avec succès', error: null }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+        return { message: null, error: "Une erreur est survenue dans la suppression d'une personne" }
+    }
+}
+
 export async function addPerson(previousState: InitialState, formData: FormData): Promise<InitialState> {
     const customHeaders = new Headers()
     customHeaders.append('Accept', 'application/json')
