@@ -9,3 +9,5 @@ export const INSERT_PERSON = (schema: string) => `INSERT INTO ${schema}.people
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 
 export const SELECT_ALL_PEOPLE = (schema: string) => `SELECT * FROM ${schema}.people`
+
+export const DELETE_PERSON = (schema: string) => `DELETE FROM ${schema}.people WHERE id = $1`
