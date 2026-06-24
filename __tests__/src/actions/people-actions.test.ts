@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { addPerson, getAllPeople } from '@/src/actions/people-actions'
+import { addPerson, deletePerson, getAllPeople } from '@/src/actions/people-actions'
 import { InitialState } from '@/src/components/people-form'
 import { createMockFetchResponse } from '@/__tests__/test-helpers.ts'
 import { Person } from '@/src/core/domain/Types/Person'
@@ -83,6 +83,41 @@ describe('People actions', () => {
                 const response = await addPerson(initialState, formData)
                 expect(response).toEqual({
                     error: "Une erreur est survenue dans l'ajout d'une personne",
+                    message: null
+                })
+            })
+        })
+    })
+
+    describe('deletePerson', async () => {
+        it('should delete a person', async () => {
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                status: 200,
+                json: () => Promise.resolve({ message: 'Personne supprimée avec succès' })
+            })
+
+            const response = await deletePerson(1)
+            expect(response).toEqual({
+                error: null,
+                message: 'Personne supprimée avec succès'
+            })
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost:3000/api/people?id=1',
+                expect.objectContaining({
+                    method: 'DELETE',
+                    mode: 'cors'
+                })
+            )
+        })
+
+        describe('with error on deleting', async () => {
+            it('should return an error message', async () => {
+                global.fetch = vi.fn().mockRejectedValue(new Error('network error'))
+
+                const response = await deletePerson(1)
+                expect(response).toEqual({
+                    error: "Une erreur est survenue dans la suppression d'une personne",
                     message: null
                 })
             })

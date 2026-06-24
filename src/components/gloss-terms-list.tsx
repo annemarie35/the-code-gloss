@@ -1,5 +1,5 @@
 import { GloseComplete } from '@/src/core/domain/models/Glose'
-import CardGrid from '@/src/components/card-grid.tsx'
+import GlossGrid from '@/src/components/gloss-grid.tsx'
 
 export default function GlossTermsList({ loading = false, glosesList = [], error = '' }: GlossTermsListProps) {
     const isCards = glosesList.length > 0
@@ -7,7 +7,7 @@ export default function GlossTermsList({ loading = false, glosesList = [], error
         <>
             {loading && <div>{'Chargement des données en cours'}</div>}
             <p>{error}</p>
-            <div>{isCards && <CardGrid cards={glosesList} />}</div>
+            <div>{isCards && <GlossGrid cards={glosesList} />}</div>
         </>
     )
 }

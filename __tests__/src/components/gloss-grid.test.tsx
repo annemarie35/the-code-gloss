@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import CardGrid, { transformData } from '@/src/components/card-grid.tsx'
+import GlossGrid, { transformData } from '@/src/components/gloss-grid.tsx'
 import { GloseComplete } from '@/src/core/domain/models/Glose.ts'
 
-const mockCards: GloseComplete[] = [
+const mockGloses: GloseComplete[] = [
     {
         id: 1,
         title: 'Test Card 1',
@@ -22,20 +22,20 @@ const mockCards: GloseComplete[] = [
     }
 ]
 
-describe('CardGrid Component', () => {
+describe('GlossGrid Component', () => {
     beforeEach(() => {
         document.body.innerHTML = ''
     })
 
     it("devrait rendre le composant avec les données par défaut quand aucune prop n'est fournie", () => {
-        render(<CardGrid />)
+        render(<GlossGrid />)
         expect(screen.getByText('Hexagonale architecture')).toBeInTheDocument()
 
         expect(screen.getByText('Invented by Alistair Cockburn in 2005')).toBeInTheDocument()
     })
 
-    it('devrait rendre les cartes à partir des props fournies', () => {
-        render(<CardGrid cards={mockCards} />)
+    it('devrait rendre les gloses à partir des props fournies', () => {
+        render(<GlossGrid cards={mockGloses} />)
 
         expect(screen.getByText('Test Card 1')).toBeInTheDocument()
         expect(screen.getByText('Test Card 2')).toBeInTheDocument()
@@ -45,24 +45,22 @@ describe('CardGrid Component', () => {
     })
 
     it('devrait formater correctement les dates', () => {
-        render(<CardGrid cards={mockCards} />)
+        render(<GlossGrid cards={mockGloses} />)
 
-        // Vérifier que les dates sont formatées correctement en français
         expect(screen.getByText(/10 mai 2023/)).toBeInTheDocument()
         expect(screen.getByText(/15 juin 2023/)).toBeInTheDocument()
     })
 
-    it('devrait afficher les tags pour chaque carte', () => {
-        render(<CardGrid cards={mockCards} />)
+    it('devrait afficher les tags pour chaque glose', () => {
+        render(<GlossGrid cards={mockGloses} />)
 
-        // Vérifier que les tags sont présents
         expect(screen.getByText('Test')).toBeInTheDocument()
         expect(screen.getByText('React')).toBeInTheDocument()
         expect(screen.getByText('TypeScript')).toBeInTheDocument()
     })
 
     it('devrait appliquer le bon layout de grid responsive', () => {
-        const { container } = render(<CardGrid cards={mockCards} />)
+        const { container } = render(<GlossGrid cards={mockGloses} />)
 
         const gridElement = container.querySelector('.grid')
 
