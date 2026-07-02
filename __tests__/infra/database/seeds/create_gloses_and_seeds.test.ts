@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, afterEach, beforeEach, MockedObject } from 'vitest'
 
-import { createAndSeedDatabase } from '@/infra/database/scripts/create_gloses_and_seeds'
-import { query } from '@/infra/database/connectionPool'
-import { importJsonFile } from '@/infra/import_json_file'
+import { createAndSeedDatabase } from '@/infra/database/seeds/create_gloses_and_seeds.ts'
+import { query } from '@/infra/database/connectionPool.ts'
+import { importJsonFile } from '@/infra/import_json_file.ts'
 
 vi.mock('pg')
 
