@@ -18,13 +18,7 @@ start:
 db-start:
     npm run start:database
 
-db-create:
-    npm run create:database
-
-db-migrate-people:
-    npm run migrate:create-people
-
-db-seed:
+db-seed-pg:
     npm run seed:database:pg
 
 db-seed-ts:
