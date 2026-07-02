@@ -25,3 +25,13 @@ CREATE TABLE IF NOT EXISTS gloses
 ALTER TABLE gloses
     ADD COLUMN IF NOT EXISTS themes text[] DEFAULT '{}';
 
+CREATE TABLE IF NOT EXISTS urls
+(
+    id          SERIAL                   NOT NULL PRIMARY KEY,
+    url         VARCHAR(500),
+    description TEXT,
+    tags        VARCHAR(200),
+    themes      text[]                   DEFAULT '{}',
+    created_at  TIMESTAMP WITH TIME ZONE
+);
+
