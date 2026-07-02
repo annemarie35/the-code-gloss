@@ -1,5 +1,5 @@
 'use client'
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { addPerson } from '@/src/actions/people-actions'
 
 export type InitialState = {
@@ -12,9 +12,15 @@ const initialState: InitialState = {
     error: ''
 }
 
-export default function PeopleForm() {
+export default function PeopleForm({ onSuccess }: { onSuccess?: () => void }) {
     const [state, formAction, isPending] = useActionState(addPerson, initialState)
     const { message, error } = state
+
+    useEffect(() => {
+        if (state.message) {
+            onSuccess?.()
+        }
+    }, [state.message])
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [tags, setTags] = useState('')

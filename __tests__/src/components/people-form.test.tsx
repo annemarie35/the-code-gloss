@@ -128,5 +128,19 @@ describe('People Form', () => {
                 })
             )
         })
+
+        it('should call onSuccess callback after successful submit', async () => {
+            const onSuccess = vi.fn()
+            const { getByRole } = render(<PeopleForm onSuccess={onSuccess} />)
+
+            await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
+
+            const user = userEvent.setup()
+            await user.click(getByRole('button'))
+
+            expect(onSuccess).toHaveBeenCalledOnce()
+        })
     })
 })

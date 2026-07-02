@@ -10,15 +10,16 @@ export default function PeoplePage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
-    useEffect(() => {
-        const fetchPeople = async () => {
-            const { people, error } = await getAllPeople()
-            setLoading(false)
-            if (error) {
-                setError('Une erreur est survenue.')
-            }
-            setData(people)
+    const fetchPeople = async () => {
+        const { people, error } = await getAllPeople()
+        setLoading(false)
+        if (error) {
+            setError('Une erreur est survenue.')
         }
+        setData(people)
+    }
+
+    useEffect(() => {
         fetchPeople()
     }, [])
 
@@ -30,7 +31,7 @@ export default function PeoplePage() {
     return (
         <div>
             <PageLayout title="People">
-                <PeopleForm />
+                <PeopleForm onSuccess={fetchPeople} />
                 <PeopleList loading={loading} peopleList={data} error={error} onDelete={handleDelete} />
             </PageLayout>
         </div>
