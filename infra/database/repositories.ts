@@ -12,3 +12,6 @@ export const selectAllGloses = async (): Promise<QueryResultRow[]> => {
 export const insertGlose = async (glose: Omit<GloseComplete, 'id'>): Promise<undefined> => {
     await query(INSERT_GLOSE('public'), [glose.description, glose.title, glose.tags, glose.created_at])
 }
+
+// TODO
+// Move repositories from infrastructure folder, it is a port
