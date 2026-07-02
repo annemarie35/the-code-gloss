@@ -16,8 +16,10 @@ export default function PeopleForm() {
     const [state, formAction, isPending] = useActionState(addPerson, initialState)
     const { message, error } = state
     const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [tags, setTags] = useState('')
 
-    const isFormValid = firstName.trim() !== ''
+    const isFormValid = firstName.trim() !== '' && lastName.trim() !== '' && tags.trim() !== ''
 
     return (
         <>
@@ -29,7 +31,7 @@ export default function PeopleForm() {
             >
                 <div>
                     <label htmlFor="first-name" className="mr-4">
-                        First name
+                        First name <span aria-hidden="true">*</span>
                     </label>
                     <input
                         type="text"
@@ -45,7 +47,7 @@ export default function PeopleForm() {
                 </div>
                 <div>
                     <label htmlFor="last-name" className="mr-4">
-                        Last name
+                        Last name <span aria-hidden="true">*</span>
                     </label>
                     <input
                         type="text"
@@ -54,6 +56,9 @@ export default function PeopleForm() {
                         placeholder="Lovelace"
                         className="py-2 px-3 rounded-sm"
                         aria-label="last name"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                     />
                 </div>
                 <div>
@@ -122,7 +127,7 @@ export default function PeopleForm() {
                 </div>
                 <div>
                     <label htmlFor="tags" className="mr-4">
-                        Tags
+                        Tags <span aria-hidden="true">*</span>
                     </label>
                     <input
                         type="text"
@@ -131,6 +136,9 @@ export default function PeopleForm() {
                         placeholder="pioneer, math..."
                         className="py-2 px-3 rounded-sm"
                         aria-label="tags"
+                        required
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
                     />
                 </div>
                 <div>

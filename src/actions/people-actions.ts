@@ -65,18 +65,21 @@ export async function addPerson(previousState: InitialState, formData: FormData)
                 body: JSON.stringify({
                     first_name: formData.get('first-name') as string,
                     last_name: formData.get('last-name') as string,
-                    nickname: formData.get('nickname') as string,
-                    blog_url: formData.get('blog-url') as string,
-                    linkedin_url: formData.get('linkedin-url') as string,
-                    biography: formData.get('biography') as string,
-                    year_of_birth: formData.get('year-of-birth') as string,
+                    nickname: formData.get('nickname') || null,
+                    blog_url: formData.get('blog-url') || null,
+                    linkedin_url: formData.get('linkedin-url') || null,
+                    biography: formData.get('biography') || null,
+                    year_of_birth: formData.get('year-of-birth')
+                        ? parseInt(formData.get('year-of-birth') as string, 10)
+                        : null,
                     tags: formData.get('tags') as string
                 })
             }
         })
         return { message: `${formData.get('first-name') as string} ajouté(e) avec succès`, error: null }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
+        console.error(err)
+        console.log(err)
         return { message: null, error: "Une erreur est survenue dans l'ajout d'une personne" }
     }
 }

@@ -67,7 +67,42 @@ describe('People actions', () => {
                 expect.objectContaining({
                     method: 'POST',
                     mode: 'cors',
-                    body: '{"first_name":"Ada","last_name":"Lovelace","nickname":"ada_codes","blog_url":"https://ada.dev","linkedin_url":"https://linkedin.com/in/ada","biography":"First programmer","year_of_birth":"1815","tags":"pioneer, math"}'
+                    body: '{"first_name":"Ada","last_name":"Lovelace","nickname":"ada_codes","blog_url":"https://ada.dev","linkedin_url":"https://linkedin.com/in/ada","biography":"First programmer","year_of_birth":1815,"tags":"pioneer, math"}'
+                })
+            )
+        })
+
+        it('should send null for empty optional fields', async () => {
+            const formDataOnlyRequired = {
+                get: (key: string) => {
+                    const data: Record<string, string> = {
+                        'first-name': 'Ada',
+                        'last-name': 'Lovelace',
+                        tags: 'pioneer'
+                    }
+                    return data[key] ?? null
+                },
+                append: vi.fn(),
+                delete: vi.fn(),
+                getAll: vi.fn(),
+                has: vi.fn(),
+                set: vi.fn(),
+                forEach: vi.fn(),
+                entries: vi.fn(),
+                keys: vi.fn(),
+                values: vi.fn()
+            }
+
+            global.fetch = vi.fn().mockResolvedValue(createMockFetchResponse({ ok: true, status: 200 }))
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            await addPerson(initialState, formDataOnlyRequired)
+
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost:3000/api/people',
+                expect.objectContaining({
+                    body: '{"first_name":"Ada","last_name":"Lovelace","nickname":null,"blog_url":null,"linkedin_url":null,"biography":null,"year_of_birth":null,"tags":"pioneer"}'
                 })
             )
         })

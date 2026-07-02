@@ -30,16 +30,42 @@ describe('People Form', () => {
     })
 
     describe('submit button', () => {
-        it('should be disabled when first name is empty', () => {
+        it('should be disabled when all required fields are empty', () => {
             const { getByRole } = render(<PeopleForm />)
 
             expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
         })
 
-        it('should be enabled when first name is filled', async () => {
+        it('should be disabled when only first name is filled', async () => {
             const { getByRole } = render(<PeopleForm />)
 
             await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled when only last name is filled', async () => {
+            const { getByRole } = render(<PeopleForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled when only tags is filled', async () => {
+            const { getByRole } = render(<PeopleForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be enabled when first name, last name and tags are filled', async () => {
+            const { getByRole } = render(<PeopleForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
 
             expect(getByRole('button', { name: /ajouter/i })).toBeEnabled()
         })
@@ -49,7 +75,33 @@ describe('People Form', () => {
             const firstNameInput = getByRole('textbox', { name: /first name/i })
 
             await userEvent.type(firstNameInput, 'Ada')
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
             await userEvent.clear(firstNameInput)
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled again when last name is cleared', async () => {
+            const { getByRole } = render(<PeopleForm />)
+            const lastNameInput = getByRole('textbox', { name: /last name/i })
+
+            await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+            await userEvent.type(lastNameInput, 'Lovelace')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
+            await userEvent.clear(lastNameInput)
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it('should be disabled again when tags is cleared', async () => {
+            const { getByRole } = render(<PeopleForm />)
+            const tagsInput = getByRole('textbox', { name: /tags/i })
+
+            await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+            await userEvent.type(tagsInput, 'pioneer')
+            await userEvent.clear(tagsInput)
 
             expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
         })
@@ -60,6 +112,8 @@ describe('People Form', () => {
             const { getByRole, getByText } = render(<PeopleForm />)
 
             await userEvent.type(getByRole('textbox', { name: /first name/i }), 'Ada')
+            await userEvent.type(getByRole('textbox', { name: /last name/i }), 'Lovelace')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'pioneer')
 
             const user = userEvent.setup()
             await user.click(getByRole('button'))
