@@ -30,8 +30,10 @@
 
 services:
     postgresql:
+        build:
+            context: .
+            dockerfile: Dockerfile
         container_name: postgresql
-        image: docker.io/bitnami/postgresql:latest
         ports:
             - '5432:5432'
         #    https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#customizable-environment-variables
@@ -42,6 +44,7 @@ services:
         volumes:
             - ./database-configurations/eight-connexions/:/bitnami/postgresql/conf/
             - ./infra/database/scripts/:/tmp/scripts/
+            - ./infra/database/seeds/:/tmp/seeds/
         healthcheck:
             test: 'psql --dbname "host=localhost port=5432 dbname=postgres user=username password=password123"'
             interval: 1s

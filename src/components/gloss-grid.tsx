@@ -1,25 +1,17 @@
 import { GloseComplete } from '@/src/core/domain/models/Glose.ts'
 import { formatDate } from '@/src/helpers/date-formatter.ts'
 
-type Tag = {
+type GlossTerm = {
     id: number
     name: string
     color: string
 }
 
-export type Card = {
-    id: number
-    title: string
-    description: string
-    created_at: Date
-    tags: Tag[]
-}
-
-type CardGridProps = {
+type GlossGridProps = {
     cards?: GloseComplete[]
 }
 
-const defaultCardsData: GloseComplete[] = [
+const defaultGlossData: GloseComplete[] = [
     {
         id: 1,
         title: 'Hexagonale architecture',
@@ -55,7 +47,7 @@ export const transformData = (gloses: GloseComplete[]) => {
     return gloses.map((rawGlose) => {
         const tagNames = rawGlose.tags.split(',').map((tag) => tag.trim())
 
-        const tags: Tag[] = tagNames.map((tagName) => {
+        const tags: GlossTerm[] = tagNames.map((tagName) => {
             const color = tagColorMap[tagName] || tagColorMap.default
             return {
                 id: nextTagId++,
@@ -74,31 +66,31 @@ export const transformData = (gloses: GloseComplete[]) => {
     })
 }
 
-export default function CardGrid({ cards = defaultCardsData }: CardGridProps) {
-    const transformedCards = transformData(cards)
+export default function GlossGrid({ cards = defaultGlossData }: GlossGridProps) {
+    const transformedGloses = transformData(cards)
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Gloses Terms</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {transformedCards.map((card) => (
+                {transformedGloses.map((glose) => (
                     <div
-                        key={card.id}
+                        key={glose.id}
                         className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
                     >
                         <div className="p-6">
-                            <h2 className="text-xl font-semibold mb-2 text-gray-800">{card.title}</h2>
-                            <p className="text-gray-600 mb-4">{card.description}</p>
+                            <h2 className="text-xl font-semibold mb-2 text-gray-800">{glose.title}</h2>
+                            <p className="text-gray-600 mb-4">{glose.description}</p>
 
                             <div className="text-sm text-gray-500 mb-4 ">
                                 <span className="inline-block">
-                                    <span className="font-medium">Créé le:</span> {formatDate(card.created_at)}
+                                    <span className="font-medium">Créé le:</span> {formatDate(glose.created_at)}
                                 </span>
                             </div>
 
                             <div className="flex flex-wrap gap-2">
-                                {card.tags.map((tag) => (
+                                {glose.tags.map((tag) => (
                                     <span
                                         key={tag.id}
                                         className={`${tag.color} text-white text-xs px-2 py-1 rounded-full`}

@@ -14,7 +14,7 @@
 /build
 /dist
 /backups
-infra/database/scripts/backups/gloses.csv
+infra/backups/gloses.csv
 
 # misc
 .DS_Store

@@ -38,9 +38,9 @@ cp .envrc.sample .envrc
 Feed env variables with `direnv allow`
 
 You need to have [Docker](https://www.docker.com/) installed on your machine and running.
-
 Run `docker compose up` to start docker postgres container
-Then `npm run create:database` to create database
+or `docker compose up -d --build` to start database with migrations executed
+If not, then `npm run create:database` to create database
 Then `seed:database:pg` or `seed:database:pg` to seed database with some data
 
 ## Getting Started

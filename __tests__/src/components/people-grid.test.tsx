@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import PeopleGrid, { transformPeople } from '@/src/components/people-grid'
 import { Person } from '@/src/core/domain/Types/Person'
 
@@ -76,6 +76,28 @@ describe('PeopleGrid Component', () => {
 
         expect(screen.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', 'https://ada.dev')
         expect(screen.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute('href', 'https://linkedin.com/in/ada')
+    })
+
+    it('should not show delete buttons when onDelete is not provided', () => {
+        render(<PeopleGrid people={mockPeople} />)
+
+        expect(screen.queryByRole('button', { name: /Supprimer/i })).not.toBeInTheDocument()
+    })
+
+    it('should show a delete button per card when onDelete is provided', () => {
+        const onDelete = vi.fn()
+        render(<PeopleGrid people={mockPeople} onDelete={onDelete} />)
+
+        const deleteButtons = screen.getAllByRole('button', { name: /Supprimer/i })
+        expect(deleteButtons).toHaveLength(mockPeople.length)
+    })
+
+    it('should call onDelete with the person id when delete button is clicked', () => {
+        const onDelete = vi.fn()
+        render(<PeopleGrid people={mockPeople} onDelete={onDelete} />)
+
+        fireEvent.click(screen.getByRole('button', { name: /Supprimer Ada Lovelace/i }))
+        expect(onDelete).toHaveBeenCalledWith(1)
     })
 
     it('should apply responsive grid layout', () => {

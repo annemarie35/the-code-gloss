@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import PeopleList from '@/src/components/people-list'
 import { Person } from '@/src/core/domain/Types/Person'
 
@@ -60,6 +60,30 @@ describe('People List', () => {
 
         it('should display the person biography', () => {
             expect(screen.getByText('First programmer')).toBeInTheDocument()
+        })
+    })
+
+    describe('When onDelete is provided', () => {
+        it('should not show delete button when onDelete is not provided', () => {
+            render(<PeopleList loading={false} peopleList={people} error={''} />)
+
+            expect(screen.queryByRole('button', { name: /Supprimer/i })).not.toBeInTheDocument()
+        })
+
+        it('should show delete button when onDelete is provided', () => {
+            const onDelete = vi.fn()
+            render(<PeopleList loading={false} peopleList={people} error={''} onDelete={onDelete} />)
+
+            expect(screen.getByRole('button', { name: /Supprimer Ada Lovelace/i })).toBeInTheDocument()
+        })
+
+        it('should call onDelete with person id when delete button is clicked', () => {
+            const onDelete = vi.fn()
+            render(<PeopleList loading={false} peopleList={people} error={''} onDelete={onDelete} />)
+
+            fireEvent.click(screen.getByRole('button', { name: /Supprimer Ada Lovelace/i }))
+
+            expect(onDelete).toHaveBeenCalledWith(1)
         })
     })
 })

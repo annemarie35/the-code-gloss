@@ -18,13 +18,7 @@ start:
 db-start:
     npm run start:database
 
-db-create:
-    npm run create:database
-
-db-migrate-people:
-    npm run migrate:create-people
-
-db-seed:
+db-seed-pg:
     npm run seed:database:pg
 
 db-seed-ts:
@@ -61,10 +55,10 @@ type-check:
 
 # Database backup
 db-export:
-    cd infra/database/scripts/backups && bash export.sh
+    cd infra/backups && bash export.sh
 
 db-import:
-    cd infra/database/scripts/backups && bash import.sh
+    cd infra/backups && bash import.sh
 
 # Check everything
 check: format lint-fix type-check test

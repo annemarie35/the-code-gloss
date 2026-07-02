@@ -30,6 +30,7 @@ const defaultPeopleData: Person[] = [
 
 type PeopleGridProps = {
     people?: Person[]
+    onDelete?: (id: number) => void
 }
 
 export const transformPeople = (people: Person[]): PersonCard[] => {
@@ -46,7 +47,7 @@ export const transformPeople = (people: Person[]): PersonCard[] => {
     }))
 }
 
-export default function PeopleGrid({ people = defaultPeopleData }: PeopleGridProps) {
+export default function PeopleGrid({ people = defaultPeopleData, onDelete }: PeopleGridProps) {
     const transformedPeople = transformPeople(people)
 
     return (
@@ -81,26 +82,37 @@ export default function PeopleGrid({ people = defaultPeopleData }: PeopleGridPro
                                 ))}
                             </div>
 
-                            <div className="flex gap-4">
-                                {person.blog_url && (
-                                    <a
-                                        href={person.blog_url}
-                                        className="text-blue-500 text-sm hover:underline"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                            <div className="flex gap-4 items-center justify-between">
+                                <div className="flex gap-4">
+                                    {person.blog_url && (
+                                        <a
+                                            href={person.blog_url}
+                                            className="text-blue-500 text-sm hover:underline"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Blog
+                                        </a>
+                                    )}
+                                    {person.linkedin_url && (
+                                        <a
+                                            href={person.linkedin_url}
+                                            className="text-blue-700 text-sm hover:underline"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            LinkedIn
+                                        </a>
+                                    )}
+                                </div>
+                                {onDelete && (
+                                    <button
+                                        onClick={() => onDelete(person.id)}
+                                        className="text-red-500 text-sm hover:text-red-700"
+                                        aria-label={`Supprimer ${person.fullName}`}
                                     >
-                                        Blog
-                                    </a>
-                                )}
-                                {person.linkedin_url && (
-                                    <a
-                                        href={person.linkedin_url}
-                                        className="text-blue-700 text-sm hover:underline"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        LinkedIn
-                                    </a>
+                                        Supprimer
+                                    </button>
                                 )}
                             </div>
                         </div>

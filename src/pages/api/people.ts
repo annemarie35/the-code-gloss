@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { addPerson } from '@/src/core/domain/usecases/add-person.ts'
+import { deletePerson } from '@/src/core/domain/usecases/delete-person.ts'
 import { getPeopleInMemory } from '@/src/lib/service/get-people'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { Person } from '@/src/core/domain/Types/Person'
@@ -31,6 +32,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
         await addPerson(JSON.parse(req.body))
         return res.status(201).json({ message: 'Personne ajoutée avec succès' })
+    }
+
+    if (req.method === 'DELETE') {
+        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
+            return res.status(429).json({ error: 'Too Many Requests' })
+        }
+        if (!isValidOrigin(req)) {
+            return res.status(403).json({ error: 'Forbidden' })
+        }
+        const id = parseInt(req.query.id as string, 10)
+        if (isNaN(id)) {
+            return res.status(400).json({ error: 'Invalid id' })
+        }
+        await deletePerson(id)
+        return res.status(200).json({ message: 'Personne supprimée avec succès' })
     }
 
     if (req.method === 'GET') {
