@@ -9,27 +9,29 @@
 
 Le harness désigne tout ce qui entoure un agent IA (hors modèle) pour augmenter la confiance dans le code généré. Il se compose de deux types de contrôles :
 
-- **Guides (feedforward)** : anticipent et orientent l'agent *avant* qu'il agisse
-- **Sensors (feedback)** : observent les résultats *après* que l'agent a agi, pour permettre l'auto-correction
+- **Guides (feedforward)** : anticipent et orientent l'agent _avant_ qu'il agisse
+- **Sensors (feedback)** : observent les résultats _après_ que l'agent a agi, pour permettre l'auto-correction
 
 Ces contrôles couvrent trois dimensions :
 
-| Dimension | Objectif |
-|-----------|----------|
-| **Maintainability** | Qualité interne du code |
+| Dimension                | Objectif                                |
+| ------------------------ | --------------------------------------- |
+| **Maintainability**      | Qualité interne du code                 |
 | **Architecture fitness** | Respect des contraintes architecturales |
-| **Behavior** | Correction fonctionnelle |
+| **Behavior**             | Correction fonctionnelle                |
 
 ---
 
 ## Ce qui existe déjà dans ce projet
 
 ### Guides (feedforward)
+
 - `CLAUDE.md` — conventions d'architecture, nommage, flux en couches
 - TypeScript — typage comme guide implicite
 - ESLint + Prettier — style et format
 
 ### Sensors (feedback — computationnels)
+
 - Vitest — tests unitaires et composants
 - Playwright — installé (mais sous-utilisé, voir lacunes)
 - Husky + lint-staged — vérifications pre-commit
@@ -50,6 +52,7 @@ Page → Action → API → Service → Repository
 Mais **rien n'enforce cette règle automatiquement** — un agent peut violer ces couches sans qu'aucun outil ne le détecte.
 
 **Outils manquants :**
+
 - `dependency-cruiser` ou `eslint-plugin-boundaries` — pour interdire les imports transverses (ex: un composant qui importe depuis `infra/repositories/`, ou une page qui appelle `fetch()` directement)
 - Fitness functions exécutables — les règles architecturales sont dans un doc texte, pas dans du code vérifiable
 
@@ -71,6 +74,7 @@ Mais **rien n'enforce cette règle automatiquement** — un agent peut violer ce
 L'article insiste : les messages d'erreur doivent être **conçus pour la self-correction par un LLM**, pas pour un humain.
 
 Exemple d'un bon message (à créer) :
+
 > "Import depuis `infra/` détecté dans `src/pages/` — interdit. Utilise une action dans `src/actions/` qui appelle `httpClient`."
 
 Les messages ESLint actuels sont génériques et ne guident pas l'agent vers la solution.
@@ -84,14 +88,14 @@ Les messages ESLint actuels sont génériques et ne guident pas l'agent vers la 
 
 ## Priorisation des actions
 
-| Priorité | Action | Dimension | Outil suggéré |
-|----------|--------|-----------|---------------|
-| 1 | Enforcer les couches architecturales | Architecture fitness | `dependency-cruiser` ou `eslint-plugin-boundaries` |
-| 2 | Ecrire de vrais tests Playwright sur l'app | Behavior | Playwright (existant) |
-| 3 | Seuil de coverage minimum | Maintainability | Config `vitest.config.mts` |
-| 4 | Détection de dead code | Maintainability | `knip` |
-| 5 | Messages ESLint guidants pour l'agent | Tous | ESLint custom rules |
-| 6 | Mutation testing | Behavior | Stryker |
+| Priorité | Action                                     | Dimension            | Outil suggéré                                      |
+| -------- | ------------------------------------------ | -------------------- | -------------------------------------------------- |
+| 1        | Enforcer les couches architecturales       | Architecture fitness | `dependency-cruiser` ou `eslint-plugin-boundaries` |
+| 2        | Ecrire de vrais tests Playwright sur l'app | Behavior             | Playwright (existant)                              |
+| 3        | Seuil de coverage minimum                  | Maintainability      | Config `vitest.config.mts`                         |
+| 4        | Détection de dead code                     | Maintainability      | `knip`                                             |
+| 5        | Messages ESLint guidants pour l'agent      | Tous                 | ESLint custom rules                                |
+| 6        | Mutation testing                           | Behavior             | Stryker                                            |
 
 ---
 
