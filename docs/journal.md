@@ -27,6 +27,15 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 22/09/2026
+
+- Ajout du skill [security-audit](https://github.com/cloudflare/security-audit-skill) de Cloudflare via `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit`
+    - Installé dans `.agents/skills/security-audit/`, symlinké pour Claude Code
+    - Ce skill transforme l'agent en auditeur de sécurité automatisé en 6 phases : reconnaissance, hunting ciblé, validation des findings, output structuré, vérification indépendante et rapport final
+    - Produit un `findings.json` (findings confirmés / à valider / rejetés) et un `REPORT.md`
+    - Bénéfice concret pour ce projet : détecter des vulnérabilités dans les API routes (injection SQL, CSRF bypass, validation manquante), les actions server-side, et la configuration CSP/headers dans `next.config.ts`
+    - Usage : "security audit this codebase" ou "find security vulnerabilities in ./src"
+
 ## 24/06/2026
 
 - Ajout de la possibilité de supprimer une personne depuis sa carte dans `PeopleGrid`
