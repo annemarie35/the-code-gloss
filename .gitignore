@@ -54,3 +54,9 @@ test-results/
 
 # Barad-dur code analysis https://lab.frogg.it/Edouard_Mangel/barad-dur
 .repository-analysis/
+
+# Security audit skill analysis
+security-audit-skill/
+
+# Second brain (veille perso)
+/second-brain
