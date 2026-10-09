@@ -1,12 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
-import pkg from 'pg'
-const { Pool } = pkg
-
+import { SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
 import * as mod from '@/infra/repositories/person_repository'
 import { getPeopleInMemory } from '@/src/lib/service/get-people'
 
+const { mockQuery } = vi.hoisted(() => ({
+    mockQuery: vi.fn()
+}))
+
 vi.mock('pg', () => {
-    const mockQuery = vi.fn().mockReturnValue({
+    mockQuery.mockReturnValue({
         rows: [
             {
                 id: 1,
@@ -39,7 +41,7 @@ describe('Get people', () => {
         const getPeopleDbQuerySpy = vi.spyOn(mod, 'selectAllPeople')
         const people = await getPeopleInMemory()
 
-        expect(Pool).toBeCalledTimes(1)
+        expect(mockQuery).toHaveBeenCalledExactlyOnceWith(SELECT_ALL_PEOPLE('public'), [])
 
         expect(getPeopleDbQuerySpy).toHaveBeenCalledOnce()
         expect(people).toEqual([

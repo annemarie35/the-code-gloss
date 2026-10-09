@@ -12,7 +12,9 @@ export default defineConfig({
             '**/node_modules/**',
             '**/dist/**',
             '**/.{idea,git,cache,output,temp}/**',
-            '__tests__/infra/**'
+            '__tests__/infra/**',
+            '.agents/**',
+            '.claude/**'
         ],
         environment: 'jsdom',
         setupFiles: ['setup-tests.ts']
