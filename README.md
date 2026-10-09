@@ -4,8 +4,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 The purpose is to practice React since I didn't work with it since October 2021.
 Also make some practice of [clean archigonale architecture](https://www.youtube.com/watch?v=QV-CHSmlOh8).
 
-Another purpose was added after, use Claude to make an opinion about it. Well, since I used it, I realized that I don't want to do code reviews anymore, even though I enjoy them.
+Another purpose was added after, use Claude to make an opinion about it. Well, since I used it, I realized that I don't want to do code reviews anymore, even though I enjoy them. 
+
 Plus, I want to add more and more features. Looks like an addictive effect, don't you think ?
+
 Well, I am turning this project onto a good legacy project to practice making refactoring, improve architecture, and tests.
 
 ## Why code gloss?
@@ -38,10 +40,9 @@ cp .envrc.sample .envrc
 Feed env variables with `direnv allow`
 
 You need to have [Docker](https://www.docker.com/) installed on your machine and running.
-Run `docker compose up` to start docker postgres container
-or `docker compose up -d --build` to start database with migrations executed
-If not, then `npm run create:database` to create database
-Then `seed:database:pg` or `seed:database:pg` to seed database with some data
+- Run `docker compose up` to start docker postgres container or `docker compose up -d --build` to start database with migrations executed
+- If not, then `npm run create:database` to create database
+- Then `seed:database:pg` or `seed:database:pg` to seed database with some data
 
 ## Getting Started
 
