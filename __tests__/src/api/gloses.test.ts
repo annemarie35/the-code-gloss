@@ -8,11 +8,13 @@ vi.mock('@/src/lib/rate-limiter', () => ({
     rateLimit: vi.fn().mockReturnValue(true),
     getIp: vi.fn().mockReturnValue('127.0.0.1')
 }))
+vi.mock('@/src/lib/service/get-gloses')
+vi.mock('@/src/lib/service/add-glose')
+vi.mock('@/src/lib/database/insert-gloses-db-query')
 
 describe('Gloses API', () => {
     it('should get gloses when request method is GET', async () => {
         const getGlosesInMemorySpy = vi.spyOn(getGlosesModTOI, 'getGlosesInMemory')
-        vi.mock('@/src/lib/service/get-gloses')
 
         const request = {
             method: 'GET'
@@ -38,9 +40,6 @@ describe('Gloses API', () => {
         const date = new Date(2000, 1, 1, 13)
         vi.setSystemTime(date)
 
-        vi.mock('@/src/lib/service/add-glose')
-
-        vi.mock('@/src/lib/database/insert-gloses-db-query')
         const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
 
         const request = {
