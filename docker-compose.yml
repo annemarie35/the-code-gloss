@@ -35,7 +35,7 @@ services:
             dockerfile: Dockerfile
         container_name: postgresql
         ports:
-            - '5432:5432'
+            - '127.0.0.1:5432:5432'
         #    https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#customizable-environment-variables
         environment:
             - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
