@@ -23,7 +23,7 @@ const eslintConfig = [
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
         }
     },
-    { ignores: ['**/node_modules/', '**/.next/'] }
+    { ignores: ['**/node_modules/', '**/.next/', '.agents/'] }
 ]
 
 export default eslintConfig
