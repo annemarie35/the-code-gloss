@@ -22,7 +22,7 @@ describe('Sql Queries', () => {
             password: container.getPassword()
         })
 
-        const sql = readFileSync(resolve('infra/database/scripts/create_people_table.sql'), 'utf-8')
+        const sql = readFileSync(resolve('infra/database/scripts/migrations.sql'), 'utf-8')
         await pool.query(sql)
     }, 60_000)
 
