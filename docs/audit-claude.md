@@ -7,25 +7,25 @@
 
 **code-gloss** est un glossaire personnel du code : on y enregistre des termes (« gloses ») classés par tags et thèmes, des personnes de référence (blogueurs, auteurs…), et on peut agréger des flux RSS externes. L'application expose aussi son propre flux RSS.
 
-| Élément         | Choix                                                    |
-| --------------- | -------------------------------------------------------- |
-| Framework       | Next.js 16 (Pages Router), React 19, TypeScript          |
-| Style           | Tailwind CSS v4                                          |
-| Base de données | PostgreSQL (image bitnami, via Docker Compose), driver `pg` |
-| Logs            | pino / pino-pretty (dans le client HTTP)                 |
-| Tests           | Vitest + Testing Library (jsdom), Testcontainers (infra), Playwright (e2e) |
-| Qualité         | ESLint, Prettier, Husky + lint-staged, `just check`      |
+| Élément         | Choix                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------- |
+| Framework       | Next.js 16 (Pages Router), React 19, TypeScript                                         |
+| Style           | Tailwind CSS v4                                                                         |
+| Base de données | PostgreSQL (image bitnami, via Docker Compose), driver `pg`                             |
+| Logs            | pino / pino-pretty (dans le client HTTP)                                                |
+| Tests           | Vitest + Testing Library (jsdom), Testcontainers (infra), Playwright (e2e)              |
+| Qualité         | ESLint, Prettier, Husky + lint-staged, `just check`                                     |
 | CI              | GitHub Actions (tests + couverture + type-check, reviewdog, audit de sécurité « vice ») |
 
 ## 2. Fonctionnalités
 
-| Page            | Rôle                                                         | Données                 |
-| --------------- | ------------------------------------------------------------ | ----------------------- |
-| `/`             | Formulaire d'ajout de glose, filtre par thème, liste en grille | table `gloses`         |
-| `/people`       | Ajout / liste / suppression de personnes                     | table `people`          |
-| `/feeds`        | Lecture de flux RSS/Atom externes (URLs stockées en `localStorage`) | proxy `/api/feeds` |
-| `/rss`          | Aperçu des gloses + lien d'abonnement                        | `/api/rss`              |
-| `/about`        | Texte de présentation statique                               | —                       |
+| Page      | Rôle                                                                | Données            |
+| --------- | ------------------------------------------------------------------- | ------------------ |
+| `/`       | Formulaire d'ajout de glose, filtre par thème, liste en grille      | table `gloses`     |
+| `/people` | Ajout / liste / suppression de personnes                            | table `people`     |
+| `/feeds`  | Lecture de flux RSS/Atom externes (URLs stockées en `localStorage`) | proxy `/api/feeds` |
+| `/rss`    | Aperçu des gloses + lien d'abonnement                               | `/api/rss`         |
+| `/about`  | Texte de présentation statique                                      | —                  |
 
 ## 3. Architecture en couches
 
@@ -42,12 +42,12 @@ Page (src/pages/*.tsx)                 useEffect + useState
 
 ### 3.1 Flux par ressource
 
-| Ressource | Page          | Action                 | Route API         | Service / Use case                                     | Repository                              |
-| --------- | ------------- | ---------------------- | ----------------- | ------------------------------------------------------ | --------------------------------------- |
-| Gloses    | `index.tsx`, `rss.tsx` | `gloses-actions.ts` | `api/gloses.ts` (GET, POST) | `lib/service/get-gloses.ts`, `lib/service/add-glose.ts` | `infra/database/repositories.ts` |
-| People    | `people.tsx`  | `people-actions.ts`    | `api/people.ts` (GET, POST, DELETE) | `lib/service/get-people.ts`, `core/domain/usecases/add-person.ts`, `delete-person.ts` | `infra/repositories/person_repository.ts` |
-| Feeds     | `feeds.tsx`   | `feeds-actions.ts`     | `api/feeds.ts` (GET) | `lib/service/get-feeds.ts` (fetch + parsing regex RSS/Atom) | — (pas de persistance) |
-| RSS       | `rss.tsx` (lien) | —                   | `api/rss.ts` (GET, XML) | `lib/service/get-gloses.ts`                       | `infra/database/repositories.ts` |
+| Ressource | Page                   | Action              | Route API                           | Service / Use case                                                                    | Repository                                |
+| --------- | ---------------------- | ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Gloses    | `index.tsx`, `rss.tsx` | `gloses-actions.ts` | `api/gloses.ts` (GET, POST)         | `lib/service/get-gloses.ts`, `lib/service/add-glose.ts`                               | `infra/database/repositories.ts`          |
+| People    | `people.tsx`           | `people-actions.ts` | `api/people.ts` (GET, POST, DELETE) | `lib/service/get-people.ts`, `core/domain/usecases/add-person.ts`, `delete-person.ts` | `infra/repositories/person_repository.ts` |
+| Feeds     | `feeds.tsx`            | `feeds-actions.ts`  | `api/feeds.ts` (GET)                | `lib/service/get-feeds.ts` (fetch + parsing regex RSS/Atom)                           | — (pas de persistance)                    |
+| RSS       | `rss.tsx` (lien)       | —                   | `api/rss.ts` (GET, XML)             | `lib/service/get-gloses.ts`                                                           | `infra/database/repositories.ts`          |
 
 ### 3.2 Les couches en détail
 
@@ -56,16 +56,16 @@ Page (src/pages/*.tsx)                 useEffect + useState
 - **Actions** (`src/actions/`) : appellent `httpClient` (`src/lib/http.ts`, wrapper `fetch` + logs pino), capturent les erreurs et renvoient un objet typé `{ message, error, ... }`.
 - **Routes API** (`src/pages/api/`) : limitation de débit en mémoire (`src/lib/rate-limiter.ts`, fenêtre fixe par IP), contrôle `Origin === Host` sur les mutations (protection CSRF), puis délégation.
 - **Domaine** (`src/core/domain/`) :
-  - `models/Glose.ts` (type `GloseComplete`, constante `THEMES` : OPS, CRAFT, DATABASE, DDD, AGILE), `models/Feed.ts`
-  - `Types/Person.ts`
-  - `usecases/add-person.ts`, `delete-person.ts` — avec injection de dépendance du repository (paramètre par défaut), ce qui les rend testables sans base.
+    - `models/Glose.ts` (type `GloseComplete`, constante `THEMES` : OPS, CRAFT, DATABASE, DDD, AGILE), `models/Feed.ts`
+    - `Types/Person.ts`
+    - `usecases/add-person.ts`, `delete-person.ts` — avec injection de dépendance du repository (paramètre par défaut), ce qui les rend testables sans base.
 - **Services** (`src/lib/service/`) : lecture/mapping des lignes SQL vers les types du domaine, parsing des flux.
 - **Infra** (`infra/`) :
-  - `database/connectionPool.ts` : `Pool` pg (6 connexions max) configuré par variables d'environnement, export d'une fonction `query`.
-  - `database/sql_queries.ts` : requêtes SQL paramétrées (`$1…`), nom de schéma injecté.
-  - `database/repositories.ts` (gloses) et `repositories/person_repository.ts` (people).
-  - `database/scripts/migrations.sql` : schéma (`people`, `gloses` + colonne `themes text[]`, `urls`), copié dans `/docker-entrypoint-initdb.d/` par le `Dockerfile` (cf. ADR 001).
-  - `database/seeds/` : seeds SQL, JSON et script TS ; `backups/` : scripts d'export/import.
+    - `database/connectionPool.ts` : `Pool` pg (6 connexions max) configuré par variables d'environnement, export d'une fonction `query`.
+    - `database/sql_queries.ts` : requêtes SQL paramétrées (`$1…`), nom de schéma injecté.
+    - `database/repositories.ts` (gloses) et `repositories/person_repository.ts` (people).
+    - `database/scripts/migrations.sql` : schéma (`people`, `gloses` + colonne `themes text[]`, `urls`), copié dans `/docker-entrypoint-initdb.d/` par le `Dockerfile` (cf. ADR 001).
+    - `database/seeds/` : seeds SQL, JSON et script TS ; `backups/` : scripts d'export/import.
 
 ### 3.3 Sécurité transverse
 
@@ -78,11 +78,11 @@ Page (src/pages/*.tsx)                 useEffect + useState
 
 ## 4. Tests
 
-| Type                 | Emplacement                        | Commande                    | Environnement |
-| -------------------- | ---------------------------------- | --------------------------- | ------------- |
-| Unitaires/composants | `__tests__/src/**`                 | `npm run test`              | jsdom         |
-| Infra / base         | `__tests__/infra/**`               | `npm run test:db`           | node + Testcontainers PostgreSQL |
-| E2E                  | `integration-tests/`               | `npm run test:integration`  | Playwright    |
+| Type                 | Emplacement          | Commande                   | Environnement                    |
+| -------------------- | -------------------- | -------------------------- | -------------------------------- |
+| Unitaires/composants | `__tests__/src/**`   | `npm run test`             | jsdom                            |
+| Infra / base         | `__tests__/infra/**` | `npm run test:db`          | node + Testcontainers PostgreSQL |
+| E2E                  | `integration-tests/` | `npm run test:integration` | Playwright                       |
 
 Chaque fichier source a son test miroir (convention imposée par `CLAUDE.md`). La CI sur PR exécute `test:coverage` et `type-check`.
 
@@ -101,9 +101,9 @@ Chaque fichier source a son test miroir (convention imposée par `CLAUDE.md`). L
 1. **Deux emplacements pour la logique métier** : les gloses passent par `src/lib/service/` alors que les personnes passent par `src/core/domain/usecases/`. Il faudrait choisir un seul modèle (les use cases avec injection semblent la cible).
 2. **Deux emplacements pour les repositories** : `infra/database/repositories.ts` (gloses) vs `infra/repositories/person_repository.ts` (people). Un `TODO` dans `repositories.ts` le signale déjà.
 3. **Types définis hors du domaine** :
-   - `src/lib/service/add-glose.ts` redéclare un type `Glose` local au lieu de réutiliser `GloseComplete`.
-   - `src/pages/api/gloses.ts` et `api/people.ts` déclarent `ResponseData` / `CreateOrGetGloseResponse` dans la route (contraire à la règle « ne jamais exporter de types depuis une route API » — ici non exportés, mais ils gagneraient à vivre dans le domaine).
-   - Les actions importent `InitialState` depuis les composants (`gloss-terms-form`, `people-form`) : dépendance inversée action → composant.
+    - `src/lib/service/add-glose.ts` redéclare un type `Glose` local au lieu de réutiliser `GloseComplete`.
+    - `src/pages/api/gloses.ts` et `api/people.ts` déclarent `ResponseData` / `CreateOrGetGloseResponse` dans la route (contraire à la règle « ne jamais exporter de types depuis une route API » — ici non exportés, mais ils gagneraient à vivre dans le domaine).
+    - Les actions importent `InitialState` depuis les composants (`gloss-terms-form`, `people-form`) : dépendance inversée action → composant.
 4. **`layout.tsx` et `pageLayout.tsx` dans `src/pages/`** : avec le Pages Router, tout fichier de ce dossier devient une route (`/layout`, `/pageLayout`). `layout.tsx` (balises `<html>/<body>`) est un reliquat de l'App Router ; `pageLayout.tsx` devrait être dans `src/components/`.
 5. **Duplication** : `isValidOrigin` est copié dans `api/gloses.ts` et `api/people.ts` ; il pourrait rejoindre `src/lib/`.
 6. **`'use server'`** sur les actions et services alors que le projet utilise le Pages Router : la directive n'a pas d'effet ici et entretient la confusion. Les actions s'exécutent côté client et appellent l'API en HTTP.
