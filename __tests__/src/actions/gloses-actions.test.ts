@@ -9,7 +9,7 @@ describe('Gloses actions', () => {
             get: () => 'some words',
             append: vi.fn(),
             delete: vi.fn(),
-            getAll: vi.fn(),
+            getAll: vi.fn().mockReturnValue(['CRAFT']),
             has: vi.fn(),
             set: vi.fn(),
             forEach: vi.fn(),
@@ -39,7 +39,23 @@ describe('Gloses actions', () => {
                 expect.objectContaining({
                     method: 'POST',
                     mode: 'cors',
-                    body: '{"title":"some words","description":"some words","tags":"some words"}'
+                    body: '{"title":"some words","description":"some words","tags":"some words","themes":["CRAFT"]}'
+                })
+            )
+        })
+
+        it('should send an empty themes array when no theme is selected', async () => {
+            const fetchResponse = createMockFetchResponse({ data: gloses, ok: true, status: 200 })
+            global.fetch = vi.fn().mockResolvedValue(createMockFetchResponse(fetchResponse))
+            const formDataWithoutTheme = { ...formData, getAll: vi.fn().mockReturnValue([]) }
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            await addGlossTerm(initialState, formDataWithoutTheme)
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost:3000/api/gloses',
+                expect.objectContaining({
+                    body: '{"title":"some words","description":"some words","tags":"some words","themes":[]}'
                 })
             )
         })

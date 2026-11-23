@@ -1,47 +1,36 @@
-import { describe, expect, it, vi } from 'vitest'
-
-import * as mod from '@/src/lib/service//add-glose'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AddGlose } from '@/src/lib/service/add-glose'
+import { insertGlose } from '@/infra/database/repositories'
 
-vi.mock('pg', () => {
-    const mockQuery = vi.fn().mockReturnValue({
-        rowsCount: 1
-    })
-    const MockPool = vi.fn(function () {
-        return { query: mockQuery }
-    })
-
-    const pkg = { Pool: MockPool }
-
-    return {
-        default: pkg,
-        Pool: MockPool
-    }
-})
+vi.mock('@/infra/database/repositories', () => ({
+    insertGlose: vi.fn()
+}))
 
 describe('createGlose', () => {
-    it('Should persist glose', async () => {
-        vi.useFakeTimers()
-        const date = new Date(
-            Date.parse(new Date(2006, 0, 2, 15, 4, 5).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }))
-        )
+    afterEach(() => {
+        vi.useRealTimers()
+        vi.resetAllMocks()
+    })
 
+    it('Should persist glose with its themes and creation date', async () => {
+        vi.useFakeTimers()
+        const date = new Date(2006, 0, 2, 15, 4, 5)
         vi.setSystemTime(date)
 
-        const insertDatabaseSpy = vi.spyOn(mod, 'AddGlose')
-        await AddGlose({
+        const response = await AddGlose({
             title: 'Title',
             description: 'Description',
             tags: 'Tag',
             created_at: '',
-            themes: []
+            themes: ['CRAFT']
         })
 
-        expect(insertDatabaseSpy).toHaveBeenLastCalledWith({
+        expect(response).toBe('succes')
+        expect(insertGlose).toHaveBeenCalledWith({
             title: 'Title',
             description: 'Description',
             tags: 'Tag',
-            themes: [],
+            themes: ['CRAFT'],
             created_at: date.toISOString()
         })
     })
