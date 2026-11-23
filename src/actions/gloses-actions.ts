@@ -17,7 +17,8 @@ export async function addGlossTerm(previousState: InitialState, formData: FormDa
                 body: JSON.stringify({
                     title: formData.get('glose-title') as string,
                     description: formData.get('glose-description') as string,
-                    tags: formData.get('glose-tags') as string
+                    tags: formData.get('glose-tags') as string,
+                    themes: formData.getAll('glose-theme') as string[]
                 })
             }
         })

@@ -4,7 +4,7 @@ import pkg from 'pg'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { INSERT_PERSON, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
+import { INSERT_GLOSE, INSERT_PERSON, SELECT_ALL, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
 
 const { Pool } = pkg
 
@@ -52,6 +52,28 @@ describe('Sql Queries', () => {
             const result = await pool.query(SELECT_ALL_PEOPLE('public'))
 
             expect(result.rows.length).toBeGreaterThanOrEqual(1)
+        })
+    })
+
+    describe('Glose', () => {
+        it('should insert a glose with its themes', async () => {
+            const result = await pool.query(INSERT_GLOSE('public'), [
+                'The fundamental idea of Event Sourcing is that...',
+                'Event sourcing',
+                'DDD, code',
+                new Date().toISOString(),
+                ['DDD', 'CRAFT']
+            ])
+
+            expect(result.rowCount).toBe(1)
+        })
+
+        it('should select all gloses with their themes', async () => {
+            const result = await pool.query(SELECT_ALL('public'))
+
+            const eventSourcing = result.rows.find((row) => row.title === 'Event sourcing')
+
+            expect(eventSourcing?.themes).toEqual(['DDD', 'CRAFT'])
         })
     })
 })

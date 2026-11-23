@@ -126,7 +126,7 @@ describe('Gloss Form Terms', () => {
                 expect.objectContaining({
                     method: 'POST',
                     mode: 'cors',
-                    body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
+                    body: '{"title":"TDD","description":"Created by Kent Beck","tags":"XP","themes":["CRAFT"]}'
                 })
             )
         })

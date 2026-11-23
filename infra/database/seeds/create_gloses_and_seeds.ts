@@ -13,7 +13,7 @@ export async function createAndSeedDatabase({
         const gloses: Seeds = importingFileFunction(dataFilePath)
         const created_at: string = new Date().toISOString()
         gloses.forEach(async (glose: Seeds[number]) => {
-            await poolDb(INSERT_GLOSE('public'), [glose.description, glose.title, glose.tags, created_at])
+            await poolDb(INSERT_GLOSE('public'), [glose.description, glose.title, glose.tags, created_at, []])
         })
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'unknown error'

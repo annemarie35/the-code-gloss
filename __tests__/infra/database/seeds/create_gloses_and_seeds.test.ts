@@ -3,6 +3,7 @@ import { describe, it, expect, vi, afterEach, beforeEach, MockedObject } from 'v
 import { createAndSeedDatabase } from '@/infra/database/seeds/create_gloses_and_seeds.ts'
 import { query } from '@/infra/database/connectionPool.ts'
 import { importJsonFile } from '@/infra/import_json_file.ts'
+import { INSERT_GLOSE } from '@/infra/database/sql_queries.ts'
 
 vi.mock('pg')
 
@@ -69,6 +70,22 @@ describe('CreateAndSeedDatabase', () => {
                 })
 
                 expect(queryMock).toHaveBeenCalledTimes(2)
+            })
+
+            it('should insert each entry with an empty themes array', async () => {
+                await createAndSeedDatabase({
+                    dataFilePath: 'path-to/file-to-import',
+                    importingFileFunction: importingFileFunctionMock,
+                    poolDb: queryMock
+                })
+
+                expect(queryMock).toHaveBeenNthCalledWith(1, INSERT_GLOSE('public'), [
+                    'Invented by Alistair Cockburn in 2005',
+                    'Hexagonale architecture',
+                    'Craft',
+                    expect.any(String),
+                    []
+                ])
             })
         })
     })
