@@ -12,7 +12,7 @@ vi.mock('pino', () => ({ pino: pinoMock }))
 
 import { httpClient } from '@/src/lib/http'
 
-const CATCH_ERROR_MESSAGE = ' encore une erreur dans le catch de http client'
+const CATCH_ERROR_MESSAGE = 'encore une erreur dans le catch de http client'
 
 const requestConfig = {
     method: 'GET' as const,
