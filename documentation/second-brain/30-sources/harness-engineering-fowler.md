@@ -19,7 +19,7 @@ format: article
 
 ## Idées clés
 
-- Les règles d'architecture écrites en prose (ex. `CLAUDE.md`) ne sont pas un harness : il faut des **fitness functions exécutables**.
+- Les règles d'architecture écrites en prose (ex. `../../../CLAUDE.md`) ne sont pas un harness : il faut des **fitness functions exécutables**.
 - Les messages d'erreur des sensors doivent être **écrits pour un LLM** : dire ce qui est interdit _et_ quoi faire à la place.
 - « A good harness should direct human input to where it is most important. »
 
@@ -29,11 +29,11 @@ Le cadre guides/sensors est un bon outil de diagnostic : appliqué à code-gloss
 
 ## Application concrète
 
-Analyse complète : `docs/harness-engineering.md` dans code-gloss. Priorités retenues :
+Analyse complète : `../..` dans code-gloss. Priorités retenues :
 
 - [ ] Enforcer les couches (`dependency-cruiser` ou `eslint-plugin-boundaries`)
 - [ ] Vrais tests Playwright sur l'app (actuellement des placeholders)
-- [ ] Seuil de coverage dans `vitest.config.mts`
+- [ ] Seuil de coverage dans `../../../vitest.config.mts`
 - [ ] Dead code avec `knip`
 - [ ] Messages ESLint guidants pour l'agent
 - [ ] Mutation testing (Stryker)

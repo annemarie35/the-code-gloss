@@ -8,7 +8,7 @@ status: digéré
 
 # Agent de code review sur les PR GitHub avec Claude Code
 
-Pour qu'un agent relise automatiquement chaque PR d'un dépôt, le plus simple est la **GitHub Action Claude Code** (`anthropics/claude-code-action`). Elle se déclenche sur les événements de PR, lit le `CLAUDE.md` du dépôt pour connaître les conventions, puis poste ses remarques en commentaires inline (ou un seul commentaire de synthèse s'il n'y a rien à signaler). Les PR en draft sont ignorées.
+Pour qu'un agent relise automatiquement chaque PR d'un dépôt, le plus simple est la **GitHub Action Claude Code** (`anthropics/claude-code-action`). Elle se déclenche sur les événements de PR, lit le `../../../CLAUDE.md` du dépôt pour connaître les conventions, puis poste ses remarques en commentaires inline (ou un seul commentaire de synthèse s'il n'y a rien à signaler). Les PR en draft sont ignorées.
 
 ## Exemple
 
@@ -60,14 +60,14 @@ jobs:
 
 ## Quand l'utiliser / ne pas l'utiliser
 
-- ✅ Comme **sensor** supplémentaire : un deuxième regard sur les bugs, la sécurité et les conventions du `CLAUDE.md`.
+- ✅ Comme **sensor** supplémentaire : un deuxième regard sur les bugs, la sécurité et les conventions du `../../../CLAUDE.md`.
 - ⚠️ Chaque review consomme de l'API : limiter les déclencheurs (pas de review sur les drafts, éventuellement pas sur chaque `synchronize`).
-- ❌ Ne remplace pas la review humaine ni les tests : la qualité dépend du `CLAUDE.md` et du prompt.
+- ❌ Ne remplace pas la review humaine ni les tests : la qualité dépend du `../../../CLAUDE.md` et du prompt.
 
 ## Application concrète
 
 - [ ] Installer le workflow Claude Code Review sur `annemarie35/the-code-gloss`.
-- [ ] Ajouter au prompt les règles d'architecture du `CLAUDE.md` (couches Page → Action → API → Service → Repository, test obligatoire pour chaque fichier).
+- [ ] Ajouter au prompt les règles d'architecture du `../../../CLAUDE.md` (couches Page → Action → API → Service → Repository, test obligatoire pour chaque fichier).
 - [ ] Comparer sur 2–3 PR les remarques de l'Action et celles de `/code-review` en local.
 
 ## Liens

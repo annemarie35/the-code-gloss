@@ -52,7 +52,7 @@ Revue mensuelle. Chaque mouvement est noté dans la note hebdo et dans l'histori
 
 - **Quadrant** : techniques
 - **Depuis** : 2026-10-08
-- **Pourquoi** : en place dans `next.config.ts`, voir [[content-security-policy]] · [[hsts]]
+- **Pourquoi** : en place dans `../../../next.config.ts`, voir [[content-security-policy]] · [[hsts]]
 
 ## Trial
 
@@ -94,7 +94,7 @@ Revue mensuelle. Chaque mouvement est noté dans la note hebdo et dans l'histori
 ### Zod
 
 - **Quadrant** : langages & frameworks
-- **Pourquoi** : validation d'entrée des API routes (cf. `docs/journal.md`)
+- **Pourquoi** : validation d'entrée des API routes (cf. `../..`)
 
 ## Hold
 

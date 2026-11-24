@@ -9,7 +9,7 @@ origin: private-doc/fix-strict-transport-security.md
 
 # Strict Transport Security (HSTS)
 
-HSTS is configured in `next.config.ts` alongside the CSP header, inside the `headers()` function applied to all routes (`/(.*)`).
+HSTS is configured in `../../../next.config.ts` alongside the CSP header, inside the `headers()` function applied to all routes (`/(.*)`).
 
 ## Header value
 
@@ -29,7 +29,7 @@ HSTS instructs browsers to only connect to the app over HTTPS for the duration o
 
 ## Configuration location
 
-`next.config.ts` — added to the same `headers()` block as the CSP:
+`../../../next.config.ts` — added to the same `headers()` block as the CSP:
 
 ```ts
 {
