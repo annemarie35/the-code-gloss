@@ -59,6 +59,14 @@ describe('GlossGrid Component', () => {
         expect(screen.getByText('TypeScript')).toBeInTheDocument()
     })
 
+    it('devrait afficher le thème de la glose dans sa carte', () => {
+        const gloseWithTheme: GloseComplete = { ...mockGloses[0], themes: ['DDD'] }
+
+        render(<GlossGrid cards={[gloseWithTheme]} />)
+
+        expect(screen.getByText('DDD')).toBeInTheDocument()
+    })
+
     it('devrait appliquer le bon layout de grid responsive', () => {
         const { container } = render(<GlossGrid cards={mockGloses} />)
 
