@@ -32,6 +32,15 @@ describe('GlossGrid Component', () => {
         expect(screen.getByText('Hexagonale architecture')).toBeInTheDocument()
 
         expect(screen.getByText('Invented by Alistair Cockburn in 2005')).toBeInTheDocument()
+        expect(screen.getByText('Craft')).toBeInTheDocument()
+        expect(screen.getByText('Architecture')).toBeInTheDocument()
+    })
+
+    it('devrait colorer chaque tag selon sa couleur', () => {
+        render(<GlossGrid cards={mockGloses} />)
+
+        expect(screen.getByText('Test')).toHaveClass('bg-blue-500')
+        expect(screen.getByText('TypeScript')).toHaveClass('bg-blue-700')
     })
 
     it('devrait rendre les gloses à partir des props fournies', () => {
@@ -89,6 +98,33 @@ describe('GlossGrid Component', () => {
     })
 
     describe('transformData', () => {
+        const colorOf = (tags: string) =>
+            transformData([{ ...mockGloses[0], tags }])[0].tags.map((tag) => ({ name: tag.name, color: tag.color }))
+
+        it.each([
+            ['API', 'bg-red-500'],
+            ['Architecture', 'bg-red-300'],
+            ['Backend', 'bg-indigo-500'],
+            ['CSS', 'bg-pink-500'],
+            ['Craft', 'bg-red-200'],
+            ['Frontend', 'bg-purple-500'],
+            ['HTML', 'bg-orange-500'],
+            ['JavaScript', 'bg-yellow-500'],
+            ['Next.js', 'bg-black'],
+            ['React', 'bg-green-500'],
+            ['Routing', 'bg-violet-500'],
+            ['Redux', 'bg-purple-700'],
+            ['SSR', 'bg-teal-500'],
+            ['Test', 'bg-blue-500'],
+            ['TypeScript', 'bg-blue-700']
+        ])('should color the %s tag with %s', (name, color) => {
+            expect(colorOf(name)).toEqual([{ name, color }])
+        })
+
+        it('should use the default color for an unknown tag', () => {
+            expect(colorOf('Elixir')).toEqual([{ name: 'Elixir', color: 'bg-gray-500' }])
+        })
+
         it('should map gloses for better tags display', () => {
             const rawData = [
                 {
