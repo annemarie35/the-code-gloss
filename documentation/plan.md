@@ -158,3 +158,14 @@ Les modifications sont classées de la plus critique à la moins critique :
 **Fichiers :** `package.json`, `report.html`, `src/lib/http.ts`
 
 **Modification :** Vérifier puis supprimer les paquets inutilisés, déplacer `@types/pg` en `devDependencies`, ignorer `report.html`, rendre le message de `httpClient` générique (issue #10).
+
+## Chantier : failles révélées par le test de mutation
+
+> 24 novembre 2026 · premier passage de Stryker (`npm run test:mutation`) · score global 62,56 % (493 mutants tués, 193 survivants, 102 sans couverture)
+
+Les étapes vont du plus ciblé au plus large. Après chaque étape, relancer Stryker sur les fichiers concernés (`npx stryker run --mutate <fichiers>`) pour vérifier que les mutants sont tués.
+
+- [x] **1. Fermer les failles du code des thèmes** : tuer le mutant survivant de `src/components/ui/theme-pill.tsx` (classe de l'état sélectionné non vérifiée) et retirer le `?.` devenu inutile dans `src/lib/filter-by-themes.ts` depuis que `themes` est typé `Theme[]`.
+- [ ] **2. Renforcer les tests de `src/lib/http.ts`** (35,7 %, 6 erreurs) : c'est le client HTTP utilisé par toutes les actions, il faut couvrir les cas d'erreur (réponse non `ok`, corps JSON invalide, erreur réseau).
+- [ ] **3. Renforcer les tests des routes API** : `src/pages/api/feeds.ts` (55,9 %), `gloses.ts` (66 %) et `people.ts` (67,6 %), en priorité les codes HTTP et les messages d'erreur. À coordonner avec le point 3 du plan (validation des entrées).
+- [ ] **4. Couvrir les pages et les composants les plus faibles** : `src/pages/feeds.tsx` (8,6 %), `index.tsx` (34,8 %), `about.tsx` (33,3 %), `src/components/gloss-grid.tsx` (61 %) et `gloss-terms-form.tsx` (60,4 %).
