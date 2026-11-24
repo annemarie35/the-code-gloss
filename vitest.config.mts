@@ -12,7 +12,7 @@ export default defineConfig({
             '**/node_modules/**',
             '**/dist/**',
             '**/.{idea,git,cache,output,temp}/**',
-            '__tests__/infra/**',
+            '__tests__/infra/**/!(create_gloses_and_seeds).test.ts',
             '.agents/**',
             '.claude/**'
         ],

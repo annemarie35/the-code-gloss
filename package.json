@@ -14,7 +14,7 @@
         "seed:database:ts": "npx ts-node infra/database/seeds/create_gloses_and_seeds.ts",
         "lint": "eslint .",
         "lint:fix": "eslint --fix --cache .",
-        "test": "vitest --exclude \"*/integration-tests\" --exclude \"**/__tests__/infra/**\"",
+        "test": "vitest --exclude \"*/integration-tests\"",
         "test:db": "vitest --config vitest.config.db.mts",
         "test:integration": "npx playwright test",
         "test:coverage": "vitest --coverage",
