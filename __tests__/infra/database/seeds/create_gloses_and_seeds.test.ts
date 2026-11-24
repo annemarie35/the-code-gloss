@@ -39,7 +39,7 @@ describe('CreateAndSeedDatabase', () => {
                 importingFileFunction: importingFileFunctionMock,
                 poolDb: queryMock
             })
-            expect(importingFileFunctionMock).toBeCalledWith('path-to/file-to-import')
+            expect(importingFileFunctionMock).toHaveBeenCalledWith('path-to/file-to-import')
         })
 
         it('should log if something went wrong while importing file', async () => {
