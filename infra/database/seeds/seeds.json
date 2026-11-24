@@ -2,16 +2,19 @@
     {
         "description": "Invented by Alistair Cockburn in 2005",
         "tags": "Craft, Architecture",
-        "title": "Hexagonale architecture"
+        "title": "Hexagonale architecture",
+        "themes": ["CRAFT"]
     },
     {
         "description": "Invented by Eric Evans in 2003",
         "tags": "Architecture",
-        "title": "DDD"
+        "title": "DDD",
+        "themes": ["DDD"]
     },
     {
         "description": "Software engineer and instructor, Robert C. Martin, introduced the collection of principles in his 2000 paper Design Principles and Design Patterns about software rot. The SOLID acronym was coined around 2004 by Michael Feathers.",
         "tags": "Design, OOP",
-        "title": "SOLID"
+        "title": "SOLID",
+        "themes": ["DESIGN"]
     }
 ]

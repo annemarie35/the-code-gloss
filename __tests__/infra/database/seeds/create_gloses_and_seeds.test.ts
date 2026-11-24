@@ -73,7 +73,7 @@ describe('CreateAndSeedDatabase', () => {
                 expect(queryMock).toHaveBeenCalledTimes(2)
             })
 
-            it('should insert each entry with an empty themes array', async () => {
+            it('should insert each entry with its properties', async () => {
                 await createAndSeedDatabase({
                     dataFilePath: 'path-to/file-to-import',
                     importingFileFunction: importingFileFunctionMock,
