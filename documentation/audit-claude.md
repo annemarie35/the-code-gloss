@@ -133,7 +133,7 @@ Chaque fichier source a son test miroir (convention imposée par `CLAUDE.md`). L
 3. `integration-tests/` ne contient que les exemples Playwright par défaut (`demo-todo-app.spec.ts`, `example.spec.ts`) : pas de vrai test e2e de l'app.
 4. Le test de `add-glose.ts` s'appelle `create-glose.test.ts` (écart avec la convention miroir).
 5. Dépendances de dev probablement inutiles : `mysql`, `mysql2`, `oracledb`, `sqlite3`, `better-sqlite3`, `pg-query-stream` (vestiges d'un usage knex ?). `@types/pg` est en `dependencies` au lieu de `devDependencies`.
-6. `report.html` est versionné à la racine.
+~~6. `report.html` est versionné à la racine.~~
 7. Le message d'erreur de `httpClient` (« Erreur dans récupérations des gloses ») est spécifique aux gloses alors que le client est générique ; le TODO #10 sur la gestion des codes d'erreur reste ouvert.
 
 ## 7. Recommandations prioritaires
