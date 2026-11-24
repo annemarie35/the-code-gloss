@@ -43,7 +43,7 @@ You need to have [Docker](https://www.docker.com/) installed on your machine and
 
 - Run `docker compose up` to start docker postgres container or `docker compose up -d --build` to start database with migrations executed
 - If not, then `npm run create:database` to create database
-- Then `seed:database:pg` or `seed:database:pg` to seed database with some data
+- Then `seed:database:pg` or `seed:database:ts` to seed database with some data
 
 ## Getting Started
 
