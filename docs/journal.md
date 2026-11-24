@@ -27,6 +27,30 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 24/11/2026
+
+- Ajout d'un [second brain](../second-brain/README.md) pour organiser ma veille technique (PR #105)
+    - Markdown pur avec liens `[[wiki]]`, ouvrable comme vault Obsidian
+    - Workflow : capture (`00-inbox/`) → fiche de lecture (`30-sources/`) → note atomique (`20-notes/`) → action (`50-radar/`, spike, ADR)
+    - Areas (`40-areas/`) comme pages d'index : sécurité, frontend, testing, architecture, IA, leadership
+    - Règle d'or : pas de fiche sans « application concrète », sinon ça finit en pile de favoris
+    - Deux skills Claude Code pour automatiser : `/veille <url>` crée la fiche source et la relie aux areas, `/weekly` prépare la note hebdo et trie l'inbox
+    - `/second-brain` retiré du `.gitignore` pour versionner les notes
+- Nouvelle note [claude-code-pr-review-agent](../second-brain/20-notes/claude-code-pr-review-agent.md) : comment brancher un agent Claude Code qui fait la code review des PR (GitHub Action `anthropics/claude-code-action`, `/install-github-app`, ou `/code-review` en local)
+    - À tester sur ce repo, en ajoutant au prompt les règles de couches du `CLAUDE.md`
+
+## 23/11/2026
+
+- Correction du bug n°1 (critique) du [plan de modifications](plan.md) : les thèmes des gloses sont enfin persistés (PR #103)
+    - Le formulaire envoyait `glose-theme` mais l'action ne le transmettait pas et l'`INSERT` n'écrivait pas la colonne `themes` : le filtre par thème ne marchait que sur les données de seed
+    - L'action récupère maintenant les thèmes avec `formData.getAll('glose-theme')`, le repository les passe à la requête (`themes ?? []`) et `INSERT_GLOSE` écrit la colonne `themes`
+    - Tests ajoutés/mis à jour sur l'action, le service, les requêtes SQL, les seeds et les repositories
+- Ajout de la doc d'architecture et du plan de modifications (PR #104)
+    - [architecture.md](architecture.md) : diagramme Mermaid des couches Pages → Actions → API routes → Services → Repositories
+    - [plan.md](plan.md) : les 15 modifications issues de l'[audit](audit-claude.md), classées de critique à faible (SSRF sur `/api/feeds`, validation des entrées des routes API, URLs `localhost` en dur, identifiants de base versionnés, CSP, rate limiter…)
+    - Ajout dans `CLAUDE.md` du bloc généré par `next dev` qui rappelle aux agents que Next.js 16 a des breaking changes
+- Formatage du README et de l'audit avec Prettier
+
 ## 22/09/2026
 
 - Ajout du skill [security-audit](https://github.com/cloudflare/security-audit-skill) de Cloudflare via `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit`
