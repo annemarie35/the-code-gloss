@@ -9,7 +9,7 @@ origin: private-doc/csp-config.md
 
 # Content Security Policy (CSP)
 
-CSP is configured in `next.config.ts` via the `headers()` function and applies to all routes (`/(.*)`).
+CSP is configured in `../../../next.config.ts` via the `headers()` function and applies to all routes (`/(.*)`).
 
 ## Directives
 
@@ -27,7 +27,7 @@ CSP is configured in `next.config.ts` via the `headers()` function and applies t
 
 ## Adding external resources
 
-If you need to allow external resources, extend the relevant directive in `next.config.ts`:
+If you need to allow external resources, extend the relevant directive in `../../../next.config.ts`:
 
 ```ts
 // Example: allow Google Fonts

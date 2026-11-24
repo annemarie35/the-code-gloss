@@ -1,6 +1,6 @@
 # Plan de modifications — code-gloss
 
-> 18 novembre 2026 · issu de [`docs/audit-claude.md`](audit-claude.md) · branche `fix/architecture-review`
+> 18 novembre 2026 · issu de [``](audit-claude.md) · branche `fix/architecture-review`
 
 Les modifications sont classées de la plus critique à la moins critique :
 
@@ -139,7 +139,7 @@ Les modifications sont classées de la plus critique à la moins critique :
 
 **Problème :** `CLAUDE.md` cite `npm run create:database` (n'existe plus) et des commandes knex (non installé) ; l'ADR 001 indique `infra/database/seeds/migrations.sql` au lieu de `scripts/`.
 
-**Fichiers :** `CLAUDE.md`, `docs/adr/001-dockerfile-for-database-initialization.md`
+**Fichiers :** `CLAUDE.md`, ``
 
 **Modification :** Aligner les commandes et les chemins sur l'état réel du projet.
 

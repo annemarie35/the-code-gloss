@@ -1,7 +1,7 @@
 # Audit d'architecture — code-gloss
 
 > Rédigé par Claude le 2026-11-18, sur la branche `fix/architecture-review`.
-> Basé sur la lecture des fichiers sources (`src/`, `infra/`), de la configuration (Next, Vitest, Docker, CI) et de la documentation existante (`CLAUDE.md`, `docs/`).
+> Basé sur la lecture des fichiers sources (`src/`, `infra/`), de la configuration (Next, Vitest, Docker, CI) et de la documentation existante (`CLAUDE.md`, ``).
 
 ## 1. Vue d'ensemble
 
@@ -92,7 +92,7 @@ Chaque fichier source a son test miroir (convention imposée par `CLAUDE.md`). L
 - Use cases `people` découplés de l'infra par injection de dépendance : bon pattern à généraliser.
 - Couverture de tests systématique, y compris tests d'intégration base avec Testcontainers.
 - Sécurité prise au sérieux dès le départ (CSP, rate limit, CSRF, SQL paramétré).
-- Harness pour agents IA déjà réfléchi (`CLAUDE.md`, `docs/harness-engineering.md`, `just check`, hooks pre-commit).
+- Harness pour agents IA déjà réfléchi (`CLAUDE.md`, ``, `just check`, hooks pre-commit).
 
 ## 6. Incohérences et points d'attention
 

@@ -9,7 +9,7 @@ origin: private-doc/rate-limiter.md
 
 # Rate Limiting
 
-Rate limiting is implemented in `src/lib/rate-limiter.ts` and applied to all API routes to prevent brute force attacks.
+Rate limiting is implemented in `../../../src/lib/rate-limiter.ts` and applied to all API routes to prevent brute force attacks.
 
 - In-memory fixed-window rate limiter (no new dependency)
 - rateLimit(ip, limit, windowMs) — returns false when limit exceeded
@@ -39,9 +39,9 @@ A simple in-memory fixed-window rate limiter — no external dependency required
 
 | File                      | Role                                |
 | ------------------------- | ----------------------------------- |
-| `src/lib/rate-limiter.ts` | Utility:`rateLimit()` and `getIp()` |
-| `src/pages/api/gloses.ts` | Applies limits to POST and GET      |
-| `src/pages/api/rss.ts`    | Applies limit to GET                |
+| `../../../src/lib/rate-limiter.ts` | Utility:`rateLimit()` and `getIp()` |
+| `../../../src/pages/api/gloses.ts` | Applies limits to POST and GET      |
+| `../../../src/pages/api/rss.ts`    | Applies limit to GET                |
 
 ## Limits
 

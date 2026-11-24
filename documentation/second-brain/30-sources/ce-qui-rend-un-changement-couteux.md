@@ -36,7 +36,7 @@ format: article
 
 ## Application concrète
 
-- [ ] (proposé) Chercher les décisions métier recopiées dans code-gloss (ex. validation d'un glose, limites du rate limiting, liste des thèmes) et les centraliser dans `src/core/domain/`.
+- [ ] (proposé) Chercher les décisions métier recopiées dans code-gloss (ex. validation d'un glose, limites du rate limiting, liste des thèmes) et les centraliser dans `../../../src/core/domain`.
 - [ ] (proposé) Pour chaque couche (Page → Action → API → Service → Repository), vérifier qu'il existe au moins un test de comportement, pas seulement des tests de mocks, pour lever la « absence de certitude » avant de déléguer un changement à un agent.
 - [ ] (proposé) En équipe : utiliser la grille cause → smell → coût en revue de code pour nommer le problème de conception plutôt que le symptôme.
 

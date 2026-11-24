@@ -29,14 +29,14 @@
 
 ## 24/11/2026
 
-- Ajout d'un [second brain](../second-brain/README.md) pour organiser ma veille technique (PR #105)
+- Ajout d'un [second brain](second-brain/README.md) pour organiser ma veille technique (PR #105)
     - Markdown pur avec liens `[[wiki]]`, ouvrable comme vault Obsidian
     - Workflow : capture (`00-inbox/`) → fiche de lecture (`30-sources/`) → note atomique (`20-notes/`) → action (`50-radar/`, spike, ADR)
     - Areas (`40-areas/`) comme pages d'index : sécurité, frontend, testing, architecture, IA, leadership
     - Règle d'or : pas de fiche sans « application concrète », sinon ça finit en pile de favoris
     - Deux skills Claude Code pour automatiser : `/veille <url>` crée la fiche source et la relie aux areas, `/weekly` prépare la note hebdo et trie l'inbox
     - `/second-brain` retiré du `.gitignore` pour versionner les notes
-- Nouvelle note [claude-code-pr-review-agent](../second-brain/20-notes/claude-code-pr-review-agent.md) : comment brancher un agent Claude Code qui fait la code review des PR (GitHub Action `anthropics/claude-code-action`, `/install-github-app`, ou `/code-review` en local)
+- Nouvelle note [claude-code-pr-review-agent](second-brain/20-notes/claude-code-pr-review-agent.md) : comment brancher un agent Claude Code qui fait la code review des PR (GitHub Action `anthropics/claude-code-action`, `/install-github-app`, ou `/code-review` en local)
     - À tester sur ce repo, en ajoutant au prompt les règles de couches du `CLAUDE.md`
 
 ## 23/11/2026

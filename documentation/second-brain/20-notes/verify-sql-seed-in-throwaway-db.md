@@ -15,7 +15,7 @@ Pour tester un script de seed, on ne l'exécute pas directement sur la base de d
 
 ## Exemple
 
-Contexte : `infra/database/seeds/gloses_seeds.sql` insérait les gloses sans `themes` ni `created_at`. Correction : ajout des colonnes `themes` (`ARRAY['CRAFT']`, valeurs prises dans `THEMES` de `src/core/domain/models/Glose.ts`) et `created_at` (`NOW()`).
+Contexte : `../../../infra/database/seeds/gloses_seeds.sql` insérait les gloses sans `themes` ni `created_at`. Correction : ajout des colonnes `themes` (`ARRAY['CRAFT']`, valeurs prises dans `THEMES` de `src/core/domain/models/Glose.ts`) et `created_at` (`NOW()`).
 
 ### Option 1 — transaction annulée
 
