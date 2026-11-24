@@ -1,4 +1,5 @@
 import { insertGlose } from '@/infra/database/repositories'
+import { Theme } from '@/src/core/domain/models/Glose'
 
 export const AddGlose = async (glose: Glose) => {
     glose.created_at = new Date().toISOString()
@@ -12,5 +13,5 @@ type Glose = {
     description: string
     tags: string
     created_at: string
-    themes: string[]
+    themes: Theme[]
 }
