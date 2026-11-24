@@ -11,23 +11,23 @@ Les modifications sont classées de la plus critique à la moins critique :
 
 ## Synthèse
 
-| #   | Priorité | Modification                                                   | Fichiers principaux              |
-| --- | -------- | -------------------------------------------------------------- | -------------------------------- |
-| 1   | Critique | Persister les thèmes des gloses                                | `src/actions/gloses-actions.ts`… |
-| 2   | Critique | Protéger `/api/feeds` contre le SSRF                           | `src/pages/api/feeds.ts`…        |
-| 3   | Critique | Valider les entrées et gérer les erreurs dans les routes API   | `src/pages/api/gloses.ts`…       |
-| 4   | Élevée   | Retirer les routes parasites de `src/pages/`                   | `src/pages/layout.tsx`…          |
-| 5   | Élevée   | Supprimer les URLs `http://localhost:3000` codées en dur       | `src/actions/*.ts`…              |
-| 6   | Élevée   | Sortir les identifiants de base des fichiers versionnés        | `package.json`…                  |
-| 7   | Moyenne  | Fiabiliser le rate limiter                                     | `src/lib/rate-limiter.ts`        |
-| 8   | Moyenne  | Durcir la Content Security Policy                              | `next.config.ts`                 |
-| 9   | Moyenne  | Corriger les comportements UI incohérents                      | `src/pages/index.tsx`…           |
-| 10  | Moyenne  | Unifier le pattern métier et les repositories                  | `src/lib/service/`…              |
-| 11  | Faible   | Ranger les types dans le domaine et supprimer les duplications | `src/lib/service/add-glose.ts`…  |
-| 12  | Faible   | Retirer les directives `'use server'` sans effet               | `src/actions/*.ts`…              |
-| 13  | Faible   | Mettre à jour la documentation                                 | `CLAUDE.md`…                     |
-| 14  | Faible   | Écrire de vrais tests e2e                                      | `integration-tests/`…            |
-| 15  | Faible   | Nettoyer les dépendances et fichiers inutiles                  | `package.json`…                  |
+| #   | Priorité | Modification                                                   | Fichiers principaux              | Fait |
+| --- | -------- | -------------------------------------------------------------- | -------------------------------- | ---- |
+| 1   | Critique | Persister les thèmes des gloses                                | `src/actions/gloses-actions.ts`… | [ ]  |
+| 2   | Critique | Protéger `/api/feeds` contre le SSRF                           | `src/pages/api/feeds.ts`…        | [ ]  |
+| 3   | Critique | Valider les entrées et gérer les erreurs dans les routes API   | `src/pages/api/gloses.ts`…       | [ ]  |
+| 4   | Élevée   | Retirer les routes parasites de `src/pages/`                   | `src/pages/layout.tsx`…          | [ ]  |
+| 5   | Élevée   | Supprimer les URLs `http://localhost:3000` codées en dur       | `src/actions/*.ts`…              | [ ]  |
+| 6   | Élevée   | Sortir les identifiants de base des fichiers versionnés        | `package.json`…                  | [ ]  |
+| 7   | Moyenne  | Fiabiliser le rate limiter                                     | `src/lib/rate-limiter.ts`        | [ ]  |
+| 8   | Moyenne  | Durcir la Content Security Policy                              | `next.config.ts`                 | [ ]  |
+| 9   | Moyenne  | Corriger les comportements UI incohérents                      | `src/pages/index.tsx`…           | [ ]  |
+| 10  | Moyenne  | Unifier le pattern métier et les repositories                  | `src/lib/service/`…              | [ ]  |
+| 11  | Faible   | Ranger les types dans le domaine et supprimer les duplications | `src/lib/service/add-glose.ts`…  | [ ]  |
+| 12  | Faible   | Retirer les directives `'use server'` sans effet               | `src/actions/*.ts`…              | [ ]  |
+| 13  | Faible   | Mettre à jour la documentation                                 | `CLAUDE.md`…                     | [ ]  |
+| 14  | Faible   | Écrire de vrais tests e2e                                      | `integration-tests/`…            | [ ]  |
+| 15  | Faible   | Nettoyer les dépendances et fichiers inutiles                  | `package.json`…                  | [ ]  |
 
 ## Détail des modifications
 
