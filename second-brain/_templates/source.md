@@ -1,7 +1,7 @@
 ---
 type: source
 title:
-date: { { date } }
+date: {{date}}
 tags: []
 status: inbox
 source:

@@ -1,7 +1,7 @@
 ---
 type: note
 title:
-date: { { date } }
+date: {{date}}
 tags: []
 status: digéré
 ---
