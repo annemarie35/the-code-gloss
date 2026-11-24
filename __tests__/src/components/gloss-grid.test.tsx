@@ -67,6 +67,16 @@ describe('GlossGrid Component', () => {
         expect(screen.getByText('DDD')).toBeInTheDocument()
     })
 
+    it('devrait afficher chaque thème comme une pastille non cliquable', () => {
+        const gloseWithThemes: GloseComplete = { ...mockGloses[0], themes: ['DDD', 'CRAFT'] }
+
+        render(<GlossGrid cards={[gloseWithThemes]} />)
+
+        expect(screen.getByText('DDD')).toHaveClass('rounded-full')
+        expect(screen.getByText('CRAFT')).toHaveClass('rounded-full')
+        expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    })
+
     it('devrait appliquer le bon layout de grid responsive', () => {
         const { container } = render(<GlossGrid cards={mockGloses} />)
 

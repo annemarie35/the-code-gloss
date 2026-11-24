@@ -1,5 +1,6 @@
 import { GloseComplete } from '@/src/core/domain/models/Glose.ts'
 import { formatDate } from '@/src/helpers/date-formatter.ts'
+import { ThemePill } from '@/src/components/ui/theme-pill'
 
 type GlossTerm = {
     id: number
@@ -101,7 +102,11 @@ export default function GlossGrid({ cards = defaultGlossData }: GlossGridProps) 
                                 ))}
                             </div>
 
-                            <span>{glose.themes.join(', ')}</span>
+                            <div className="flex flex-wrap gap-2 mt-4">
+                                {glose.themes.map((theme) => (
+                                    <ThemePill key={theme} theme={theme} />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ))}
