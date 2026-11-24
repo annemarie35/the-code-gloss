@@ -4,6 +4,7 @@ import pkg from 'pg'
 import { insertGlose, selectAllGloses } from '@/infra/database/repositories'
 import { query } from '@/infra/database/connectionPool'
 import { INSERT_GLOSE, SELECT_ALL } from '@/infra/database/sql_queries'
+import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 const mockQueryResult: pkg.QueryResult<pkg.QueryResultRow> = {
     rows: [],
@@ -25,7 +26,7 @@ describe('repositories', () => {
     })
 
     describe('insertGlose', () => {
-        const glose = {
+        const glose: Omit<GloseComplete, 'id'> = {
             title: 'Event sourcing',
             description: 'The fundamental idea of Event Sourcing is that...',
             tags: 'DDD, code',

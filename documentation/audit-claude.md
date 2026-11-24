@@ -106,9 +106,9 @@ Chaque fichier source a son test miroir (convention imposée par `CLAUDE.md`). L
     - Les actions importent `InitialState` depuis les composants (`gloss-terms-form`, `people-form`) : dépendance inversée action → composant.
 4. **`layout.tsx` et `pageLayout.tsx` dans `src/pages/`** : avec le Pages Router, tout fichier de ce dossier devient une route (`/layout`, `/pageLayout`). `layout.tsx` (balises `<html>/<body>`) est un reliquat de l'App Router ; `pageLayout.tsx` devrait être dans `src/components/`.
 5. **Duplication** : `isValidOrigin` est copié dans `api/gloses.ts` et `api/people.ts` ; il pourrait rejoindre `src/lib/`.
-~~6. **`'use server'`** sur les actions et services alors que le projet utilise le Pages Router : la directive n'a pas d'effet ici et entretient la confusion. Les actions s'exécutent côté client et appellent l'API en HTTP.~~
-7. **URLs codées en dur** : `http://localhost:3000` dans toutes les actions et dans le `<link>` du flux RSS — bloquant pour tout déploiement. Une URL relative (`/api/...`) ou une variable d'environnement suffirait.
-8. **Logique dans les routes API** : `api/rss.ts` construit le XML dans la route, `api/people.ts` parse l'`id` — la génération RSS pourrait être un service.
+   ~~6. **`'use server'`** sur les actions et services alors que le projet utilise le Pages Router : la directive n'a pas d'effet ici et entretient la confusion. Les actions s'exécutent côté client et appellent l'API en HTTP.~~
+6. **URLs codées en dur** : `http://localhost:3000` dans toutes les actions et dans le `<link>` du flux RSS — bloquant pour tout déploiement. Une URL relative (`/api/...`) ou une variable d'environnement suffirait.
+7. **Logique dans les routes API** : `api/rss.ts` construit le XML dans la route, `api/people.ts` parse l'`id` — la génération RSS pourrait être un service.
 
 ### 6.2 Bugs fonctionnels probables
 

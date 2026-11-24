@@ -59,6 +59,24 @@ describe('GlossGrid Component', () => {
         expect(screen.getByText('TypeScript')).toBeInTheDocument()
     })
 
+    it('devrait afficher le thème de la glose dans sa carte', () => {
+        const gloseWithTheme: GloseComplete = { ...mockGloses[0], themes: ['DDD'] }
+
+        render(<GlossGrid cards={[gloseWithTheme]} />)
+
+        expect(screen.getByText('DDD')).toBeInTheDocument()
+    })
+
+    it('devrait afficher chaque thème comme une pastille non cliquable', () => {
+        const gloseWithThemes: GloseComplete = { ...mockGloses[0], themes: ['DDD', 'CRAFT'] }
+
+        render(<GlossGrid cards={[gloseWithThemes]} />)
+
+        expect(screen.getByText('DDD')).toHaveClass('rounded-full')
+        expect(screen.getByText('CRAFT')).toHaveClass('rounded-full')
+        expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    })
+
     it('devrait appliquer le bon layout de grid responsive', () => {
         const { container } = render(<GlossGrid cards={mockGloses} />)
 
@@ -102,14 +120,16 @@ describe('GlossGrid Component', () => {
                     tags: [
                         { id: 1, name: 'Test', color: 'bg-blue-500' },
                         { id: 2, name: 'React', color: 'bg-green-500' }
-                    ]
+                    ],
+                    themes: []
                 },
                 {
                     id: 2,
                     title: 'Test Card 2',
                     description: 'Description du test card 2',
                     created_at: '2023-06-15T00:00:00.000Z',
-                    tags: [{ id: 3, name: 'TypeScript', color: 'bg-blue-700' }]
+                    tags: [{ id: 3, name: 'TypeScript', color: 'bg-blue-700' }],
+                    themes: []
                 }
             ])
         })
