@@ -11,6 +11,7 @@ tags: [ai-engineering]
 ## Notes
 
 - [[agent-harness-guides-and-sensors]]
+- [[claude-code-pr-review-agent]]
 - Source : [[harness-engineering-fowler]]
 
 ## Sources
