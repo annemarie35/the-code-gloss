@@ -59,5 +59,14 @@ describe('ThemePill', () => {
             rerender(<ThemePill theme="OPS" isSelected onClick={vi.fn()} />)
             expect(screen.getByRole('button')).not.toHaveClass('hover:border-gray-500')
         })
+
+        it('ne devrait avoir que les classes de base et de sélection quand il est sélectionné', () => {
+            render(<ThemePill theme="OPS" isSelected onClick={vi.fn()} />)
+
+            expect(screen.getByRole('button')).toHaveClass(
+                'px-4 py-1 rounded-full text-sm font-medium border transition-colors duration-200 bg-gray-800 text-white border-gray-800',
+                { exact: true }
+            )
+        })
     })
 })
