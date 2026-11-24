@@ -1,2 +1,4 @@
 .github/vice-badge.json
 documentation/second-brain/_templates/
+/dist/**
+node_modules/
