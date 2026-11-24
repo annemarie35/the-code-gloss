@@ -110,14 +110,16 @@ describe('GlossGrid Component', () => {
                     tags: [
                         { id: 1, name: 'Test', color: 'bg-blue-500' },
                         { id: 2, name: 'React', color: 'bg-green-500' }
-                    ]
+                    ],
+                    themes: []
                 },
                 {
                     id: 2,
                     title: 'Test Card 2',
                     description: 'Description du test card 2',
                     created_at: '2023-06-15T00:00:00.000Z',
-                    tags: [{ id: 3, name: 'TypeScript', color: 'bg-blue-700' }]
+                    tags: [{ id: 3, name: 'TypeScript', color: 'bg-blue-700' }],
+                    themes: []
                 }
             ])
         })

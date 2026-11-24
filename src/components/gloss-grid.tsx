@@ -61,7 +61,8 @@ export const transformData = (gloses: GloseComplete[]) => {
             title: rawGlose.title,
             description: rawGlose.description,
             created_at: rawGlose.created_at,
-            tags
+            tags,
+            themes: rawGlose.themes
         }
     })
 }
@@ -74,7 +75,7 @@ export default function GlossGrid({ cards = defaultGlossData }: GlossGridProps) 
             <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Gloses Terms</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {transformedGloses.map((glose, index) => (
+                {transformedGloses.map((glose) => (
                     <div
                         key={glose.id}
                         className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
@@ -100,7 +101,7 @@ export default function GlossGrid({ cards = defaultGlossData }: GlossGridProps) 
                                 ))}
                             </div>
 
-                            <span>{cards[index].themes.join(', ')}</span>
+                            <span>{glose.themes.join(', ')}</span>
                         </div>
                     </div>
                 ))}
