@@ -4,8 +4,8 @@ Espace personnel de veille. Markdown pur, liens `[[wiki]]`, ouvrable comme vault
 
 ## Structure
 
-| Dossier        | Rôle                                                           |
-| -------------- | -------------------------------------------------------------- |
+| Dossier       | Rôle                                                           |
+| ------------- | -------------------------------------------------------------- |
 | `00-inbox`    | Capture brute : un lien + une ligne « pourquoi ». Pas de tri.  |
 | `10-journal`  | Une note par semaine : `YYYY-Www.md` (ex. `2026-W41.md`).      |
 | `20-notes`    | Notes atomiques permanentes : 1 concept = 1 fichier, mes mots. |
@@ -24,8 +24,8 @@ capture (inbox) → lecture (fiche source) → digestion (note atomique) → act
 
 | Fréquence       | Action                                                                    | Durée  |
 | --------------- | ------------------------------------------------------------------------- | ------ |
-| Au fil de l'eau | Capturer dans `00-inbox`                                                 | 30 s   |
-| 2–3×/semaine    | Lire 1–2 items, créer une fiche `30-sources`                             | 20 min |
+| Au fil de l'eau | Capturer dans `00-inbox`                                                  | 30 s   |
+| 2–3×/semaine    | Lire 1–2 items, créer une fiche `30-sources`                              | 20 min |
 | Vendredi        | Note hebdo, vider l'inbox, extraire 1–3 notes atomiques                   | 30 min |
 | Mensuel         | Revoir le radar, archiver, choisir 1 sujet à expérimenter dans code-gloss | 1 h    |
 

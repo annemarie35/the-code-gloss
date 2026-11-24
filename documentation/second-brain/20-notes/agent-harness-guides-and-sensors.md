@@ -14,7 +14,7 @@ Un agent de code n'est fiable que si on l'entoure de contrôles. Les **guides** 
 
 | Type   | Dans code-gloss                                     |
 | ------ | --------------------------------------------------- |
-| Guide  | `../../../CLAUDE.md`, TypeScript, ESLint/Prettier            |
+| Guide  | `../../../CLAUDE.md`, TypeScript, ESLint/Prettier   |
 | Sensor | Vitest, Playwright, Husky + lint-staged             |
 | Manque | Vérification automatique des couches d'architecture |
 

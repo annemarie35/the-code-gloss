@@ -37,8 +37,8 @@ store with a Redis-backed counter.
 
 A simple in-memory fixed-window rate limiter — no external dependency required.
 
-| File                      | Role                                |
-| ------------------------- | ----------------------------------- |
+| File                               | Role                                |
+| ---------------------------------- | ----------------------------------- |
 | `../../../src/lib/rate-limiter.ts` | Utility:`rateLimit()` and `getIp()` |
 | `../../../src/pages/api/gloses.ts` | Applies limits to POST and GET      |
 | `../../../src/pages/api/rss.ts`    | Applies limit to GET                |
