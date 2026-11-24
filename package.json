@@ -21,6 +21,7 @@
         "test:integration": "npx playwright test",
         "test:coverage": "vitest --coverage",
         "test:watch": "npm run test -- --watch",
+        "test:mutation": "stryker run",
         "type-check": "npx tsc --build "
     },
     "lint-staged": {
@@ -46,6 +47,8 @@
         "@eslint/eslintrc": "^3",
         "@eslint/js": "^10.0.1",
         "@playwright/test": "^1.63.0",
+        "@stryker-mutator/core": "^10.1.1",
+        "@stryker-mutator/vitest-runner": "^10.1.1",
         "@testcontainers/postgresql": "^12.2.0",
         "@testing-library/jest-dom": "^7.0.1",
         "@testing-library/react": "^16.3.3",
