@@ -1,7 +1,7 @@
 ---
 type: weekly
 title: Semaine {{week}}
-date: {{date}}
+date: { { date } }
 tags: [weekly]
 ---
 

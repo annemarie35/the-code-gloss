@@ -4,17 +4,17 @@ Espace personnel de veille. Markdown pur, liens `[[wiki]]`, ouvrable comme vault
 
 ## Structure
 
-| Dossier        | Rôle                                                              |
-| -------------- | ----------------------------------------------------------------- |
-| `00-inbox/`    | Capture brute : un lien + une ligne « pourquoi ». Pas de tri.     |
-| `10-journal/`  | Une note par semaine : `YYYY-Www.md` (ex. `2026-W41.md`).         |
-| `20-notes/`    | Notes atomiques permanentes : 1 concept = 1 fichier, mes mots.    |
-| `30-sources/`  | Fiches de lecture : articles, talks, livres, podcasts.            |
-| `40-areas/`    | Domaines suivis en continu (MOC = pages d'index qui lient).       |
-| `50-radar/`    | Mon tech radar : Adopt / Trial / Assess / Hold.                   |
-| `60-projects/` | Veille liée à un objectif borné dans le temps.                    |
-| `90-archives/` | Ce qui n'est plus actif.                                          |
-| `_templates/`  | Modèles de notes.                                                 |
+| Dossier        | Rôle                                                           |
+| -------------- | -------------------------------------------------------------- |
+| `00-inbox/`    | Capture brute : un lien + une ligne « pourquoi ». Pas de tri.  |
+| `10-journal/`  | Une note par semaine : `YYYY-Www.md` (ex. `2026-W41.md`).      |
+| `20-notes/`    | Notes atomiques permanentes : 1 concept = 1 fichier, mes mots. |
+| `30-sources/`  | Fiches de lecture : articles, talks, livres, podcasts.         |
+| `40-areas/`    | Domaines suivis en continu (MOC = pages d'index qui lient).    |
+| `50-radar/`    | Mon tech radar : Adopt / Trial / Assess / Hold.                |
+| `60-projects/` | Veille liée à un objectif borné dans le temps.                 |
+| `90-archives/` | Ce qui n'est plus actif.                                       |
+| `_templates/`  | Modèles de notes.                                              |
 
 ## Workflow
 
@@ -22,12 +22,12 @@ Espace personnel de veille. Markdown pur, liens `[[wiki]]`, ouvrable comme vault
 capture (inbox) → lecture (fiche source) → digestion (note atomique) → action (radar / spike / ADR)
 ```
 
-| Fréquence       | Action                                                                     | Durée  |
-| --------------- | -------------------------------------------------------------------------- | ------ |
-| Au fil de l'eau | Capturer dans `00-inbox/`                                                  | 30 s   |
-| 2–3×/semaine    | Lire 1–2 items, créer une fiche `30-sources/`                              | 20 min |
-| Vendredi        | Note hebdo, vider l'inbox, extraire 1–3 notes atomiques                    | 30 min |
-| Mensuel         | Revoir le radar, archiver, choisir 1 sujet à expérimenter dans code-gloss  | 1 h    |
+| Fréquence       | Action                                                                    | Durée  |
+| --------------- | ------------------------------------------------------------------------- | ------ |
+| Au fil de l'eau | Capturer dans `00-inbox/`                                                 | 30 s   |
+| 2–3×/semaine    | Lire 1–2 items, créer une fiche `30-sources/`                             | 20 min |
+| Vendredi        | Note hebdo, vider l'inbox, extraire 1–3 notes atomiques                   | 30 min |
+| Mensuel         | Revoir le radar, archiver, choisir 1 sujet à expérimenter dans code-gloss | 1 h    |
 
 **Règle d'or : pas de fiche sans « application concrète ».** Sinon, c'est une pile de favoris.
 

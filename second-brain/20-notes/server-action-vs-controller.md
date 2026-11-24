@@ -7,7 +7,7 @@ status: digéré
 origin: private-doc/todo-refacto.md
 ---
 
-##  should i extract http call in src/actions/people-actions.ts to move it to a controller ?
+## should i extract http call in src/actions/people-actions.ts to move it to a controller ?
 
 ⏺ Non, ce n'est pas nécessaire ici. Voici pourquoi :
 
@@ -27,7 +27,6 @@ Extraire l'appel HTTP dans un "controller" n'apporterait rien car :
 Ce qui pourrait valoir la peine en revanche : extraire le mapping FormData → objet personne
 dans une fonction pure, testable indépendamment. Mais c'est un refactor distinct et
 optionnel.
-
 
 ## Liens
 
