@@ -17,7 +17,8 @@ describe('CreateAndSeedDatabase', () => {
                 {
                     description: 'Invented by Alistair Cockburn in 2005',
                     tags: 'Craft',
-                    title: 'Hexagonale architecture'
+                    title: 'Hexagonale architecture',
+                    themes: ['CRAFT']
                 },
                 {
                     description: 'Invented by Eric Evans in 2003',
@@ -84,9 +85,10 @@ describe('CreateAndSeedDatabase', () => {
                     'Hexagonale architecture',
                     'Craft',
                     expect.any(String),
-                    []
+                    ['CRAFT']
                 ])
             })
+            // TODO theme is mandatory ?
         })
     })
 })
