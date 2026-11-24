@@ -16,7 +16,6 @@ Les principales raisons qui pourraient influencer le choix entre interface et ty
 
 En pratique, pour un composant simple comme le vôtre, les deux approches sont parfaitement valables et relèvent souvent de préférences personnelles ou de conventions d'équipe. L'utilisation d'une interface n'était qu'un choix stylistique dans ma réponse.
 
-
 ## Liens
 
 - Area : [[frontend]]

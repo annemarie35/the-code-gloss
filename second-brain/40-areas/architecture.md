@@ -8,7 +8,6 @@ tags: [architecture]
 
 **Ce que je surveille** : architecture en couches, fitness functions, ADR, patterns Next.js côté serveur
 
-
 ## Notes
 
 - [[server-action-vs-controller]]

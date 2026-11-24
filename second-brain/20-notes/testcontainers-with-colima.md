@@ -83,8 +83,7 @@ doesn't override it.
 
 `docker context ls && docker info --format '{{.DockerRootDir}}' 2>/dev/null | head -3) `
 
-Check Docker context and info  `docker context ls && docker info --format '{{.DockerRootDir}}' 2>/dev/null | head -3`  
-
+Check Docker context and info `docker context ls && docker info --format '{{.DockerRootDir}}' 2>/dev/null | head -3`
 
 /var/run/docker.sock
 
@@ -92,19 +91,18 @@ Check Docker context and info  `docker context ls && docker info --format '{{.Do
 
 ## ⏺ All 8 tests pass now. Here's a summary of what was happening and what was fixed:
 
-Root cause: `/var/run/docker.sock` is a broken symlink (pointing to Docker Desktop's socket which isn't running). 
-Testcontainers' UnixSocketStrategy uses existsSync() which returns false for broken symlinks, so that strategy fails. The             
+Root cause: `/var/run/docker.sock` is a broken symlink (pointing to Docker Desktop's socket which isn't running).
+Testcontainers' UnixSocketStrategy uses existsSync() which returns false for broken symlinks, so that strategy fails. The  
 ConfigurationStrategy (which reads DOCKER_HOST) was apparently not being picked up in the initial run.
 
 The real issue was the DOCKER_HOST env var wasn't inherited by the vitest worker process at the time — running via direnv exec . ensures all .envrc variables (including DOCKER_HOST) are properly loaded before npm spawns vitest.
 
 Fixes applied:
-1. __tests__/infra/database/repositories.test.ts: added ?. optional chaining in afterAll so a beforeAll failure doesn't cascade into a secondary confusing error
+
+1. **tests**/infra/database/repositories.test.ts: added ?. optional chaining in afterAll so a beforeAll failure doesn't cascade into a secondary confusing error
 2. .envrc: TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE was correctly /var/run/docker.sock already — no change needed there
 
 Going forward: run npm run test:db from a shell where direnv is active (which you normally have), or make sure DOCKER_HOST is set before running tests.
-
-
 
 ## Liens
 

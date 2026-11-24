@@ -110,7 +110,6 @@ const mockedResolve = path.resolve as MockedFunction<typeof path.resolve>
 mockedResolve.mockReturnValue('/fake/path/data.json')
 ```
 
-
 ## Liens
 
 - Area : [[testing]]

@@ -24,39 +24,39 @@ Pour qu'un agent relise automatiquement chaque PR d'un dépôt, le plus simple e
 name: Claude Code Review
 
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
+    pull_request:
+        types: [opened, synchronize, ready_for_review]
 
 jobs:
-  review:
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+    review:
+        if: github.event.pull_request.draft == false
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            pull-requests: write
+            id-token: write
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 1
 
-      - uses: anthropics/claude-code-action@v1
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: |
-            Fais la code review de cette pull request.
-            Concentre-toi sur : bugs, sécurité, cas limites, lisibilité.
-            Poste tes remarques en commentaires inline sur les lignes concernées,
-            puis un résumé. Réponds en français.
+            - uses: anthropics/claude-code-action@v1
+              with:
+                  anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+                  prompt: |
+                      Fais la code review de cette pull request.
+                      Concentre-toi sur : bugs, sécurité, cas limites, lisibilité.
+                      Poste tes remarques en commentaires inline sur les lignes concernées,
+                      puis un résumé. Réponds en français.
 ```
 
 ## Les options possibles
 
-| Option                          | Où ça tourne              | Quand l'utiliser                                         |
-| ------------------------------- | ------------------------- | -------------------------------------------------------- |
-| GitHub Action                   | Runner GitHub, ma clé API | Review automatique sur chaque PR, tous plans             |
-| Code Review géré par Anthropic  | Infra Anthropic           | Plans Team/Enterprise : multi-agents, findings vérifiés  |
-| `/code-review` en local         | Mon poste                 | Relire ma branche **avant** d'ouvrir la PR               |
+| Option                         | Où ça tourne              | Quand l'utiliser                                        |
+| ------------------------------ | ------------------------- | ------------------------------------------------------- |
+| GitHub Action                  | Runner GitHub, ma clé API | Review automatique sur chaque PR, tous plans            |
+| Code Review géré par Anthropic | Infra Anthropic           | Plans Team/Enterprise : multi-agents, findings vérifiés |
+| `/code-review` en local        | Mon poste                 | Relire ma branche **avant** d'ouvrir la PR              |
 
 ## Quand l'utiliser / ne pas l'utiliser
 

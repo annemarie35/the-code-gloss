@@ -44,7 +44,6 @@ HSTS instructs browsers to only connect to the app over HTTPS for the duration o
 - The `preload` directive requires the site to be submitted to [hstspreload.org](https://hstspreload.org) separately — the header alone does not auto-enroll it.
 - Once a browser caches HSTS with a long `max-age`, reverting to HTTP is not trivial. Only add `preload` if you are confident HTTPS will always be available on this domain and all its subdomains.
 
-
 ## Liens
 
 - Area : [[security]]

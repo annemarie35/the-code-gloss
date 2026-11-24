@@ -12,6 +12,7 @@ tags: [testing]
 
 - [[vitest-mocking-patterns]]
 - [[testcontainers-with-colima]]
+- [[verify-sql-seed-in-throwaway-db]]
 
 ## Sources
 

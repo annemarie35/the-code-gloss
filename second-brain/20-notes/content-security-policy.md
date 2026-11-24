@@ -46,7 +46,6 @@ If you need to allow external resources, extend the relevant directive in `next.
 - `'unsafe-inline'` and `'unsafe-eval'` on `script-src` are required by the Next.js dev server and its client-side hydration. In a future hardening pass, these can be replaced with nonces or hashes once Next.js stable nonce support is configured.
 - `frame-ancestors 'none'` is equivalent to `X-Frame-Options: DENY` and prevents the app from being embedded in iframes.
 
-
 ## Liens
 
 - Area : [[security]]

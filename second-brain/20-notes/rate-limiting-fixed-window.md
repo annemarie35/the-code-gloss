@@ -64,7 +64,6 @@ IP is extracted from the `x-forwarded-for` header (set by proxies/load balancers
 - The store is **in-memory**: it resets on server restart and is **not shared across multiple instances**.
 - For a multi-instance or serverless deployment, replace the `Map` store with a Redis-backed counter (e.g. `rate-limiter-flexible` with an `ioredis` client).
 
-
 ## Liens
 
 - Area : [[security]] · [[architecture]]

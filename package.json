@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build",
-        "format": "prettier --write --ignore-path .gitignore .",
+        "format": "prettier --write --ignore-path .gitignore --ignore-path .prettierignore .",
         "start": "next start",
         "start:database": "docker compose up --wait --detach",
         "database:migrations": "docker exec postgresql psql --dbname \"host=localhost port=5432 user=username password=password123 dbname=postgres\" --file=/tmp/scripts/migrations.sql",
@@ -14,7 +14,7 @@
         "seed:database:ts": "npx ts-node infra/database/seeds/create_gloses_and_seeds.ts",
         "lint": "eslint .",
         "lint:fix": "eslint --fix --cache .",
-        "test": "vitest --exclude \"*/integration-tests\" --exclude \"**/__tests__/infra/**\"",
+        "test": "vitest --exclude \"*/integration-tests\"",
         "test:db": "vitest --config vitest.config.db.mts",
         "test:integration": "npx playwright test",
         "test:coverage": "vitest --coverage",

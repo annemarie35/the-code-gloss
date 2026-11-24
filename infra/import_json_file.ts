@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import type { GloseComplete } from '../src/core/domain/models/Glose.ts'
 
 export const importJsonFile = (filePath: string): Seeds => {
     const dataFilePath = path.resolve(process.cwd(), filePath)
@@ -20,10 +21,4 @@ export const importJsonFile = (filePath: string): Seeds => {
     return dataEntries
 }
 
-export type Seeds = Seed[]
-
-type Seed = {
-    description: string
-    tags: string
-    title: string
-}
+export type Seeds = Omit<GloseComplete, 'id'>[]

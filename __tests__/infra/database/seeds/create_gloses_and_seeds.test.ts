@@ -17,7 +17,8 @@ describe('CreateAndSeedDatabase', () => {
                 {
                     description: 'Invented by Alistair Cockburn in 2005',
                     tags: 'Craft',
-                    title: 'Hexagonale architecture'
+                    title: 'Hexagonale architecture',
+                    themes: ['CRAFT']
                 },
                 {
                     description: 'Invented by Eric Evans in 2003',
@@ -39,7 +40,7 @@ describe('CreateAndSeedDatabase', () => {
                 importingFileFunction: importingFileFunctionMock,
                 poolDb: queryMock
             })
-            expect(importingFileFunctionMock).toBeCalledWith('path-to/file-to-import')
+            expect(importingFileFunctionMock).toHaveBeenCalledWith('path-to/file-to-import')
         })
 
         it('should log if something went wrong while importing file', async () => {
@@ -72,7 +73,7 @@ describe('CreateAndSeedDatabase', () => {
                 expect(queryMock).toHaveBeenCalledTimes(2)
             })
 
-            it('should insert each entry with an empty themes array', async () => {
+            it('should insert each entry with its properties', async () => {
                 await createAndSeedDatabase({
                     dataFilePath: 'path-to/file-to-import',
                     importingFileFunction: importingFileFunctionMock,
@@ -84,9 +85,10 @@ describe('CreateAndSeedDatabase', () => {
                     'Hexagonale architecture',
                     'Craft',
                     expect.any(String),
-                    []
+                    ['CRAFT']
                 ])
             })
+            // TODO theme is mandatory ?
         })
     })
 })
