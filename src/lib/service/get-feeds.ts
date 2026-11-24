@@ -1,5 +1,3 @@
-'use server'
-
 import { Feed, FeedItem } from '@/src/core/domain/models/Feed'
 
 function extractTag(xml: string, tag: string): string {

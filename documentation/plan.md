@@ -24,7 +24,7 @@ Les modifications sont classées de la plus critique à la moins critique :
 | 9   | Moyenne  | Corriger les comportements UI incohérents                      | `src/pages/index.tsx`…           | [ ]   |
 | 10  | Moyenne  | Unifier le pattern métier et les repositories                  | `src/lib/service/`…              | [ ]   |
 | 11  | Faible   | Ranger les types dans le domaine et supprimer les duplications | `src/lib/service/add-glose.ts`…  | [ ]   |
-| 12  | Faible   | Retirer les directives `'use server'` sans effet               | `src/actions/*.ts`…              | [ ]   |
+| 12  | Faible   | Retirer les directives `'use server'` sans effet               | `src/actions/*.ts`…              | [ x ] |
 | 13  | Faible   | Mettre à jour la documentation                                 | `CLAUDE.md`…                     | [ ]   |
 | 14  | Faible   | Écrire de vrais tests e2e                                      | `integration-tests/`…            | [ ]   |
 | 15  | Faible   | Nettoyer les dépendances et fichiers inutiles                  | `package.json`…                  | [ x ] |

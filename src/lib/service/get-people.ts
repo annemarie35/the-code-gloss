@@ -1,5 +1,3 @@
-'use server'
-
 import { selectAllPeople } from '@/infra/repositories/person_repository'
 import { Person } from '@/src/core/domain/Types/Person'
 import type { QueryResultRow } from 'pg'

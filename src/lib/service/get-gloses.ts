@@ -1,5 +1,3 @@
-'use server'
-
 import { selectAllGloses } from '@/infra/database/repositories'
 import { GloseComplete } from '@/src/core/domain/models/Glose.ts'
 import type { QueryResultRow } from 'pg'

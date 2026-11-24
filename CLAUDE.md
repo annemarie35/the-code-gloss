@@ -130,7 +130,7 @@ Page (src/pages/)
 ### Each layer's responsibility
 
 - **API routes**: validate input, apply rate limiting, call service, return HTTP response — no business logic
-- **Services**: fetch/transform data, marked `'use server'`
+- **Services**: fetch/transform data (server-side only; no `'use server'` directive — it has no effect in the Pages Router)
 - **Actions**: call `httpClient` from `src/lib/http.ts`, handle errors, return typed result
 - **Pages**: call actions in `useEffect`, manage local state with `useState`
 

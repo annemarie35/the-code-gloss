@@ -1,4 +1,3 @@
-'use server'
 import { httpClient } from '@/src/lib/http'
 import { Feed } from '@/src/core/domain/models/Feed'
 

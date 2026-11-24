@@ -1,4 +1,3 @@
-'use server'
 import { InitialState } from '@/src/components/gloss-terms-form'
 import { httpClient } from '@/src/lib/http'
 import { GloseComplete } from '@/src/core/domain/models/Glose'

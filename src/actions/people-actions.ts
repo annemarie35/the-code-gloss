@@ -1,4 +1,3 @@
-'use server'
 import { InitialState } from '@/src/components/people-form'
 import { httpClient } from '@/src/lib/http'
 import { Person } from '@/src/core/domain/Types/Person'
