@@ -7,5 +7,5 @@ export type GloseComplete = {
     themes: string[]
 }
 
-export const THEMES = ['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE'] as const
+export const THEMES = ['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN'] as const
 export type Theme = (typeof THEMES)[number]
