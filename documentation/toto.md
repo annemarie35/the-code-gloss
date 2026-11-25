@@ -1,15 +1,15 @@
 Étape 4 : pages et composants
 
 ┌─────────────────────────────────────┬────────┬────────┐
-│               Fichier               │ Avant  │ Après  │
+│ Fichier │ Avant │ Après │
 ├─────────────────────────────────────┼────────┼────────┤
-│ src/pages/feeds.tsx                 │ 8,6 %  │ 90,5 % │
+│ src/pages/feeds.tsx │ 8,6 % │ 90,5 % │
 ├─────────────────────────────────────┼────────┼────────┤
-│ src/pages/index.tsx                 │ 34,8 % │ 91,3 % │
+│ src/pages/index.tsx │ 34,8 % │ 91,3 % │
 ├─────────────────────────────────────┼────────┼────────┤
-│ src/pages/about.tsx                 │ 33,3 % │ 100 %  │
+│ src/pages/about.tsx │ 33,3 % │ 100 % │
 ├─────────────────────────────────────┼────────┼────────┤
-│ src/components/gloss-grid.tsx       │ 61 %   │ 97,6 % │
+│ src/components/gloss-grid.tsx │ 61 % │ 97,6 % │
 ├─────────────────────────────────────┼────────┼────────┤
 │ src/components/gloss-terms-form.tsx │ 60,4 % │ 95,8 % │
 └─────────────────────────────────────┴────────┴────────┘
@@ -36,6 +36,7 @@ actions useActionState des tests suivants, même après démontage du composant.
 commentaire l'explique.
 
 Les survivants restants sont quasiment tous des mutants qu'aucun test ne peut tuer, par exemple :
+
 - un rendu conditionnel d'une chaîne vide ;
 - le tableau de dépendances d'un useEffect ;
 - un trim() sur un champ type="url", que le navigateur nettoie déjà.
