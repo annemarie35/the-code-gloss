@@ -3,18 +3,26 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import FeedsPage from '@/src/pages/feeds'
-import { getFeed } from '@/src/actions/feeds-actions'
+import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
 import { Feed } from '@/src/core/domain/models/Feed'
 
-vi.mock('@/src/actions/feeds-actions', () => ({
-    getFeed: vi.fn()
+vi.mock('@/src/client/api/feeds-api', () => ({
+    getFeed: vi.fn(),
+    listFeedSubscriptions: vi.fn(),
+    subscribeToFeed: vi.fn(),
+    unsubscribeFromFeed: vi.fn()
 }))
 
 const getFeedMock = vi.mocked(getFeed)
+const listFeedSubscriptionsMock = vi.mocked(listFeedSubscriptions)
+const subscribeToFeedMock = vi.mocked(subscribeToFeed)
+const unsubscribeFromFeedMock = vi.mocked(unsubscribeFromFeed)
 
-const STORAGE_KEY = 'rss-feed-urls'
 const FEED_A_URL = 'https://a.example.com/feed.xml'
 const FEED_B_URL = 'https://b.example.com/feed.xml'
+const CREATED_AT = '2026-11-25T10:00:00.000Z'
+const subscriptionA = { id: 1, url: FEED_A_URL, createdAt: CREATED_AT }
+const subscriptionB = { id: 2, url: FEED_B_URL, createdAt: CREATED_AT }
 
 const feedA: Feed = {
     title: 'Blog A',
@@ -40,20 +48,23 @@ async function addFeed(url: string) {
     await userEvent.click(screen.getByRole('button', { name: 'Ajouter' }))
 }
 
-function savedUrls() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
-}
-
 describe('Feeds page', () => {
     beforeEach(() => {
-        localStorage.clear()
-        getFeedMock.mockReset()
+        vi.clearAllMocks()
         getFeedMock.mockImplementation(async (url) => ({ feed: feedsByUrl[url], error: null }))
+        listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [], error: null })
+        let nextId = 1
+        subscribeToFeedMock.mockImplementation(async (url) => ({
+            subscription: { id: nextId++, url, createdAt: CREATED_AT },
+            error: null
+        }))
+        unsubscribeFromFeedMock.mockResolvedValue({ error: null })
     })
 
     describe('initial render', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             render(<FeedsPage />)
+            await waitFor(() => expect(listFeedSubscriptionsMock).toHaveBeenCalled())
         })
 
         it('should render the Feeds page heading', () => {
@@ -68,7 +79,7 @@ describe('Feeds page', () => {
             expect(screen.getByRole('button', { name: 'Ajouter' })).toBeDefined()
         })
 
-        it('should display an empty state message when no feeds are added', () => {
+        it('should display an empty state message when no feeds are saved', () => {
             expect(screen.getByText('Ajoutez une URL de flux RSS pour afficher les articles.')).toBeDefined()
         })
 
@@ -76,49 +87,81 @@ describe('Feeds page', () => {
             expect(getFeedMock).not.toHaveBeenCalled()
         })
 
-        it('should not display the loading message when no feed is added', () => {
+        it('should not display the loading message when no feed is saved', () => {
             expect(screen.queryByText('Chargement des articles...')).not.toBeInTheDocument()
         })
     })
 
-    it('should load the feeds saved in localStorage on mount', async () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([FEED_A_URL, FEED_B_URL]))
+    describe('saved feeds', () => {
+        it('should load the saved feeds and their articles on mount', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA, subscriptionB], error: null })
 
-        render(<FeedsPage />)
+            render(<FeedsPage />)
 
-        expect(await screen.findByText('Article A')).toBeInTheDocument()
-        expect(await screen.findByText('Article B')).toBeInTheDocument()
-        expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL)
-        expect(getFeedMock).toHaveBeenCalledWith(FEED_B_URL)
-        expect(screen.getByText(FEED_A_URL)).toBeInTheDocument()
-    })
+            expect(await screen.findByText('Article A')).toBeInTheDocument()
+            expect(await screen.findByText('Article B')).toBeInTheDocument()
+            expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL)
+            expect(getFeedMock).toHaveBeenCalledWith(FEED_B_URL)
+            expect(screen.getByText(FEED_A_URL)).toBeInTheDocument()
+        })
 
-    it('should display each saved feed only once when the mount effect runs twice', async () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([FEED_A_URL]))
+        it('should not use localStorage anymore', async () => {
+            const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
 
-        render(
-            <React.StrictMode>
-                <FeedsPage />
-            </React.StrictMode>
-        )
+            render(<FeedsPage />)
 
-        await waitFor(() => expect(getFeedMock).toHaveBeenCalledTimes(2))
-        expect(await screen.findAllByText('Article A')).toHaveLength(1)
+            await waitFor(() => expect(listFeedSubscriptionsMock).toHaveBeenCalled())
+            expect(getItemSpy).not.toHaveBeenCalled()
+            getItemSpy.mockRestore()
+        })
+
+        it('should display each saved feed only once when the mount effect runs twice', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA], error: null })
+
+            render(
+                <React.StrictMode>
+                    <FeedsPage />
+                </React.StrictMode>
+            )
+
+            await waitFor(() => expect(getFeedMock).toHaveBeenCalledTimes(2))
+            expect(await screen.findAllByText('Article A')).toHaveLength(1)
+            expect(screen.getAllByText(FEED_A_URL)).toHaveLength(1)
+        })
+
+        it('should display an error when the saved feeds cannot be listed', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({
+                subscriptions: [],
+                error: 'Une erreur est survenue en récupérant vos flux'
+            })
+
+            render(<FeedsPage />)
+
+            expect(await screen.findByText('Une erreur est survenue en récupérant vos flux')).toBeInTheDocument()
+        })
     })
 
     describe('adding a feed', () => {
-        it('should fetch the feed, save its url and clear the input', async () => {
+        it('should save the feed, fetch it and clear the input', async () => {
             render(<FeedsPage />)
 
             await addFeed(FEED_A_URL)
 
+            expect(subscribeToFeedMock).toHaveBeenCalledWith(FEED_A_URL)
             expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL)
-            expect(savedUrls()).toEqual([FEED_A_URL])
             expect(screen.getByPlaceholderText('https://example.com/feed.xml')).toHaveValue('')
-            expect(screen.getByText(FEED_A_URL)).toBeInTheDocument()
+            expect(await screen.findByText(FEED_A_URL)).toBeInTheDocument()
             expect(
                 screen.queryByText('Ajoutez une URL de flux RSS pour afficher les articles.')
             ).not.toBeInTheDocument()
+        })
+
+        it('should trim the url before saving it', async () => {
+            render(<FeedsPage />)
+
+            await addFeed(`  ${FEED_A_URL}  `)
+
+            expect(subscribeToFeedMock).toHaveBeenCalledWith(FEED_A_URL)
         })
 
         it('should display the feed articles with their feed title, date and link', async () => {
@@ -163,7 +206,7 @@ describe('Feeds page', () => {
 
             expect(await screen.findByText('Article A')).toBeInTheDocument()
             expect(await screen.findByText('Article B')).toBeInTheDocument()
-            expect(savedUrls()).toEqual([FEED_A_URL, FEED_B_URL])
+            expect(subscribeToFeedMock).toHaveBeenCalledTimes(2)
         })
 
         it('should display a loading message while the feed is being fetched', async () => {
@@ -172,21 +215,35 @@ describe('Feeds page', () => {
 
             await addFeed(FEED_A_URL)
 
-            expect(screen.getByText('Chargement des articles...')).toBeInTheDocument()
+            expect(await screen.findByText('Chargement des articles...')).toBeInTheDocument()
             expect(
                 screen.queryByText('Ajoutez une URL de flux RSS pour afficher les articles.')
             ).not.toBeInTheDocument()
         })
 
-        it('should ignore a url that is already added', async () => {
+        it('should refuse a url that is already saved', async () => {
             render(<FeedsPage />)
 
             await addFeed(FEED_A_URL)
+            await screen.findByText('Article A')
             await addFeed(FEED_A_URL)
 
+            expect(await screen.findByText(`Flux déjà ajouté : ${FEED_A_URL}`)).toBeInTheDocument()
+            expect(subscribeToFeedMock).toHaveBeenCalledOnce()
             expect(getFeedMock).toHaveBeenCalledOnce()
             expect(screen.getAllByText(FEED_A_URL)).toHaveLength(1)
-            expect(savedUrls()).toEqual([FEED_A_URL])
+        })
+
+        it('should clear the previous error when a feed is added', async () => {
+            render(<FeedsPage />)
+            await addFeed(FEED_A_URL)
+            await screen.findByText('Article A')
+            await addFeed(FEED_A_URL)
+            await screen.findByText(`Flux déjà ajouté : ${FEED_A_URL}`)
+
+            await addFeed(FEED_B_URL)
+
+            await waitFor(() => expect(screen.queryByText(`Flux déjà ajouté : ${FEED_A_URL}`)).not.toBeInTheDocument())
         })
 
         it('should ignore an empty url', () => {
@@ -194,8 +251,23 @@ describe('Feeds page', () => {
 
             fireEvent.submit(screen.getByRole('button', { name: 'Ajouter' }).closest('form')!)
 
+            expect(subscribeToFeedMock).not.toHaveBeenCalled()
             expect(getFeedMock).not.toHaveBeenCalled()
-            expect(savedUrls()).toBeNull()
+        })
+
+        it('should keep the url in the input and display the error when the feed cannot be saved', async () => {
+            subscribeToFeedMock.mockResolvedValue({
+                subscription: null,
+                error: "Une erreur est survenue dans l'ajout du flux"
+            })
+            render(<FeedsPage />)
+
+            await addFeed(FEED_A_URL)
+
+            expect(await screen.findByText("Une erreur est survenue dans l'ajout du flux")).toBeInTheDocument()
+            expect(getFeedMock).not.toHaveBeenCalled()
+            expect(screen.getByPlaceholderText('https://example.com/feed.xml')).toHaveValue(FEED_A_URL)
+            expect(screen.getByText('Ajoutez une URL de flux RSS pour afficher les articles.')).toBeInTheDocument()
         })
 
         it('should display an error when the feed cannot be fetched', async () => {
@@ -218,19 +290,32 @@ describe('Feeds page', () => {
     })
 
     describe('removing a feed', () => {
-        it('should remove only that feed, its articles and its saved url', async () => {
+        it('should delete only that feed, its articles and its url', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA, subscriptionB], error: null })
             render(<FeedsPage />)
-            await addFeed(FEED_A_URL)
-            await addFeed(FEED_B_URL)
+            await screen.findByText('Article A')
             await screen.findByText('Article B')
 
             await userEvent.click(screen.getByRole('button', { name: `Supprimer ${FEED_A_URL}` }))
 
+            expect(unsubscribeFromFeedMock).toHaveBeenCalledWith(subscriptionA.id)
             await waitFor(() => expect(screen.queryByText('Article A')).not.toBeInTheDocument())
             expect(screen.queryByText(FEED_A_URL)).not.toBeInTheDocument()
             expect(screen.getByText('Article B')).toBeInTheDocument()
             expect(screen.getByText(FEED_B_URL)).toBeInTheDocument()
-            expect(savedUrls()).toEqual([FEED_B_URL])
+        })
+
+        it('should keep the feed and display the error when it cannot be deleted', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA], error: null })
+            unsubscribeFromFeedMock.mockResolvedValue({ error: 'Une erreur est survenue dans la suppression du flux' })
+            render(<FeedsPage />)
+            await screen.findByText('Article A')
+
+            await userEvent.click(screen.getByRole('button', { name: `Supprimer ${FEED_A_URL}` }))
+
+            expect(await screen.findByText('Une erreur est survenue dans la suppression du flux')).toBeInTheDocument()
+            expect(screen.getByText('Article A')).toBeInTheDocument()
+            expect(screen.getByText(FEED_A_URL)).toBeInTheDocument()
         })
     })
 })

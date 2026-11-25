@@ -35,3 +35,10 @@ CREATE TABLE IF NOT EXISTS urls
     created_at  TIMESTAMP WITH TIME ZONE
 );
 
+
+CREATE TABLE IF NOT EXISTS feed_subscriptions
+(
+    id          SERIAL                   NOT NULL PRIMARY KEY,
+    url         VARCHAR(500)             NOT NULL UNIQUE,
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL
+);

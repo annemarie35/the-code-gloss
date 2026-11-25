@@ -1,25 +1,28 @@
 import PageLayout from '@/src/pages/pageLayout'
 import { useEffect, useRef, useState } from 'react'
-import { getFeed } from '@/src/actions/feeds-actions'
+import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
+import type { FeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 import { Feed, FeedItem } from '@/src/core/domain/models/Feed'
 
 type LoadedFeed = Feed & { url: string }
 
-const STORAGE_KEY = 'rss-feed-urls'
-
 export default function FeedsPage() {
-    const [feedUrls, setFeedUrls] = useState<string[]>([])
+    const [subscriptions, setSubscriptions] = useState<FeedSubscriptionDto[]>([])
     const [feeds, setFeeds] = useState<LoadedFeed[]>([])
     const [error, setError] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY)
-        if (saved) {
-            const urls: string[] = JSON.parse(saved)
-            setFeedUrls(urls)
-            urls.forEach((url) => loadFeed(url))
+        async function loadSubscriptions() {
+            const { subscriptions, error } = await listFeedSubscriptions()
+            if (error) {
+                setError(error)
+                return
+            }
+            setSubscriptions(subscriptions)
+            subscriptions.forEach(({ url }) => loadFeed(url))
         }
+        loadSubscriptions()
     }, [])
 
     async function loadFeed(url: string) {
@@ -35,23 +38,33 @@ export default function FeedsPage() {
         })
     }
 
-    function handleAdd(e: React.FormEvent) {
+    async function handleAdd(e: React.FormEvent) {
         e.preventDefault()
         const url = inputRef.current?.value.trim()
         if (!url) return
-        if (feedUrls.includes(url)) return
-        const updated = [...feedUrls, url]
-        setFeedUrls(updated)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-        loadFeed(url)
+        setError('')
+        if (subscriptions.some((s) => s.url === url)) {
+            setError(`Flux déjà ajouté : ${url}`)
+            return
+        }
+        const { subscription, error } = await subscribeToFeed(url)
+        if (error || !subscription) {
+            setError(error ?? "Une erreur est survenue dans l'ajout du flux")
+            return
+        }
+        setSubscriptions((prev) => [...prev, subscription])
         if (inputRef.current) inputRef.current.value = ''
+        loadFeed(subscription.url)
     }
 
-    function handleRemove(url: string) {
-        const updated = feedUrls.filter((u) => u !== url)
-        setFeedUrls(updated)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-        setFeeds((prev) => prev.filter((f) => f.url !== url))
+    async function handleRemove(subscription: FeedSubscriptionDto) {
+        const { error } = await unsubscribeFromFeed(subscription.id)
+        if (error) {
+            setError(error)
+            return
+        }
+        setSubscriptions((prev) => prev.filter((s) => s.id !== subscription.id))
+        setFeeds((prev) => prev.filter((f) => f.url !== subscription.url))
     }
 
     const allItems: (FeedItem & { feedTitle: string })[] = feeds.flatMap((feed) =>
@@ -77,18 +90,18 @@ export default function FeedsPage() {
                     </button>
                 </form>
 
-                {feedUrls.length > 0 && (
+                {subscriptions.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {feedUrls.map((url) => (
+                        {subscriptions.map((subscription) => (
                             <span
-                                key={url}
+                                key={subscription.id}
                                 className="flex items-center gap-1 bg-[#FFECF5] text-[#C4338E] text-xs px-3 py-1 rounded-full"
                             >
-                                {url}
+                                {subscription.url}
                                 <button
-                                    onClick={() => handleRemove(url)}
+                                    onClick={() => handleRemove(subscription)}
                                     className="ml-1 text-[#C4338E] hover:text-[#D53815] font-bold"
-                                    aria-label={`Supprimer ${url}`}
+                                    aria-label={`Supprimer ${subscription.url}`}
                                 >
                                     &times;
                                 </button>
@@ -99,11 +112,11 @@ export default function FeedsPage() {
 
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-                {allItems.length === 0 && feedUrls.length > 0 && (
+                {allItems.length === 0 && subscriptions.length > 0 && (
                     <p className="text-gray-400 text-sm">Chargement des articles...</p>
                 )}
 
-                {allItems.length === 0 && feedUrls.length === 0 && (
+                {allItems.length === 0 && subscriptions.length === 0 && (
                     <p className="text-gray-400 text-sm">Ajoutez une URL de flux RSS pour afficher les articles.</p>
                 )}
 
