@@ -2,7 +2,7 @@ import { importJsonFile } from '../../import_json_file.ts'
 import type { Seeds } from '../../import_json_file.ts'
 import { query } from '../connectionPool.ts'
 import type { PgPoolQuery } from '../connectionPool.ts'
-import { INSERT_GLOSE } from '../sql_queries.ts'
+import INSERT_GLOSE from '../sql_queries.ts'
 
 export async function createAndSeedDatabase({
     dataFilePath,

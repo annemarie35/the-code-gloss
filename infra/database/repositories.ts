@@ -1,4 +1,4 @@
-import { INSERT_GLOSE, SELECT_ALL } from '@/infra/database/sql_queries'
+import INSERT_GLOSE, { SELECT_ALL } from '@/infra/database/sql_queries'
 
 import { query } from '@/infra/database/connectionPool'
 import { GloseComplete } from '@/src/core/domain/models/Glose'
