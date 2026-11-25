@@ -23,6 +23,112 @@ Le code neuf suit `documentation/architecture-cible.md` (Clean Architecture : en
     - passage de `get-feeds.ts` vers `parse-feed.ts` et le port `FeedReader` ;
     - migration des gloses et des personnes.
 
+## Architecture
+
+Les flèches pleines sont des appels ou des imports. Elles vont toujours vers le cœur (`src/core`), qui ne dépend de rien d'extérieur. Les flèches pointillées vont d'un adaptateur au port qu'il implémente. `container.ts` est le seul fichier qui instancie les adaptateurs et les injecte dans les use cases.
+
+```mermaid
+flowchart TB
+    subgraph browser["Navigateur"]
+        page["pages/feeds.tsx"]
+        client["client/api/feeds-api.ts<br/>getFeed · listFeedSubscriptions<br/>subscribeToFeed · unsubscribeFromFeed"]
+    end
+
+    subgraph next["Route Next"]
+        route["pages/api/feeds.ts<br/>rate limit · origin check · 405"]
+        origin["infrastructure/http/origin-check.ts"]
+        legacy["lib/service/get-feeds.ts<br/>GET ?url= (existant)"]
+    end
+
+    subgraph composition["Composition"]
+        container["composition/container.ts"]
+    end
+
+    subgraph adapters["Adaptateurs entrants"]
+        controller["adapters/api/feeds-controller.ts<br/>list 200 · subscribe 201/400/409 · unsubscribe 200/400"]
+        presenter["adapters/presenters/feed-subscription-presenter.ts<br/>→ FeedSubscriptionDto"]
+    end
+
+    subgraph core["Cœur (src/core)"]
+        subscribe["usecases/feeds/subscribe-to-feed.ts"]
+        list["usecases/feeds/list-feed-subscriptions.ts"]
+        unsubscribe["usecases/feeds/unsubscribe-from-feed.ts"]
+        entity["domain/feed/FeedSubscription.ts<br/>createFeedSubscription · normalizeFeedUrl"]
+        errors["domain/feed/feed-errors.ts<br/>InvalidFeedSubscriptionError · FeedAlreadySubscribedError"]
+        repoPort[["ports/feed-subscription-repository.ts"]]
+        clockPort[["ports/clock.ts"]]
+    end
+
+    subgraph infra["Adaptateurs sortants"]
+        pgRepo["infrastructure/postgres/pg-feed-subscription-repository.ts<br/>23505 → FeedAlreadySubscribedError"]
+        clock["infrastructure/system-clock.ts"]
+    end
+
+    db[("PostgreSQL<br/>feed_subscriptions<br/>url UNIQUE")]
+
+    page --> client
+    page -. normalizeFeedUrl .-> entity
+    client -- "fetch /api/feeds" --> route
+    route --> origin
+    route --> legacy
+    route --> container
+    container --> controller
+    controller --> presenter
+    controller --> subscribe & list & unsubscribe
+    subscribe --> entity
+    subscribe --> errors
+    subscribe --> repoPort & clockPort
+    list --> repoPort
+    unsubscribe --> repoPort
+    pgRepo -.implémente.-> repoPort
+    clock -.implémente.-> clockPort
+    container -. instancie .-> pgRepo & clock
+    pgRepo --> db
+```
+
+### Abonnement à un flux (`POST /api/feeds`)
+
+```mermaid
+sequenceDiagram
+    actor U as Utilisateur
+    participant P as feeds.tsx
+    participant C as feeds-api.ts
+    participant R as /api/feeds
+    participant Ctl as feedsController
+    participant UC as subscribeToFeed
+    participant Repo as pgFeedSubscriptionRepository
+    participant DB as PostgreSQL
+
+    U->>P: saisit une URL, clique « Ajouter »
+    P->>P: normalizeFeedUrl, doublon déjà affiché ?
+    P->>C: subscribeToFeed(url)
+    C->>R: POST { url }
+    R->>R: rate limit (10/min), même origine sinon 403
+    R->>Ctl: subscribe(req, res)
+    Ctl->>UC: subscribeToFeed(url)
+    UC->>UC: createFeedSubscription(url, clock.now())<br/>trim, http(s), normalisation, 500 car. max
+    UC->>Repo: findByUrl(url)
+    Repo->>DB: SELECT
+    alt déjà abonné
+        UC-->>Ctl: FeedAlreadySubscribedError
+        Ctl-->>R: 409
+    else nouveau
+        UC->>Repo: save(subscription)
+        Repo->>DB: INSERT
+        alt course : violation UNIQUE (23505)
+            Repo-->>Ctl: FeedAlreadySubscribedError
+            Ctl-->>R: 409
+        else inséré
+            Repo-->>UC: PersistedFeedSubscription
+            UC-->>Ctl: abonnement
+            Ctl-->>R: 201 { subscription: FeedSubscriptionDto }
+        end
+    end
+    R-->>C: réponse
+    C-->>P: { subscription, error }
+    P->>C: getFeed(subscription.url)
+```
+
 ## Étapes (TDD : test rouge → code → vert)
 
 - [x] 0. Copier ce plan dans `plans/feed-subscriptions.md`
