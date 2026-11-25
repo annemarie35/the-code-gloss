@@ -34,7 +34,7 @@ describe('Feeds API client', () => {
 
             expect(response).toEqual({ feed, error: null })
             expect(fetch).toHaveBeenCalledWith(
-                'http://localhost:3000/api/feeds?url=https%3A%2F%2Fexample.com%2Ffeed.xml',
+                '/api/feeds?url=https%3A%2F%2Fexample.com%2Ffeed.xml',
                 expect.objectContaining({ method: 'GET', mode: 'cors' })
             )
         })
@@ -56,10 +56,7 @@ describe('Feeds API client', () => {
             const response = await listFeedSubscriptions()
 
             expect(response).toEqual({ subscriptions: [subscription], error: null })
-            expect(fetch).toHaveBeenCalledWith(
-                'http://localhost:3000/api/feeds',
-                expect.objectContaining({ method: 'GET', mode: 'cors' })
-            )
+            expect(fetch).toHaveBeenCalledWith('/api/feeds', expect.objectContaining({ method: 'GET', mode: 'cors' }))
         })
 
         it('should return an empty list and an error message when the request fails', async () => {
@@ -80,7 +77,7 @@ describe('Feeds API client', () => {
 
             expect(response).toEqual({ subscription, error: null })
             expect(fetch).toHaveBeenCalledWith(
-                'http://localhost:3000/api/feeds',
+                '/api/feeds',
                 expect.objectContaining({
                     method: 'POST',
                     mode: 'cors',
@@ -107,7 +104,7 @@ describe('Feeds API client', () => {
 
             expect(response).toEqual({ error: null })
             expect(fetch).toHaveBeenCalledWith(
-                'http://localhost:3000/api/feeds?id=12',
+                '/api/feeds?id=12',
                 expect.objectContaining({ method: 'DELETE', mode: 'cors' })
             )
         })

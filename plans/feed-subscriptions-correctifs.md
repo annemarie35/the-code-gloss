@@ -11,7 +11,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 - [x] **c. URL non normalisée** : `https://Example.com` et `https://example.com/` passent pour deux flux. L'entité stocke `new URL(url).href`, et la page compare avec la même normalisation (`normalizeFeedUrl`).
 - [x] **d. `id as number` dans le presenter** : un abonnement enregistré a toujours un id. Le type `PersistedFeedSubscription` le garantit, et le repository le renvoie.
 - [x] **e. Ports sans test** : tests de type (`expectTypeOf`) pour `clock.ts` et `feed-subscription-repository.ts`.
-- [ ] **f. URL relative** : `feeds-api.ts` appelle `/api/feeds` au lieu de `http://localhost:3000/api/feeds` (point 4 ci-dessous, pour les flux seulement).
+- [x] **f. URL relative** : `feeds-api.ts` appelle `/api/feeds` au lieu de `http://localhost:3000/api/feeds` (point 4 ci-dessous, pour les flux seulement).
 
 ## Priorité haute
 

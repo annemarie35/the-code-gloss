@@ -2,7 +2,8 @@ import { httpClient } from '@/src/lib/http'
 import { Feed } from '@/src/core/domain/models/Feed'
 import type { FeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 
-const FEEDS_API_URL = 'http://localhost:3000/api/feeds'
+// Relative: called from the browser on the same origin, so it works outside localhost
+const FEEDS_API_URL = '/api/feeds'
 
 const jsonHeaders = () => {
     const headers = new Headers()
