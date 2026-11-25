@@ -3,17 +3,17 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import FeedsPage from '@/src/pages/feeds'
-import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
+import { getFeedItems, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
 import { Feed } from '@/src/core/domain/models/Feed'
 
 vi.mock('@/src/client/api/feeds-api', () => ({
-    getFeed: vi.fn(),
+    getFeedItems: vi.fn(),
     listFeedSubscriptions: vi.fn(),
     subscribeToFeed: vi.fn(),
     unsubscribeFromFeed: vi.fn()
 }))
 
-const getFeedMock = vi.mocked(getFeed)
+const getFeedItemsMock = vi.mocked(getFeedItems)
 const listFeedSubscriptionsMock = vi.mocked(listFeedSubscriptions)
 const subscribeToFeedMock = vi.mocked(subscribeToFeed)
 const unsubscribeFromFeedMock = vi.mocked(unsubscribeFromFeed)
@@ -41,7 +41,8 @@ const feedB: Feed = {
     items: [{ title: 'Article B', description: '', link: '', pubDate: '' }]
 }
 
-const feedsByUrl: Record<string, Feed> = { [FEED_A_URL]: feedA, [FEED_B_URL]: feedB }
+const feedsById: Record<number, Feed> = { [subscriptionA.id]: feedA, [subscriptionB.id]: feedB }
+const idsByUrl: Record<string, number> = { [FEED_A_URL]: subscriptionA.id, [FEED_B_URL]: subscriptionB.id }
 
 async function addFeed(url: string) {
     await userEvent.type(screen.getByPlaceholderText('https://example.com/feed.xml'), url)
@@ -51,11 +52,11 @@ async function addFeed(url: string) {
 describe('Feeds page', () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        getFeedMock.mockImplementation(async (url) => ({ feed: feedsByUrl[url], error: null }))
+        getFeedItemsMock.mockImplementation(async (id) => ({ feed: feedsById[id], error: null }))
         listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [], error: null })
-        let nextId = 1
+        let nextId = 100
         subscribeToFeedMock.mockImplementation(async (url) => ({
-            subscription: { id: nextId++, url, createdAt: CREATED_AT },
+            subscription: { id: idsByUrl[url] ?? nextId++, url, createdAt: CREATED_AT },
             error: null
         }))
         unsubscribeFromFeedMock.mockResolvedValue({ error: null })
@@ -84,7 +85,7 @@ describe('Feeds page', () => {
         })
 
         it('should not load any feed when nothing is saved', () => {
-            expect(getFeedMock).not.toHaveBeenCalled()
+            expect(getFeedItemsMock).not.toHaveBeenCalled()
         })
 
         it('should not display the loading message when no feed is saved', () => {
@@ -100,8 +101,8 @@ describe('Feeds page', () => {
 
             expect(await screen.findByText('Article A')).toBeInTheDocument()
             expect(await screen.findByText('Article B')).toBeInTheDocument()
-            expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL)
-            expect(getFeedMock).toHaveBeenCalledWith(FEED_B_URL)
+            expect(getFeedItemsMock).toHaveBeenCalledWith(subscriptionA.id)
+            expect(getFeedItemsMock).toHaveBeenCalledWith(subscriptionB.id)
             expect(screen.getByText(FEED_A_URL)).toBeInTheDocument()
         })
 
@@ -124,7 +125,7 @@ describe('Feeds page', () => {
                 </React.StrictMode>
             )
 
-            await waitFor(() => expect(getFeedMock).toHaveBeenCalledTimes(2))
+            await waitFor(() => expect(getFeedItemsMock).toHaveBeenCalledTimes(2))
             expect(await screen.findAllByText('Article A')).toHaveLength(1)
             expect(screen.getAllByText(FEED_A_URL)).toHaveLength(1)
         })
@@ -148,7 +149,7 @@ describe('Feeds page', () => {
             await addFeed(FEED_A_URL)
 
             expect(subscribeToFeedMock).toHaveBeenCalledWith(FEED_A_URL)
-            expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL)
+            expect(getFeedItemsMock).toHaveBeenCalledWith(subscriptionA.id)
             expect(screen.getByPlaceholderText('https://example.com/feed.xml')).toHaveValue('')
             expect(await screen.findByText(FEED_A_URL)).toBeInTheDocument()
             expect(
@@ -210,7 +211,7 @@ describe('Feeds page', () => {
         })
 
         it('should display a loading message while the feed is being fetched', async () => {
-            getFeedMock.mockReturnValue(new Promise(() => {}))
+            getFeedItemsMock.mockReturnValue(new Promise(() => {}))
             render(<FeedsPage />)
 
             await addFeed(FEED_A_URL)
@@ -230,7 +231,7 @@ describe('Feeds page', () => {
 
             expect(await screen.findByText(`Flux déjà ajouté : ${FEED_A_URL}`)).toBeInTheDocument()
             expect(subscribeToFeedMock).toHaveBeenCalledOnce()
-            expect(getFeedMock).toHaveBeenCalledOnce()
+            expect(getFeedItemsMock).toHaveBeenCalledOnce()
             expect(screen.getAllByText(FEED_A_URL)).toHaveLength(1)
         })
 
@@ -263,7 +264,7 @@ describe('Feeds page', () => {
             fireEvent.submit(screen.getByRole('button', { name: 'Ajouter' }).closest('form')!)
 
             expect(subscribeToFeedMock).not.toHaveBeenCalled()
-            expect(getFeedMock).not.toHaveBeenCalled()
+            expect(getFeedItemsMock).not.toHaveBeenCalled()
         })
 
         it('should keep the url in the input and display the error when the feed cannot be saved', async () => {
@@ -276,13 +277,13 @@ describe('Feeds page', () => {
             await addFeed(FEED_A_URL)
 
             expect(await screen.findByText("Une erreur est survenue dans l'ajout du flux")).toBeInTheDocument()
-            expect(getFeedMock).not.toHaveBeenCalled()
+            expect(getFeedItemsMock).not.toHaveBeenCalled()
             expect(screen.getByPlaceholderText('https://example.com/feed.xml')).toHaveValue(FEED_A_URL)
             expect(screen.getByText('Ajoutez une URL de flux RSS pour afficher les articles.')).toBeInTheDocument()
         })
 
         it('should display an error when the feed cannot be fetched', async () => {
-            getFeedMock.mockResolvedValue({ feed: null, error: 'Une erreur est survenue en récupérant le flux' })
+            getFeedItemsMock.mockResolvedValue({ feed: null, error: 'Une erreur est survenue en récupérant le flux' })
             render(<FeedsPage />)
 
             await addFeed(FEED_A_URL)
@@ -291,7 +292,7 @@ describe('Feeds page', () => {
         })
 
         it('should display an error when no feed is returned', async () => {
-            getFeedMock.mockResolvedValue({ feed: null, error: null })
+            getFeedItemsMock.mockResolvedValue({ feed: null, error: null })
             render(<FeedsPage />)
 
             await addFeed(FEED_A_URL)
@@ -319,10 +320,10 @@ describe('Feeds page', () => {
         it('should not display a feed removed while it was still loading', async () => {
             listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA, subscriptionB], error: null })
             let resolveFeedA: (response: { feed: Feed; error: null }) => void = () => {}
-            getFeedMock.mockImplementation((url) =>
-                url === FEED_A_URL
+            getFeedItemsMock.mockImplementation((id) =>
+                id === subscriptionA.id
                     ? new Promise((resolve) => (resolveFeedA = resolve))
-                    : Promise.resolve({ feed: feedsByUrl[url], error: null })
+                    : Promise.resolve({ feed: feedsById[id], error: null })
             )
             render(<FeedsPage />)
             await screen.findByText('Article B')
@@ -331,7 +332,7 @@ describe('Feeds page', () => {
             await waitFor(() => expect(screen.queryByText(FEED_A_URL)).not.toBeInTheDocument())
             resolveFeedA({ feed: feedA, error: null })
 
-            await waitFor(() => expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL))
+            await waitFor(() => expect(getFeedItemsMock).toHaveBeenCalledWith(subscriptionA.id))
             await new Promise((resolve) => setTimeout(resolve, 0))
             expect(screen.queryByText('Article A')).not.toBeInTheDocument()
             expect(screen.getByText('Article B')).toBeInTheDocument()

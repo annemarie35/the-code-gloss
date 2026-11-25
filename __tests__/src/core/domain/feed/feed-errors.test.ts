@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
     FeedAlreadySubscribedError,
+    FeedSubscriptionNotFoundError,
     FeedUnavailableError,
     InvalidFeedSubscriptionError
 } from '@/src/core/domain/feed/feed-errors'
@@ -20,6 +21,14 @@ describe('feed errors', () => {
         expect(error).toBeInstanceOf(Error)
         expect(error.name).toBe('FeedAlreadySubscribedError')
         expect(error.message).toBe('Flux déjà ajouté : https://blog.example.com/feed.xml')
+    })
+
+    it('FeedSubscriptionNotFoundError should name the unknown id', () => {
+        const error = new FeedSubscriptionNotFoundError(42)
+
+        expect(error).toBeInstanceOf(Error)
+        expect(error.name).toBe('FeedSubscriptionNotFoundError')
+        expect(error.message).toBe('Flux introuvable : 42')
     })
 
     it('FeedUnavailableError should name the url and keep the reason for the logs', () => {

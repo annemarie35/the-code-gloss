@@ -11,10 +11,10 @@ const jsonHeaders = () => {
     return headers
 }
 
-export async function getFeed(url: string): Promise<FeedResponse> {
+export async function getFeedItems(id: number): Promise<FeedResponse> {
     try {
         const feed = await httpClient({
-            url: `${FEEDS_API_URL}?url=${encodeURIComponent(url)}`,
+            url: `${FEEDS_API_URL}/${id}/items`,
             requestConfig: { method: 'GET', headers: new Headers(), mode: 'cors' }
         })
         return { feed, error: null }

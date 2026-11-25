@@ -8,7 +8,8 @@ describe('container', () => {
         expect(container.feedsController).toEqual({
             list: expect.any(Function),
             subscribe: expect.any(Function),
-            unsubscribe: expect.any(Function)
+            unsubscribe: expect.any(Function),
+            items: expect.any(Function)
         })
     })
 })

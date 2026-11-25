@@ -12,6 +12,13 @@ export class FeedAlreadySubscribedError extends Error {
     }
 }
 
+export class FeedSubscriptionNotFoundError extends Error {
+    constructor(id: number) {
+        super(`Flux introuvable : ${id}`)
+        this.name = 'FeedSubscriptionNotFoundError'
+    }
+}
+
 export class FeedUnavailableError extends Error {
     constructor(
         url: string,

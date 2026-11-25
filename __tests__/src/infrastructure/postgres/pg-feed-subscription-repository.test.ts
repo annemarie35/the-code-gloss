@@ -85,6 +85,17 @@ describe('pgFeedSubscriptionRepository', () => {
         expect(await repository.findByUrl('https://unknown.example.com/feed.xml')).toBeNull()
     })
 
+    it('should find a subscription by id', async () => {
+        await repository.save(first)
+        await repository.save(second)
+
+        expect(await repository.findById(2)).toEqual({ id: 2, ...second })
+    })
+
+    it('should return null when no subscription has this id', async () => {
+        expect(await repository.findById(99)).toBeNull()
+    })
+
     it('should delete a subscription by id', async () => {
         await repository.save(first)
         await repository.save(second)

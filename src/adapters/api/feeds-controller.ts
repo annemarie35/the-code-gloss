@@ -1,15 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
-import { FeedAlreadySubscribedError, InvalidFeedSubscriptionError } from '@/src/core/domain/feed/feed-errors'
+import {
+    FeedAlreadySubscribedError,
+    FeedSubscriptionNotFoundError,
+    FeedUnavailableError,
+    InvalidFeedSubscriptionError
+} from '@/src/core/domain/feed/feed-errors'
+import { Feed } from '@/src/core/domain/models/Feed'
 import { toFeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 
 type Deps = {
     subscribeToFeed: (url: string) => Promise<PersistedFeedSubscription>
     listFeedSubscriptions: () => Promise<PersistedFeedSubscription[]>
     unsubscribeFromFeed: (id: number) => Promise<void>
+    readFeed: (id: number) => Promise<Feed>
 }
 
-export const feedsController = ({ subscribeToFeed, listFeedSubscriptions, unsubscribeFromFeed }: Deps) => ({
+export const feedsController = ({ subscribeToFeed, listFeedSubscriptions, unsubscribeFromFeed, readFeed }: Deps) => ({
     async list(_req: NextApiRequest, res: NextApiResponse) {
         try {
             const subscriptions = await listFeedSubscriptions()
@@ -43,6 +50,19 @@ export const feedsController = ({ subscribeToFeed, listFeedSubscriptions, unsubs
             await unsubscribeFromFeed(id)
             return res.status(200).json({ message: 'Flux supprimé avec succès' })
         } catch {
+            return res.status(500).json({ error: 'Erreur interne' })
+        }
+    },
+
+    async items(req: NextApiRequest, res: NextApiResponse) {
+        const id = parseId(req.query.id)
+        if (id === null) return res.status(400).json({ error: 'Invalid id' })
+        try {
+            return res.status(200).json(await readFeed(id))
+        } catch (error) {
+            if (error instanceof FeedSubscriptionNotFoundError) return res.status(404).json({ error: error.message })
+            // The reason (blocked address, timeout...) stays on the server: it would help probe the network
+            if (error instanceof FeedUnavailableError) return res.status(502).json({ error: error.message })
             return res.status(500).json({ error: 'Erreur interne' })
         }
     }

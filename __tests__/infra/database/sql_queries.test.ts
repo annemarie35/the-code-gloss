@@ -11,6 +11,7 @@ import INSERT_GLOSE, {
     SELECT_ALL,
     SELECT_ALL_FEED_SUBSCRIPTIONS,
     SELECT_ALL_PEOPLE,
+    SELECT_FEED_SUBSCRIPTION_BY_ID,
     SELECT_FEED_SUBSCRIPTION_BY_URL
 } from '@/infra/database/sql_queries'
 
@@ -113,6 +114,14 @@ describe('Sql Queries', () => {
 
             expect(result.rows).toHaveLength(1)
             expect(result.rows[0].url).toBe(url)
+        })
+
+        it('should select a feed subscription by id', async () => {
+            const { rows } = await pool.query(SELECT_FEED_SUBSCRIPTION_BY_URL('public'), [url])
+
+            const result = await pool.query(SELECT_FEED_SUBSCRIPTION_BY_ID('public'), [rows[0].id])
+
+            expect(result.rows).toEqual([rows[0]])
         })
 
         it('should select all feed subscriptions ordered by creation', async () => {

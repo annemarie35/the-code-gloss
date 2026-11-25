@@ -1,6 +1,6 @@
 import PageLayout from '@/src/pages/pageLayout'
 import { useEffect, useRef, useState } from 'react'
-import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
+import { getFeedItems, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
 import type { FeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 import { Feed, FeedItem } from '@/src/core/domain/models/Feed'
 import { normalizeFeedUrl } from '@/src/core/domain/feed/FeedSubscription'
@@ -21,13 +21,13 @@ export default function FeedsPage() {
                 return
             }
             setSubscriptions(subscriptions)
-            subscriptions.forEach(({ url }) => loadFeed(url))
+            subscriptions.forEach(loadFeed)
         }
         loadSubscriptions()
     }, [])
 
-    async function loadFeed(url: string) {
-        const { feed, error } = await getFeed(url)
+    async function loadFeed({ id, url }: FeedSubscriptionDto) {
+        const { feed, error } = await getFeedItems(id)
 
         if (error || !feed) {
             setError(`Impossible de charger : ${url}`)
@@ -56,7 +56,7 @@ export default function FeedsPage() {
         }
         setSubscriptions((prev) => [...prev, subscription])
         if (inputRef.current) inputRef.current.value = ''
-        loadFeed(subscription.url)
+        loadFeed(subscription)
     }
 
     async function handleRemove(subscription: FeedSubscriptionDto) {

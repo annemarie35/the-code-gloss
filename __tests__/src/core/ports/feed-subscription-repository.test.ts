@@ -17,6 +17,10 @@ describe('FeedSubscriptionRepository', () => {
         expectTypeOf<
             FeedSubscriptionRepository['findByUrl']
         >().returns.resolves.toEqualTypeOf<PersistedFeedSubscription | null>()
+        expectTypeOf<FeedSubscriptionRepository['findById']>().parameter(0).toEqualTypeOf<number>()
+        expectTypeOf<
+            FeedSubscriptionRepository['findById']
+        >().returns.resolves.toEqualTypeOf<PersistedFeedSubscription | null>()
     })
 
     it('should delete a subscription by its id', () => {

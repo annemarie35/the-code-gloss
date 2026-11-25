@@ -24,4 +24,7 @@ export const SELECT_ALL_FEED_SUBSCRIPTIONS = (schema: string) =>
 export const SELECT_FEED_SUBSCRIPTION_BY_URL = (schema: string) =>
     `SELECT id, url, created_at FROM ${schema}.feed_subscriptions WHERE url = $1`
 
+export const SELECT_FEED_SUBSCRIPTION_BY_ID = (schema: string) =>
+    `SELECT id, url, created_at FROM ${schema}.feed_subscriptions WHERE id = $1`
+
 export const DELETE_FEED_SUBSCRIPTION = (schema: string) => `DELETE FROM ${schema}.feed_subscriptions WHERE id = $1`

@@ -7,6 +7,7 @@ import {
     DELETE_FEED_SUBSCRIPTION,
     INSERT_FEED_SUBSCRIPTION,
     SELECT_ALL_FEED_SUBSCRIPTIONS,
+    SELECT_FEED_SUBSCRIPTION_BY_ID,
     SELECT_FEED_SUBSCRIPTION_BY_URL
 } from '@/infra/database/sql_queries'
 
@@ -29,6 +30,10 @@ export const pgFeedSubscriptionRepository = (query: PgPoolQuery, schema = 'publi
     },
     async findByUrl(url) {
         const { rows } = await query(SELECT_FEED_SUBSCRIPTION_BY_URL(schema), [url])
+        return rows.length ? toFeedSubscription(rows[0]) : null
+    },
+    async findById(id) {
+        const { rows } = await query(SELECT_FEED_SUBSCRIPTION_BY_ID(schema), [id])
         return rows.length ? toFeedSubscription(rows[0]) : null
     },
     async delete(id) {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
+import { getFeedItems, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
 import { Feed } from '@/src/core/domain/models/Feed'
 
 const feed: Feed = {
@@ -26,23 +26,32 @@ const mockNetworkError = () => {
 }
 
 describe('Feeds API client', () => {
-    describe('getFeed', () => {
-        it('should return the feed on success', async () => {
+    describe('getFeedItems', () => {
+        it('should return the feed of the subscription on success', async () => {
             mockFetchOk(feed)
 
-            const response = await getFeed('https://example.com/feed.xml')
+            const response = await getFeedItems(12)
 
             expect(response).toEqual({ feed, error: null })
             expect(fetch).toHaveBeenCalledWith(
-                '/api/feeds?url=https%3A%2F%2Fexample.com%2Ffeed.xml',
+                '/api/feeds/12/items',
                 expect.objectContaining({ method: 'GET', mode: 'cors' })
             )
+        })
+
+        it('should return an error message when the feed is unavailable', async () => {
+            mockFetchStatus(502)
+
+            expect(await getFeedItems(12)).toEqual({
+                feed: null,
+                error: 'Une erreur est survenue en récupérant le flux'
+            })
         })
 
         it('should return an error message on network error', async () => {
             mockNetworkError()
 
-            expect(await getFeed('https://example.com/feed.xml')).toEqual({
+            expect(await getFeedItems(12)).toEqual({
                 feed: null,
                 error: 'Une erreur est survenue en récupérant le flux'
             })

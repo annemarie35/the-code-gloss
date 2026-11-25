@@ -24,6 +24,9 @@ export const inMemoryFeedSubscriptionRepository = (
         async findByUrl(url) {
             return subscriptions.find((s) => s.url === url) ?? null
         },
+        async findById(id) {
+            return subscriptions.find((s) => s.id === id) ?? null
+        },
         async delete(id) {
             const index = subscriptions.findIndex((s) => s.id === id)
             if (index !== -1) subscriptions.splice(index, 1)

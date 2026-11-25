@@ -4,14 +4,18 @@ import { systemClock } from '@/src/infrastructure/system-clock'
 import { subscribeToFeed } from '@/src/core/usecases/feeds/subscribe-to-feed'
 import { listFeedSubscriptions } from '@/src/core/usecases/feeds/list-feed-subscriptions'
 import { unsubscribeFromFeed } from '@/src/core/usecases/feeds/unsubscribe-from-feed'
+import { readFeed } from '@/src/core/usecases/feeds/read-feed'
+import { httpFeedReader } from '@/src/infrastructure/rss/http-feed-reader'
 import { feedsController } from '@/src/adapters/api/feeds-controller'
 
 const feedSubscriptionRepository = pgFeedSubscriptionRepository(query)
+const feedReader = httpFeedReader()
 
 export const container = {
     feedsController: feedsController({
         subscribeToFeed: subscribeToFeed({ feedSubscriptionRepository, clock: systemClock }),
         listFeedSubscriptions: listFeedSubscriptions({ feedSubscriptionRepository }),
-        unsubscribeFromFeed: unsubscribeFromFeed({ feedSubscriptionRepository })
+        unsubscribeFromFeed: unsubscribeFromFeed({ feedSubscriptionRepository }),
+        readFeed: readFeed({ feedSubscriptionRepository, feedReader })
     })
 }
