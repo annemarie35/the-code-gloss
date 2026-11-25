@@ -1,12 +1,12 @@
-import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
 import { FeedAlreadySubscribedError } from '@/src/core/domain/feed/feed-errors'
 import { FeedSubscriptionRepository } from '@/src/core/ports/feed-subscription-repository'
 
 export const inMemoryFeedSubscriptionRepository = (
-    initial: FeedSubscription[] = []
-): FeedSubscriptionRepository & { subscriptions: FeedSubscription[] } => {
+    initial: PersistedFeedSubscription[] = []
+): FeedSubscriptionRepository & { subscriptions: PersistedFeedSubscription[] } => {
     const subscriptions = [...initial]
-    let nextId = subscriptions.reduce((max, s) => Math.max(max, s.id ?? 0), 0) + 1
+    let nextId = subscriptions.reduce((max, s) => Math.max(max, s.id), 0) + 1
     return {
         subscriptions,
         async save(subscription) {

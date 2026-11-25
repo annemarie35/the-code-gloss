@@ -1,4 +1,4 @@
-import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
 
 export type FeedSubscriptionDto = {
     id: number
@@ -6,8 +6,8 @@ export type FeedSubscriptionDto = {
     createdAt: string
 }
 
-export const toFeedSubscriptionDto = (subscription: FeedSubscription): FeedSubscriptionDto => ({
-    id: subscription.id as number,
+export const toFeedSubscriptionDto = (subscription: PersistedFeedSubscription): FeedSubscriptionDto => ({
+    id: subscription.id,
     url: subscription.url,
     createdAt: subscription.createdAt.toISOString()
 })

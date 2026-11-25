@@ -1,5 +1,5 @@
 import type { QueryResultRow } from 'pg'
-import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
 import { FeedAlreadySubscribedError } from '@/src/core/domain/feed/feed-errors'
 import { FeedSubscriptionRepository } from '@/src/core/ports/feed-subscription-repository'
 import type { PgPoolQuery } from '@/infra/database/connectionPool'
@@ -41,7 +41,7 @@ const UNIQUE_VIOLATION = '23505'
 const isUniqueViolation = (error: unknown) =>
     typeof error === 'object' && error !== null && 'code' in error && error.code === UNIQUE_VIOLATION
 
-const toFeedSubscription = (row: QueryResultRow): FeedSubscription => ({
+const toFeedSubscription = (row: QueryResultRow): PersistedFeedSubscription => ({
     id: row.id as number,
     url: row.url as string,
     createdAt: new Date(row.created_at)

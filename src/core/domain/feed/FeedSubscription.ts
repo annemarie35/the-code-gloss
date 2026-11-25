@@ -6,6 +6,8 @@ export type FeedSubscription = {
     createdAt: Date
 }
 
+export type PersistedFeedSubscription = FeedSubscription & { id: number }
+
 const MAX_URL_LENGTH = 500
 const ALLOWED_PROTOCOLS = ['http:', 'https:']
 

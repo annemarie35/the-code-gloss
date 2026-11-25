@@ -1,8 +1,8 @@
-import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { FeedSubscription, PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
 
 export interface FeedSubscriptionRepository {
-    save(subscription: FeedSubscription): Promise<FeedSubscription>
-    findAll(): Promise<FeedSubscription[]>
-    findByUrl(url: string): Promise<FeedSubscription | null>
+    save(subscription: FeedSubscription): Promise<PersistedFeedSubscription>
+    findAll(): Promise<PersistedFeedSubscription[]>
+    findByUrl(url: string): Promise<PersistedFeedSubscription | null>
     delete(id: number): Promise<void>
 }

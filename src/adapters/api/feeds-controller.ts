@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { PersistedFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
 import { FeedAlreadySubscribedError, InvalidFeedSubscriptionError } from '@/src/core/domain/feed/feed-errors'
 import { toFeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 
 type Deps = {
-    subscribeToFeed: (url: string) => Promise<FeedSubscription>
-    listFeedSubscriptions: () => Promise<FeedSubscription[]>
+    subscribeToFeed: (url: string) => Promise<PersistedFeedSubscription>
+    listFeedSubscriptions: () => Promise<PersistedFeedSubscription[]>
     unsubscribeFromFeed: (id: number) => Promise<void>
 }
 
