@@ -11,3 +11,13 @@ export class FeedAlreadySubscribedError extends Error {
         this.name = 'FeedAlreadySubscribedError'
     }
 }
+
+export class FeedUnavailableError extends Error {
+    constructor(
+        url: string,
+        readonly reason: string
+    ) {
+        super(`Flux inaccessible : ${url}`)
+        this.name = 'FeedUnavailableError'
+    }
+}
