@@ -110,7 +110,11 @@ npx knex seed:run                      # run seeds
 
 Before creating any new file, read an existing similar file to understand the pattern.
 
-### Layered architecture — always follow this flow:
+### Target architecture — for new code
+
+New features follow `documentation/architecture-cible.md` (Clean Architecture: entities → ports → use cases → adapters → `src/composition/container.ts` → thin Next route; HTTP client in `src/client/api/`). Feed subscriptions are the first slice built this way: use them as the reference. The layered flow below describes the code not migrated yet (gloses, people); don't migrate it as a side effect of unrelated work.
+
+### Layered architecture — existing code:
 
 ```
 Page (src/pages/)
