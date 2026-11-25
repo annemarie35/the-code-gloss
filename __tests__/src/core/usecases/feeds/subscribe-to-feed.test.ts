@@ -37,4 +37,19 @@ describe('subscribeToFeed', () => {
         await expect(subscribe('ftp://example.com/feed.xml')).rejects.toBeInstanceOf(InvalidFeedSubscriptionError)
         expect(feedSubscriptionRepository.subscriptions).toEqual([])
     })
+
+    it('should store the normalized url', async () => {
+        const feedSubscriptionRepository = inMemoryFeedSubscriptionRepository()
+        const subscribe = subscribeToFeed({ feedSubscriptionRepository, clock: fixedClock(now) })
+
+        expect((await subscribe('HTTPS://Blog.Example.com')).url).toBe('https://blog.example.com/')
+    })
+
+    it('should refuse an url equivalent to one already subscribed', async () => {
+        const existing = { id: 7, url: 'https://blog.example.com/', createdAt: now }
+        const feedSubscriptionRepository = inMemoryFeedSubscriptionRepository([existing])
+        const subscribe = subscribeToFeed({ feedSubscriptionRepository, clock: fixedClock(now) })
+
+        await expect(subscribe('https://Blog.Example.com:443')).rejects.toBeInstanceOf(FeedAlreadySubscribedError)
+    })
 })

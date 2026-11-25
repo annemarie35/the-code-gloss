@@ -234,6 +234,17 @@ describe('Feeds page', () => {
             expect(screen.getAllByText(FEED_A_URL)).toHaveLength(1)
         })
 
+        it('should refuse a url equivalent to one already saved', async () => {
+            render(<FeedsPage />)
+            await addFeed(FEED_A_URL)
+            await screen.findByText('Article A')
+
+            await addFeed('HTTPS://A.Example.com:443/feed.xml')
+
+            expect(await screen.findByText(`Flux déjà ajouté : ${FEED_A_URL}`)).toBeInTheDocument()
+            expect(subscribeToFeedMock).toHaveBeenCalledOnce()
+        })
+
         it('should clear the previous error when a feed is added', async () => {
             render(<FeedsPage />)
             await addFeed(FEED_A_URL)

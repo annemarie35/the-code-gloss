@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createFeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { createFeedSubscription, normalizeFeedUrl } from '@/src/core/domain/feed/FeedSubscription'
 import { InvalidFeedSubscriptionError } from '@/src/core/domain/feed/feed-errors'
 
 describe('createFeedSubscription', () => {
@@ -55,5 +55,23 @@ describe('createFeedSubscription', () => {
         const url = `https://example.com/${'a'.repeat(480)}`
 
         expect(createFeedSubscription(url, now).url).toHaveLength(500)
+    })
+
+    it('should normalize the url so that equivalent urls are stored the same way', () => {
+        expect(createFeedSubscription('HTTPS://Blog.Example.com:443', now).url).toBe('https://blog.example.com/')
+    })
+})
+
+describe('normalizeFeedUrl', () => {
+    it('should lowercase the scheme and the host, drop the default port and add the root path', () => {
+        expect(normalizeFeedUrl(' HTTPS://Blog.Example.com:443 ')).toBe('https://blog.example.com/')
+    })
+
+    it('should keep the path as it is', () => {
+        expect(normalizeFeedUrl('https://example.com/Feed.xml')).toBe('https://example.com/Feed.xml')
+    })
+
+    it('should return the trimmed input when it is not an url', () => {
+        expect(normalizeFeedUrl(' not an url ')).toBe('not an url')
     })
 })

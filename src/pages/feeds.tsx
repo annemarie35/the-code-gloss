@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getFeed, listFeedSubscriptions, subscribeToFeed, unsubscribeFromFeed } from '@/src/client/api/feeds-api'
 import type { FeedSubscriptionDto } from '@/src/adapters/presenters/feed-subscription-presenter'
 import { Feed, FeedItem } from '@/src/core/domain/models/Feed'
+import { normalizeFeedUrl } from '@/src/core/domain/feed/FeedSubscription'
 
 type LoadedFeed = Feed & { url: string }
 
@@ -40,8 +41,9 @@ export default function FeedsPage() {
 
     async function handleAdd(e: React.FormEvent) {
         e.preventDefault()
-        const url = inputRef.current?.value.trim()
-        if (!url) return
+        const rawUrl = inputRef.current?.value.trim()
+        if (!rawUrl) return
+        const url = normalizeFeedUrl(rawUrl)
         setError('')
         if (subscriptions.some((s) => s.url === url)) {
             setError(`Flux déjà ajouté : ${url}`)
