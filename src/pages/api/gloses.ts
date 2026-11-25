@@ -3,21 +3,11 @@ import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
 import { GloseComplete } from '@/src/core/domain/models/Glose'
 import { AddGlose } from '@/src/lib/service/add-glose'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
+import { isSameOrigin } from '@/src/infrastructure/http/origin-check.ts'
 
 const POST_LIMIT = 10
 const GET_LIMIT = 60
 const WINDOW_MS = 60_000
-
-function isValidOrigin(req: NextApiRequest): boolean {
-    const origin = req.headers['origin']
-    const host = req.headers['host']
-    if (!origin || !host) return false
-    try {
-        return new URL(origin).host === host
-    } catch {
-        return false
-    }
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     const ip = getIp(req)
@@ -27,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
         }
-        if (!isValidOrigin(req)) {
+        if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
         }
         await AddGlose(JSON.parse(req.body))
