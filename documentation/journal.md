@@ -38,6 +38,27 @@
     - `/second-brain` retiré du `.gitignore` pour versionner les notes
 - Nouvelle note [claude-code-pr-review-agent](second-brain/20-notes/claude-code-pr-review-agent.md) : comment brancher un agent Claude Code qui fait la code review des PR (GitHub Action `anthropics/claude-code-action`, `/install-github-app`, ou `/code-review` en local)
     - À tester sur ce repo, en ajoutant au prompt les règles de couches du `CLAUDE.md`
+- Ajout des workflows GitHub Claude Code Review et Claude PR Assistant (PR #108)
+- Les seeds insèrent enfin les thèmes et la date de création des gloses, en SQL comme en TypeScript (PR #109)
+    - Nouveau thème `DESIGN`, test unitaire des seeds lancé par `npm run test`, remplacement du matcher déprécié `toBeCalledWith`
+    - Templates du second brain exclus de Prettier (il cassait le placeholder `{{date}}`)
+- Déplacement de la doc et du second brain dans le dossier `documentation/` (PR #110)
+- Ajout de l'[architecture cible](architecture-cible.md) et d'une colonne d'avancement dans le [plan](plan.md) (PR #111)
+- Ménage : suppression d'un paquet inutilisé, `@types/pg` passé en `devDependencies`, retrait des `'use server'` inutiles (sans effet avec le Pages Router), rapports barad-dur ignorés
+- Affichage des thèmes des gloses dans les cartes de la grille (PR #113)
+    - Extraction d'un composant `ThemePill` réutilisé par le filtre et les cartes, restreint aux valeurs de `Theme`
+    - Les thèmes des gloses sont typés `Theme[]` au lieu de `string[]`
+- Scripts `format:check` et `format:fix`, `node_modules` imbriqués ignorés par Prettier (PR #114)
+- Mise en place du test de mutation avec [Stryker](https://stryker-mutator.io/) et le runner Vitest : `npm run test:mutation` (PR #115)
+    - `.claude` et `.agents` exclus de la copie du sandbox Stryker
+    - Premier passage : score global de 62,56 % (493 mutants tués, 193 survivants, 102 sans couverture). Les failles sont suivies dans un nouveau chantier du [plan](plan.md#chantier--failles-révélées-par-le-test-de-mutation)
+- Chasse aux mutants survivants (PR #116 et branche `test/mutation-http-and-api`)
+    - `ThemePill` : la classe de l'état sélectionné n'était pas vérifiée ; `?.` inutile retiré dans `filterByThemes`
+    - `httpClient` : 35,7 % → 71,4 % en couvrant les réponses non `ok`, le JSON invalide et les erreurs réseau. Le reste porte sur la config de pino
+    - Routes API : `feeds.ts` 100 %, `gloses.ts` 97,9 %, `people.ts` 98,6 %. Les tests vérifient maintenant le corps des réponses, plus seulement le code HTTP (helper `createMockApiResponse`)
+    - Pages et composants : `feeds.tsx` 8,6 % → 90,5 %, `index.tsx` 34,8 % → 91,3 %, `about.tsx` 100 %, `gloss-grid.tsx` 97,6 %, `gloss-terms-form.tsx` 95,8 %
+    - :clown_face: Stryker a révélé un test faux : le test « erreur de chargement » de l'index faisait le rendu avant de mocker `fetch` et vérifiait en fait le message de chargement
+    - Leçon : une partie des survivants sont des mutants équivalents (catch vidé qui donne le même 403, dépendances de `useEffect`, `trim()` sur un `input type="url"`). Viser 100 % n'a pas de sens
 
 ## 23/11/2026
 
