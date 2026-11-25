@@ -1,5 +1,5 @@
 import handler from '@/src/pages/api/gloses'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as addGloseMod from '@/src/lib/service/add-glose'
 import * as getGlosesModTOI from '../../../src/lib/service/get-gloses'
 import * as rateLimiterMod from '@/src/lib/rate-limiter'
@@ -16,6 +16,10 @@ vi.mock('@/src/lib/database/insert-gloses-db-query')
 const body = '{"title":"TDD","description":"Created by Kent Beck","tags":"XP"}'
 
 describe('Gloses API', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     it('should get gloses when request method is GET', async () => {
         const getGlosesInMemorySpy = vi.spyOn(getGlosesModTOI, 'getGlosesInMemory').mockResolvedValue(gloses)
         const { res, json } = createMockApiResponse()
@@ -88,6 +92,22 @@ describe('Gloses API', () => {
         await handler(request, res)
 
         expect(res.status).toHaveBeenCalledWith(403)
+    })
+
+    it.each([
+        ['no origin header', { host: 'localhost:3000' }],
+        ['an origin on another port', { origin: 'http://localhost:4000', host: 'localhost:3000' }],
+        ['a mismatched origin', { origin: 'http://evil.com', host: 'localhost:3000' }]
+    ])('should not add a glose when POST request has %s', async (_label, headers) => {
+        const addGloseSpy = vi.spyOn(addGloseMod, 'AddGlose')
+        const { res, json } = createMockApiResponse()
+
+        // @ts-expect-error -- partial request mock
+        await handler({ method: 'POST', headers, body }, res)
+
+        expect(addGloseSpy).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(403)
+        expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
     })
 
     it('should return 429 when POST rate limit is exceeded', async () => {

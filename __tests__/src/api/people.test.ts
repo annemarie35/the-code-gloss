@@ -1,5 +1,5 @@
 import handler from '@/src/pages/api/people'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as addPersonMod from '@/src/core/domain/usecases/add-person.ts'
 import * as deletePersonMod from '@/src/core/domain/usecases/delete-person.ts'
 import * as getPeopleMod from '@/src/lib/service/get-people'
@@ -14,6 +14,10 @@ vi.mock('@/src/lib/rate-limiter', () => ({
 const validOriginHeaders = { origin: 'http://localhost:3000', host: 'localhost:3000' }
 
 describe('People API', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     describe('Create a person', () => {
         it('should create a person when request method is POST with valid origin', async () => {
             const addPersonSpy = vi.spyOn(addPersonMod, 'addPerson').mockResolvedValue('succes')
@@ -90,6 +94,22 @@ describe('People API', () => {
             expect(res.status).toHaveBeenCalledWith(403)
         })
 
+        it.each([
+            ['no origin header', { host: 'localhost:3000' }],
+            ['an origin on another port', { origin: 'http://localhost:4000', host: 'localhost:3000' }],
+            ['a mismatched origin', { origin: 'http://evil.com', host: 'localhost:3000' }]
+        ])('should not add a person when POST request has %s', async (_label, headers) => {
+            const addPersonSpy = vi.spyOn(addPersonMod, 'addPerson').mockResolvedValue('succes')
+            const { res, json } = createMockApiResponse()
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'POST', headers, body: '{"first_name":"Ada"}' }, res)
+
+            expect(addPersonSpy).not.toHaveBeenCalled()
+            expect(res.status).toHaveBeenCalledWith(403)
+            expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
+        })
+
         it('should return 429 when POST rate limit is exceeded', async () => {
             vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
             const { res, json } = createMockApiResponse()
@@ -162,6 +182,24 @@ describe('People API', () => {
             // @ts-expect-error -- partial request mock
             await handler(request, res)
 
+            expect(res.status).toHaveBeenCalledWith(403)
+            expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
+        })
+
+        it.each([
+            ['no origin header', { host: 'localhost:3000' }],
+            ['an empty host header', { origin: 'file:///', host: '' }],
+            ['a malformed origin', { origin: 'not-a-url', host: 'localhost:3000' }],
+            ['an origin on another port', { origin: 'http://localhost:4000', host: 'localhost:3000' }],
+            ['a mismatched origin', { origin: 'http://evil.com', host: 'localhost:3000' }]
+        ])('should not delete a person when DELETE request has %s', async (_label, headers) => {
+            const deletePersonSpy = vi.spyOn(deletePersonMod, 'deletePerson').mockResolvedValue('succes')
+            const { res, json } = createMockApiResponse()
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'DELETE', headers, query: { id: '1' } }, res)
+
+            expect(deletePersonSpy).not.toHaveBeenCalled()
             expect(res.status).toHaveBeenCalledWith(403)
             expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
         })
