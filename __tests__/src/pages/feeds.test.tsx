@@ -316,6 +316,27 @@ describe('Feeds page', () => {
             expect(screen.getByText(FEED_B_URL)).toBeInTheDocument()
         })
 
+        it('should not display a feed removed while it was still loading', async () => {
+            listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA, subscriptionB], error: null })
+            let resolveFeedA: (response: { feed: Feed; error: null }) => void = () => {}
+            getFeedMock.mockImplementation((url) =>
+                url === FEED_A_URL
+                    ? new Promise((resolve) => (resolveFeedA = resolve))
+                    : Promise.resolve({ feed: feedsByUrl[url], error: null })
+            )
+            render(<FeedsPage />)
+            await screen.findByText('Article B')
+
+            await userEvent.click(screen.getByRole('button', { name: `Supprimer ${FEED_A_URL}` }))
+            await waitFor(() => expect(screen.queryByText(FEED_A_URL)).not.toBeInTheDocument())
+            resolveFeedA({ feed: feedA, error: null })
+
+            await waitFor(() => expect(getFeedMock).toHaveBeenCalledWith(FEED_A_URL))
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            expect(screen.queryByText('Article A')).not.toBeInTheDocument()
+            expect(screen.getByText('Article B')).toBeInTheDocument()
+        })
+
         it('should keep the feed and display the error when it cannot be deleted', async () => {
             listFeedSubscriptionsMock.mockResolvedValue({ subscriptions: [subscriptionA], error: null })
             unsubscribeFromFeedMock.mockResolvedValue({ error: 'Une erreur est survenue dans la suppression du flux' })

@@ -7,7 +7,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 ## Corrigés dans la PR #120 (revue de code)
 
 - [x] **a. Course à l'abonnement** : deux `POST` simultanés passent tous les deux `findByUrl`, et le second `INSERT` viole la contrainte `UNIQUE` (code pg `23505`) : 500 au lieu de 409. Le repository traduit `23505` en `FeedAlreadySubscribedError`.
-- [ ] **b. Flux supprimé qui réapparaît** : un `loadFeed` encore en cours au moment de la suppression rajoute le flux. La page n'affiche que les flux encore abonnés.
+- [x] **b. Flux supprimé qui réapparaît** : un `loadFeed` encore en cours au moment de la suppression rajoute le flux. La page n'affiche que les flux encore abonnés.
 - [x] **c. URL non normalisée** : `https://Example.com` et `https://example.com/` passent pour deux flux. L'entité stocke `new URL(url).href`, et la page compare avec la même normalisation (`normalizeFeedUrl`).
 - [x] **d. `id as number` dans le presenter** : un abonnement enregistré a toujours un id. Le type `PersistedFeedSubscription` le garantit, et le repository le renvoie.
 - [x] **e. Ports sans test** : tests de type (`expectTypeOf`) pour `clock.ts` et `feed-subscription-repository.ts`.

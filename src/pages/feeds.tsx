@@ -69,7 +69,9 @@ export default function FeedsPage() {
         setFeeds((prev) => prev.filter((f) => f.url !== subscription.url))
     }
 
-    const allItems: (FeedItem & { feedTitle: string })[] = feeds.flatMap((feed) =>
+    // A feed still loading when it was removed comes back in `feeds`: only show subscribed ones
+    const subscribedFeeds = feeds.filter((feed) => subscriptions.some((s) => s.url === feed.url))
+    const allItems: (FeedItem & { feedTitle: string })[] = subscribedFeeds.flatMap((feed) =>
         feed.items.map((item) => ({ ...item, feedTitle: feed.title }))
     )
 
