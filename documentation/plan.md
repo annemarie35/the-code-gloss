@@ -117,6 +117,8 @@ Les modifications sont classées de la plus critique à la moins critique :
 
 **Modification :** Migrer `add-glose` vers un use case avec injection du repository, regrouper les repositories dans `infra/repositories/` (`glose_repository.ts`), puis mettre à jour `CLAUDE.md`.
 
+**Avancement :** la cible est décrite dans [architecture-cible.md](architecture-cible.md). Les abonnements aux flux RSS (`plans/feed-subscriptions.md`) en sont la première tranche verticale : entité `FeedSubscription`, ports `FeedSubscriptionRepository` et `Clock`, use cases `src/core/usecases/feeds/`, `pgFeedSubscriptionRepository`, `feedsController`, `src/composition/container.ts` et `src/client/api/feeds-api.ts`. Les gloses et les personnes restent à migrer.
+
 ### Priorité faible
 
 #### 11. Ranger les types dans le domaine et supprimer les duplications

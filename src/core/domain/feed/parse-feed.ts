@@ -34,12 +34,8 @@ function isAtomFeed(xml: string): boolean {
     return /xmlns="http:\/\/www\.w3\.org\/2005\/Atom"/i.test(xml)
 }
 
-export async function getFeedFromUrl(url: string): Promise<Feed> {
-    const response = await fetch(url)
-    if (!response.ok) {
-        throw new Error(`Failed to fetch feed: ${url}`)
-    }
-    const xml = await response.text()
+// Regex parsing moved as is from src/lib/service/get-feeds.ts: plan item 9 replaces it with an XML parser
+export function parseFeed(xml: string): Feed {
     const items = isAtomFeed(xml) ? parseAtomEntries(xml) : parseRssItems(xml)
     return {
         title: extractTag(xml, 'title'),

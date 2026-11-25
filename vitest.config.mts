@@ -13,6 +13,7 @@ export default defineConfig({
             '**/dist/**',
             '**/.{idea,git,cache,output,temp}/**',
             '__tests__/infra/**/!(create_gloses_and_seeds).test.ts',
+            '__tests__/src/infrastructure/postgres/**',
             '.agents/**',
             '.claude/**'
         ],
