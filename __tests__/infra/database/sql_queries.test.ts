@@ -4,7 +4,7 @@ import pkg from 'pg'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { INSERT_GLOSE, INSERT_PERSON, SELECT_ALL, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
+import INSERT_GLOSE, { INSERT_PERSON, SELECT_ALL, SELECT_ALL_PEOPLE } from '@/infra/database/sql_queries'
 
 const { Pool } = pkg
 
