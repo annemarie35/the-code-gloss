@@ -1,8 +1,9 @@
 import handler from '@/src/pages/api/feeds'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import * as getFeedsMod from '@/src/lib/service/get-feeds'
 import * as rateLimiterMod from '@/src/lib/rate-limiter'
 import { Feed } from '@/src/core/domain/models/Feed'
+import { createMockApiResponse } from '@/__tests__/test-helpers.ts'
 
 vi.mock('@/src/lib/service/get-feeds')
 vi.mock('@/src/lib/rate-limiter', () => ({
@@ -23,61 +24,87 @@ const mockFeed: Feed = {
 }
 
 describe('Feeds API', () => {
-    let res: { status: ReturnType<typeof vi.fn>; json: ReturnType<typeof vi.fn> }
-
-    beforeEach(() => {
-        const json = vi.fn()
-        res = {
-            status: vi.fn().mockReturnValue({ json }),
-            json
-        }
-    })
-
     it('should return 200 with feed data', async () => {
-        vi.spyOn(getFeedsMod, 'getFeedFromUrl').mockResolvedValue(mockFeed)
+        const getFeedSpy = vi.spyOn(getFeedsMod, 'getFeedFromUrl').mockResolvedValue(mockFeed)
+        const { res, json } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
         await handler({ query: { url: 'https://example.com/feed.xml' } }, res)
+
+        expect(getFeedSpy).toHaveBeenCalledWith('https://example.com/feed.xml')
+        expect(res.status).toHaveBeenCalledWith(200)
+        expect(json).toHaveBeenCalledWith(mockFeed)
+    })
+
+    it('should accept an http url', async () => {
+        vi.spyOn(getFeedsMod, 'getFeedFromUrl').mockResolvedValue(mockFeed)
+        const { res } = createMockApiResponse()
+
+        // @ts-expect-error -- partial request mock
+        await handler({ query: { url: 'http://example.com/feed.xml' } }, res)
 
         expect(res.status).toHaveBeenCalledWith(200)
     })
 
     it('should return 400 when url is missing', async () => {
+        const { res, json } = createMockApiResponse()
+
         // @ts-expect-error -- partial request mock
         await handler({ query: {} }, res)
 
         expect(res.status).toHaveBeenCalledWith(400)
+        expect(json).toHaveBeenCalledWith({ error: 'Missing url parameter' })
+    })
+
+    it('should return 400 when url is given several times', async () => {
+        const { res, json } = createMockApiResponse()
+
+        // @ts-expect-error -- partial request mock
+        await handler({ query: { url: ['https://example.com/a.xml', 'https://example.com/b.xml'] } }, res)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(json).toHaveBeenCalledWith({ error: 'Missing url parameter' })
     })
 
     it('should return 400 when url is invalid', async () => {
+        const { res, json } = createMockApiResponse()
+
         // @ts-expect-error -- partial request mock
         await handler({ query: { url: 'not-a-url' } }, res)
 
         expect(res.status).toHaveBeenCalledWith(400)
+        expect(json).toHaveBeenCalledWith({ error: 'Invalid URL' })
     })
 
     it('should return 400 when protocol is not http or https', async () => {
+        const { res, json } = createMockApiResponse()
+
         // @ts-expect-error -- partial request mock
         await handler({ query: { url: 'ftp://example.com/feed.xml' } }, res)
 
         expect(res.status).toHaveBeenCalledWith(400)
+        expect(json).toHaveBeenCalledWith({ error: 'Invalid URL protocol' })
     })
 
     it('should return 502 when the service throws', async () => {
         vi.spyOn(getFeedsMod, 'getFeedFromUrl').mockRejectedValue(new Error('fetch failed'))
+        const { res, json } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
         await handler({ query: { url: 'https://example.com/feed.xml' } }, res)
 
         expect(res.status).toHaveBeenCalledWith(502)
+        expect(json).toHaveBeenCalledWith({ error: 'Failed to fetch feed' })
     })
 
     it('should return 429 when rate limit is exceeded', async () => {
         vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+        const { res, json } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
         await handler({ query: { url: 'https://example.com/feed.xml' } }, res)
 
         expect(res.status).toHaveBeenCalledWith(429)
+        expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
     })
 })

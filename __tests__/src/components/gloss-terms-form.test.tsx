@@ -88,6 +88,32 @@ describe('Gloss Form Terms', () => {
             expect(getByRole('button', { name: /ajouter/i })).toBeEnabled()
         })
 
+        it('should be disabled when every text field is filled but no theme is selected', async () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
+            await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+
+            expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+        })
+
+        it.each(['title', 'description', 'tags'])(
+            'should be disabled when %s only contains spaces',
+            async (blankField) => {
+                const { getByRole } = render(<GlossTermsForm />)
+                const values: Record<string, string> = { title: 'TDD', description: 'Created by Kent Beck', tags: 'XP' }
+                values[blankField] = '   '
+
+                for (const [field, value] of Object.entries(values)) {
+                    await userEvent.type(getByRole('textbox', { name: new RegExp(field, 'i') }), value)
+                }
+                await userEvent.selectOptions(getByRole('combobox', { name: /theme/i }), 'CRAFT')
+
+                expect(getByRole('button', { name: /ajouter/i })).toBeDisabled()
+            }
+        )
+
         it('should be disabled again when a field is cleared after being filled', async () => {
             const { getByRole } = render(<GlossTermsForm />)
             const titleInput = getByRole('textbox', { name: /title/i })
@@ -103,6 +129,43 @@ describe('Gloss Form Terms', () => {
     })
 
     describe('on submit', () => {
+        async function fillAndSubmit(getByRole: ReturnType<typeof render>['getByRole']) {
+            await userEvent.type(getByRole('textbox', { name: /title/i }), 'TDD')
+            await userEvent.type(getByRole('textbox', { name: /description/i }), 'Created by Kent Beck')
+            await userEvent.type(getByRole('textbox', { name: /tags/i }), 'XP')
+            await userEvent.selectOptions(getByRole('combobox', { name: /theme/i }), 'CRAFT')
+            await userEvent.click(getByRole('button', { name: /ajouter/i }))
+        }
+
+        it('should not display any feedback before submitting', () => {
+            const { getByTestId } = render(<GlossTermsForm />)
+
+            expect(getByTestId('gloss-terms-form').lastElementChild).toBeEmptyDOMElement()
+        })
+
+        it('should display a loading label while the glose is being saved', async () => {
+            let resolveFetch: (value: unknown) => void = () => {}
+            global.fetch = vi.fn().mockReturnValue(new Promise((resolve) => (resolveFetch = resolve)))
+            const { getByRole, findByRole } = render(<GlossTermsForm />)
+
+            await fillAndSubmit(getByRole)
+
+            expect(await findByRole('button', { name: 'Loading' })).toBeDisabled()
+
+            // Let the pending action settle, otherwise React keeps later actions waiting behind it
+            resolveFetch(createMockFetchResponse({ data: gloses, ok: true, status: 200 }))
+            expect(await findByRole('button', { name: /ajouter/i })).toBeInTheDocument()
+        })
+
+        it('should display an error message when the glose cannot be saved', async () => {
+            global.fetch = vi.fn().mockRejectedValue(new Error('network down'))
+            const { getByRole, findByText } = render(<GlossTermsForm />)
+
+            await fillAndSubmit(getByRole)
+
+            expect(await findByText("Une erreur est survenue dans l'ajout d'un nouveau terme")).toBeInTheDocument()
+        })
+
         it('should persist glose and display a success message on submit containing glose title', async () => {
             const { getByRole, getByText } = render(<GlossTermsForm />)
             const gloseTitleInput = getByRole('textbox', { name: /title/i })

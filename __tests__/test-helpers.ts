@@ -1,4 +1,11 @@
+import { vi } from 'vitest'
 import { GloseComplete } from '@/src/core/domain/models/Glose'
+
+export function createMockApiResponse() {
+    const json = vi.fn()
+    const res = { status: vi.fn().mockReturnValue({ json }) }
+    return { res, json }
+}
 
 export function createMockFetchResponse(options: Partial<Template> = {}) {
     return {
