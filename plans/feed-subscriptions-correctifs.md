@@ -4,6 +4,15 @@
 
 Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-subscriptions.md`, branche `feat/feed-subscriptions`), sans être corrigés. Ils sont classés par priorité. Le code neuf suit `documentation/architecture-cible.md` et chaque correctif se fait en TDD (test rouge, puis code, puis vert).
 
+## Corrigés dans la PR #120 (revue de code)
+
+- [ ] **a. Course à l'abonnement** : deux `POST` simultanés passent tous les deux `findByUrl`, et le second `INSERT` viole la contrainte `UNIQUE` (code pg `23505`) : 500 au lieu de 409. Le repository traduit `23505` en `FeedAlreadySubscribedError`.
+- [ ] **b. Flux supprimé qui réapparaît** : un `loadFeed` encore en cours au moment de la suppression rajoute le flux. La page n'affiche que les flux encore abonnés.
+- [ ] **c. URL non normalisée** : `https://Example.com` et `https://example.com/` passent pour deux flux. L'entité stocke `new URL(url).href`, et la page compare avec la même normalisation (`normalizeFeedUrl`).
+- [ ] **d. `id as number` dans le presenter** : un abonnement enregistré a toujours un id. Le type `PersistedFeedSubscription` le garantit, et le repository le renvoie.
+- [ ] **e. Ports sans test** : tests de type (`expectTypeOf`) pour `clock.ts` et `feed-subscription-repository.ts`.
+- [ ] **f. URL relative** : `feeds-api.ts` appelle `/api/feeds` au lieu de `http://localhost:3000/api/feeds` (point 4 ci-dessous, pour les flux seulement).
+
 ## Priorité haute
 
 - [ ] **1. Protéger `GET /api/feeds?url=` contre la SSRF**
