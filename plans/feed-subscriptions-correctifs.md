@@ -15,7 +15,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 
 ## Priorité haute
 
-- [ ] **1. Protéger `GET /api/feeds?url=` contre la SSRF**
+- [x] **1. Protéger `GET /api/feeds?url=` contre la SSRF**
     - **Problème** : le serveur va chercher n'importe quelle URL http ou https (`src/lib/service/get-feeds.ts`), y compris `localhost`, une IP privée (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), le lien local `169.254.0.0/16` (métadonnées cloud) ou une adresse IPv6 locale. Il n'y a pas de timeout ni de taille maximale. L'URL n'a même pas besoin d'être enregistrée : n'importe quel visiteur peut s'en servir.
     - **Préconisation** :
         - créer le port `src/core/ports/feed-reader.ts` et son adaptateur `src/infrastructure/rss/http-feed-reader.ts`, comme le prévoit la cible ;
@@ -23,6 +23,18 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
         - **limites** : timeout (`AbortSignal.timeout(5_000)`), lecture du corps plafonnée (par exemple 2 Mo), `Content-Type` attendu (XML, RSS ou Atom) ;
         - **portée** : ne servir que les flux enregistrés, en passant à `GET /api/feeds/[id]/items` au lieu de `?url=`. Cela supprime le proxy ouvert.
     - **Tests** : IP privées, IPv4 et IPv6, `localhost`, nom d'hôte qui résout vers une IP privée, redirection vers une IP interne, timeout, corps trop gros. Les appels DNS et `fetch` sont injectés, sans réseau.
+    - **Étapes** (TDD) :
+        - [x] a. `src/core/domain/feed/parse-feed.ts` : déplacer le parsing de `get-feeds.ts` sans le changer (le point 9 le remplacera), avec ses tests.
+        - [x] b. Erreurs `FeedSubscriptionNotFoundError` et `FeedUnavailableError` dans `feed-errors.ts`.
+        - [x] c. `findById` dans le port `FeedSubscriptionRepository`, la requête `SELECT_FEED_SUBSCRIPTION_BY_ID`, le repository pg et le faux en mémoire.
+        - [x] d. Port `src/core/ports/feed-reader.ts` (`read(url): Promise<string>`, lève `FeedUnavailableError`).
+        - [x] e. Use case `src/core/usecases/feeds/read-feed.ts` : abonnement par id (sinon `FeedSubscriptionNotFoundError`), lecture, parsing.
+        - [x] f. `src/infrastructure/rss/address-guard.ts` : `isPublicAddress(ip)` (plages réservées IPv4 et IPv6 via `net.BlockList`, adresses IPv4 mappées en IPv6) et `guardedLookup`, qui valide **toutes** les adresses résolues au moment de la connexion : pas de fenêtre de DNS rebinding entre la vérification et la connexion.
+        - [x] g. `src/infrastructure/rss/http-feed-reader.ts` : `http`/`https` de Node avec `guardedLookup`, IP littérales vérifiées avant la connexion, redirections manuelles (3 au plus, http(s) seulement, chaque saut revalidé), timeout global de 5 s, corps plafonné à 2 Mo, `Content-Type` XML, RSS ou Atom. Tests contre un serveur HTTP local et un DNS injecté.
+        - [x] h. Contrôleur `items` : 200 (`Feed`), 400 (id invalide), 404 (abonnement inconnu), 502 (flux inaccessible), 500. Câblage dans `container.ts`.
+        - [x] i. Route `src/pages/api/feeds/[id]/items.ts` (GET seulement, rate limit des lectures) ; retirer `GET /api/feeds?url=` de `feeds.ts` ; supprimer `src/lib/service/get-feeds.ts` et son test.
+        - [x] j. Client `getFeedItems(id)` à la place de `getFeed(url)`, et la page charge les flux par id.
+        - [x] k. Vérifications : type-check, lint, tests, tests DB, `/verify` (flux réel chargé, `?url=` ne sert plus rien, `/api/feeds/<id>/items` d'un id inconnu → 404).
 
 - [ ] **2. Séparer les compteurs du rate limiter**
     - **Problème** : `src/lib/rate-limiter.ts` garde un seul compteur par IP pour toutes les routes et toutes les méthodes, donc les GET comptent dans la limite de 10 écritures par minute. En dev, React StrictMode double les appels du montage : ouvrir `/feeds` deux ou trois fois suffit pour que le `POST` ou le `DELETE` suivant reçoive un 429. Le problème touche aussi `people` et `gloses`.

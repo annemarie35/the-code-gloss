@@ -31,13 +31,13 @@ Les flèches pleines sont des appels ou des imports. Elles vont toujours vers le
 flowchart TB
     subgraph browser["Navigateur"]
         page["pages/feeds.tsx"]
-        client["client/api/feeds-api.ts<br/>getFeed · listFeedSubscriptions<br/>subscribeToFeed · unsubscribeFromFeed"]
+        client["client/api/feeds-api.ts<br/>getFeedItems · listFeedSubscriptions<br/>subscribeToFeed · unsubscribeFromFeed"]
     end
 
     subgraph next["Route Next"]
-        route["pages/api/feeds.ts<br/>rate limit · origin check · 405"]
+        route["pages/api/feeds.ts<br/>GET liste · POST · DELETE<br/>rate limit · origin check · 405"]
+        itemsRoute["pages/api/feeds/[id]/items.ts<br/>GET articles · rate limit · 405"]
         origin["infrastructure/http/origin-check.ts"]
-        legacy["lib/service/get-feeds.ts<br/>GET ?url= (existant)"]
     end
 
     subgraph composition["Composition"]
@@ -45,7 +45,7 @@ flowchart TB
     end
 
     subgraph adapters["Adaptateurs entrants"]
-        controller["adapters/api/feeds-controller.ts<br/>list 200 · subscribe 201/400/409 · unsubscribe 200/400"]
+        controller["adapters/api/feeds-controller.ts<br/>list 200 · subscribe 201/400/409 · unsubscribe 200/400<br/>items 200/400/404/502"]
         presenter["adapters/presenters/feed-subscription-presenter.ts<br/>→ FeedSubscriptionDto"]
     end
 
@@ -53,36 +53,49 @@ flowchart TB
         subscribe["usecases/feeds/subscribe-to-feed.ts"]
         list["usecases/feeds/list-feed-subscriptions.ts"]
         unsubscribe["usecases/feeds/unsubscribe-from-feed.ts"]
+        read["usecases/feeds/read-feed.ts"]
+        parse["domain/feed/parse-feed.ts"]
         entity["domain/feed/FeedSubscription.ts<br/>createFeedSubscription · normalizeFeedUrl"]
-        errors["domain/feed/feed-errors.ts<br/>InvalidFeedSubscriptionError · FeedAlreadySubscribedError"]
+        errors["domain/feed/feed-errors.ts<br/>InvalidFeedSubscription · FeedAlreadySubscribed<br/>FeedSubscriptionNotFound · FeedUnavailable"]
         repoPort[["ports/feed-subscription-repository.ts"]]
         clockPort[["ports/clock.ts"]]
+        readerPort[["ports/feed-reader.ts"]]
     end
 
     subgraph infra["Adaptateurs sortants"]
         pgRepo["infrastructure/postgres/pg-feed-subscription-repository.ts<br/>23505 → FeedAlreadySubscribedError"]
         clock["infrastructure/system-clock.ts"]
+        reader["infrastructure/rss/http-feed-reader.ts<br/>redirections revalidées · 5 s · 2 Mo · type XML"]
+        guard["infrastructure/rss/address-guard.ts<br/>IP publiques seulement, vérifiées à la connexion"]
     end
+
+    web(("Sites des flux"))
 
     db[("PostgreSQL<br/>feed_subscriptions<br/>url UNIQUE")]
 
     page --> client
     page -. normalizeFeedUrl .-> entity
-    client -- "fetch /api/feeds" --> route
+    client -- "/api/feeds" --> route
+    client -- "/api/feeds/:id/items" --> itemsRoute
     route --> origin
-    route --> legacy
     route --> container
+    itemsRoute --> container
     container --> controller
     controller --> presenter
-    controller --> subscribe & list & unsubscribe
+    controller --> subscribe & list & unsubscribe & read
     subscribe --> entity
     subscribe --> errors
     subscribe --> repoPort & clockPort
     list --> repoPort
     unsubscribe --> repoPort
+    read --> repoPort & readerPort
+    read --> parse
     pgRepo -.implémente.-> repoPort
     clock -.implémente.-> clockPort
-    container -. instancie .-> pgRepo & clock
+    reader -.implémente.-> readerPort
+    reader --> guard
+    reader --> web
+    container -. instancie .-> pgRepo & clock & reader
     pgRepo --> db
 ```
 
@@ -126,7 +139,52 @@ sequenceDiagram
     end
     R-->>C: réponse
     C-->>P: { subscription, error }
-    P->>C: getFeed(subscription.url)
+    P->>C: getFeedItems(subscription.id)
+```
+
+### Lecture des articles d'un flux (`GET /api/feeds/:id/items`)
+
+Le serveur ne va chercher que des URLs enregistrées dans `feed_subscriptions` : il n'y a plus de proxy ouvert (`GET /api/feeds?url=` liste seulement les abonnements).
+
+```mermaid
+sequenceDiagram
+    participant C as feeds-api.ts
+    participant R as /api/feeds/[id]/items
+    participant Ctl as feedsController.items
+    participant UC as readFeed
+    participant Repo as pgFeedSubscriptionRepository
+    participant Rd as httpFeedReader
+    participant G as guardedLookup
+    participant S as Site du flux
+
+    C->>R: GET /api/feeds/7/items
+    R->>R: rate limit (30/min)
+    R->>Ctl: items(req, res)
+    Ctl->>Ctl: id valide ? sinon 400
+    Ctl->>UC: readFeed(7)
+    UC->>Repo: findById(7)
+    alt abonnement inconnu
+        UC-->>Ctl: FeedSubscriptionNotFoundError
+        Ctl-->>R: 404
+    else abonnement trouvé
+        UC->>Rd: read(url)
+        loop au plus 3 redirections
+            Rd->>Rd: http(s) seulement, IP littérale publique
+            Rd->>G: résolution DNS à la connexion
+            G->>G: toutes les adresses publiques ? sinon refus
+            Rd->>S: GET (timeout global 5 s)
+            S-->>Rd: 3xx Location → saut suivant, revalidé
+        end
+        alt refus, erreur, délai, > 2 Mo ou type non XML
+            Rd-->>Ctl: FeedUnavailableError (raison gardée côté serveur)
+            Ctl-->>R: 502 « Flux inaccessible »
+        else 2xx XML
+            Rd-->>UC: document
+            UC->>UC: parseFeed(document)
+            UC-->>Ctl: Feed
+            Ctl-->>R: 200 { title, items }
+        end
+    end
 ```
 
 ## Étapes (TDD : test rouge → code → vert)
