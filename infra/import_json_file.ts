@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import type { GloseComplete } from '../src/core/domain/models/Glose.ts'
+import type { Person } from '../src/core/domain/Types/Person.ts'
 
 export const importJsonFile = (filePath: string): Seeds => {
     const dataFilePath = path.resolve(process.cwd(), filePath)
@@ -13,12 +14,23 @@ export const importJsonFile = (filePath: string): Seeds => {
 
     const dataEntries = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'))
 
-    if (!Array.isArray(dataEntries)) {
-        throw new Error('The JSON file must contain an array of entries')
+    if (!isSeeds(dataEntries)) {
+        throw new Error('The JSON file must contain an object with "gloses" and "people" arrays')
     }
 
-    console.log(`File with ${dataEntries.length} entries successfully imported!`)
+    console.log(
+        `File with ${dataEntries.gloses.length} gloses and ${dataEntries.people.length} people successfully imported!`
+    )
     return dataEntries
 }
 
-export type Seeds = Omit<GloseComplete, 'id'>[]
+const isSeeds = (data: unknown): data is Seeds =>
+    typeof data === 'object' &&
+    data !== null &&
+    !Array.isArray(data) &&
+    Array.isArray((data as Seeds).gloses) &&
+    Array.isArray((data as Seeds).people)
+
+export type GloseSeed = Omit<GloseComplete, 'id' | 'created_at'>
+export type PersonSeed = Omit<Person, 'id' | 'created_at'>
+export type Seeds = { gloses: GloseSeed[]; people: PersonSeed[] }

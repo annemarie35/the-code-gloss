@@ -1,20 +1,64 @@
-[
-    {
-        "description": "Invented by Alistair Cockburn in 2005",
-        "tags": "Craft, Architecture",
-        "title": "Hexagonale architecture",
-        "themes": ["CRAFT"]
-    },
-    {
-        "description": "Invented by Eric Evans in 2003",
-        "tags": "Architecture",
-        "title": "DDD",
-        "themes": ["DDD"]
-    },
-    {
-        "description": "Software engineer and instructor, Robert C. Martin, introduced the collection of principles in his 2000 paper Design Principles and Design Patterns about software rot. The SOLID acronym was coined around 2004 by Michael Feathers.",
-        "tags": "Design, OOP",
-        "title": "SOLID",
-        "themes": ["DESIGN"]
-    }
-]
+{
+    "gloses": [
+        {
+            "description": "Invented by Alistair Cockburn in 2005",
+            "tags": "Craft, Architecture",
+            "title": "Hexagonale architecture",
+            "themes": ["CRAFT"]
+        },
+        {
+            "description": "Invented by Eric Evans in 2003",
+            "tags": "Architecture",
+            "title": "DDD",
+            "themes": ["DDD"]
+        },
+        {
+            "description": "Software engineer and instructor, Robert C. Martin, introduced the collection of principles in his 2000 paper Design Principles and Design Patterns about software rot. The SOLID acronym was coined around 2004 by Michael Feathers.",
+            "tags": "Design, OOP",
+            "title": "SOLID",
+            "themes": ["DESIGN"]
+        }
+    ],
+    "people": [
+        {
+            "first_name": "Alistair",
+            "last_name": "Cockburn",
+            "nickname": null,
+            "blog_url": "https://alistaircockburn.com",
+            "linkedin_url": null,
+            "biography": "Co-author of the Agile Manifesto, he introduced the hexagonal architecture (ports and adapters) in 2005.",
+            "year_of_birth": 1953,
+            "tags": "Craft, Architecture, Agile"
+        },
+        {
+            "first_name": "Eric",
+            "last_name": "Evans",
+            "nickname": null,
+            "blog_url": "https://www.domainlanguage.com",
+            "linkedin_url": null,
+            "biography": "Author of Domain-Driven Design: Tackling Complexity in the Heart of Software (2003).",
+            "year_of_birth": null,
+            "tags": "DDD, Architecture"
+        },
+        {
+            "first_name": "Robert C.",
+            "last_name": "Martin",
+            "nickname": "Uncle Bob",
+            "blog_url": "https://blog.cleancoder.com",
+            "linkedin_url": null,
+            "biography": "Author of Clean Code and Clean Architecture, he gathered the SOLID principles in his 2000 paper Design Principles and Design Patterns.",
+            "year_of_birth": 1952,
+            "tags": "Craft, Design, OOP"
+        },
+        {
+            "first_name": "Michael",
+            "last_name": "Feathers",
+            "nickname": null,
+            "blog_url": null,
+            "linkedin_url": null,
+            "biography": "Author of Working Effectively with Legacy Code (2004), he coined the SOLID acronym.",
+            "year_of_birth": null,
+            "tags": "Craft, Legacy, Design"
+        }
+    ]
+}
