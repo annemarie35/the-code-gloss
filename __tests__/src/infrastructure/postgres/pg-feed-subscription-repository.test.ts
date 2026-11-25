@@ -6,6 +6,7 @@ import { resolve } from 'path'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { pgFeedSubscriptionRepository } from '@/src/infrastructure/postgres/pg-feed-subscription-repository'
 import { FeedSubscriptionRepository } from '@/src/core/ports/feed-subscription-repository'
+import { FeedAlreadySubscribedError } from '@/src/core/domain/feed/feed-errors'
 
 const { Pool } = pkg
 
@@ -41,6 +42,23 @@ describe('pgFeedSubscriptionRepository', () => {
 
     it('should save a subscription and return it with its id', async () => {
         expect(await repository.save(first)).toEqual({ id: 1, ...first })
+    })
+
+    it('should refuse to save an url already saved, as a domain error', async () => {
+        await repository.save(first)
+
+        await expect(repository.save({ ...first, createdAt: second.createdAt })).rejects.toThrow(
+            new FeedAlreadySubscribedError(first.url)
+        )
+        expect(await repository.findAll()).toEqual([{ id: 1, ...first }])
+    })
+
+    it('should let other database errors through', async () => {
+        const failing = pgFeedSubscriptionRepository(async () => {
+            throw Object.assign(new Error('connection refused'), { code: 'ECONNREFUSED' })
+        })
+
+        await expect(failing.save(first)).rejects.toThrow('connection refused')
     })
 
     it('should find all subscriptions as entities, oldest first', async () => {

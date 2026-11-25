@@ -1,4 +1,5 @@
 import { FeedSubscription } from '@/src/core/domain/feed/FeedSubscription'
+import { FeedAlreadySubscribedError } from '@/src/core/domain/feed/feed-errors'
 import { FeedSubscriptionRepository } from '@/src/core/ports/feed-subscription-repository'
 
 export const inMemoryFeedSubscriptionRepository = (
@@ -9,6 +10,10 @@ export const inMemoryFeedSubscriptionRepository = (
     return {
         subscriptions,
         async save(subscription) {
+            // Same as the UNIQUE constraint on feed_subscriptions.url
+            if (subscriptions.some((s) => s.url === subscription.url)) {
+                throw new FeedAlreadySubscribedError(subscription.url)
+            }
             const saved = { ...subscription, id: nextId++ }
             subscriptions.push(saved)
             return saved

@@ -38,6 +38,18 @@ describe('subscribeToFeed', () => {
         expect(feedSubscriptionRepository.subscriptions).toEqual([])
     })
 
+    it('should refuse an url subscribed in the meantime by another request', async () => {
+        const feedSubscriptionRepository = inMemoryFeedSubscriptionRepository()
+        feedSubscriptionRepository.findByUrl = async () => null
+        await feedSubscriptionRepository.save({ url: 'https://blog.example.com/feed.xml', createdAt: now })
+        const subscribe = subscribeToFeed({ feedSubscriptionRepository, clock: fixedClock(now) })
+
+        await expect(subscribe('https://blog.example.com/feed.xml')).rejects.toThrow(
+            new FeedAlreadySubscribedError('https://blog.example.com/feed.xml')
+        )
+        expect(feedSubscriptionRepository.subscriptions).toHaveLength(1)
+    })
+
     it('should store the normalized url', async () => {
         const feedSubscriptionRepository = inMemoryFeedSubscriptionRepository()
         const subscribe = subscribeToFeed({ feedSubscriptionRepository, clock: fixedClock(now) })
