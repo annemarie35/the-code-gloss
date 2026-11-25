@@ -55,6 +55,28 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 - [ ] **10. Supprimer les copies de `isValidOrigin`** dans `src/pages/api/people.ts` et `gloses.ts` en utilisant `src/infrastructure/http/origin-check.ts`, lors de la migration de ces routes vers l'architecture cible.
 - [ ] **11. Anciens flux du `localStorage`** : ils sont abandonnés et à rajouter à la main. Pas de migration prévue, sauf si le besoin apparaît.
 
+## Relevés par la seconde revue de code
+
+- [ ] **12. Empêcher la double soumission du formulaire** (priorité moyenne)
+    - **Problème** : `handleAdd` (`src/pages/feeds.tsx`) est asynchrone et rien ne bloque un second envoi. Un double-clic sur « Ajouter » (ou deux fois Entrée) envoie deux `POST` avec la même URL. Les deux passent le contrôle de doublon côté client : l'un reçoit 201, l'autre 409, et la page affiche une erreur générique à côté d'un flux pourtant ajouté.
+    - **Préconisation** : un state `isSubmitting` qui désactive le bouton (et ignore la soumission) tant que la requête est en cours.
+    - **Tests** : deux soumissions rapprochées n'appellent `subscribeToFeed` qu'une fois ; le bouton est désactivé pendant l'envoi puis réactivé, y compris après une erreur.
+
+- [ ] **13. Ne plus afficher « Chargement des articles... » indéfiniment** (priorité basse)
+    - **Problème** : le message dépend de `allItems.length === 0 && subscriptions.length > 0`, pas de l'état réel du chargement. Si tous les flux échouent (ou n'ont aucun article), il reste affiché pour toujours.
+    - **Préconisation** : suivre l'état de chargement par flux (`loading | loaded | error`), à faire avec le point 6, et n'afficher le message que tant qu'au moins un flux est en `loading`.
+    - **Tests** : tous les flux en échec → pas de message de chargement ; un flux sans article → pas de message de chargement.
+
+- [ ] **14. Répondre 404 à la suppression d'un id inexistant** (priorité basse)
+    - **Problème** : `DELETE /api/feeds?id=999999`, ou une seconde suppression depuis un autre onglet, répond 200 « Flux supprimé avec succès » : `pgFeedSubscriptionRepository.delete` ignore `rowCount`.
+    - **Préconisation** : `delete` renvoie `boolean` (ou le use case lève `FeedSubscriptionNotFoundError`), et le contrôleur répond 404. Côté page, un 404 retire quand même le flux de la liste, puisqu'il n'existe plus.
+    - **Tests** : repository (testcontainers) `delete` d'un id absent ; use case avec le faux repository ; contrôleur → 404.
+
+- [ ] **15. Limiter le chargement simultané des flux** (priorité basse)
+    - **Problème** : au montage, la page lance un `GET ?url=` par abonnement, tous en parallèle. Avec la limite de 30 GET par minute et par IP (et l'appel de liste en plus), au-delà d'une trentaine d'abonnements les derniers flux reçoivent un 429 et affichent « Impossible de charger » à chaque rechargement.
+    - **Préconisation** : d'abord les points 2 (compteurs séparés) et 8 (cache serveur). Ensuite, soit limiter la concurrence côté client (par exemple 4 requêtes à la fois), soit un endpoint qui renvoie les articles de tous les flux enregistrés en un seul appel (à concevoir avec le point 1 et `GET /api/feeds/[id]/items`).
+    - **Tests** : avec 10 abonnements et une limite de 4, jamais plus de 4 appels `getFeed` en cours ; tous les flux finissent chargés.
+
 ## Ordre conseillé
 
-1 → 2 → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Les points 10 et 11 suivent la migration des gloses et des personnes.
+1 → 2 → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Le point 12 est indépendant et rapide ; 13 se fait avec 6, 15 après 2 et 8, et 14 quand on veut. Les points 10 et 11 suivent la migration des gloses et des personnes.
