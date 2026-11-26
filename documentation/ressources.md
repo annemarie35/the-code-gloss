@@ -20,6 +20,7 @@
 - [ ] Kent Beck
 - [ ] Martin Fowler
 - [ ] Pete Hodgson
+- [ ] Greg Young
 
 ## BOOKS
 
@@ -35,5 +36,6 @@
 - [ ] How Do Committees Invent?, Melvin Conway (1968) — énonce la loi de Conway
 - [ ] Strangler Fig Application, Martin Fowler (2004) — article du bliki qui nomme le pattern de migration progressive
 - [ ] Feature Toggles (aka Feature Flags), Pete Hodgson (2017) — article de référence sur martinfowler.com, qui classe les feature flags selon leur usage et leur durée de vie
+- [ ] Event Sourcing, Martin Fowler (2005) — article qui décrit le pattern de persistance par événements
 
 ## GLOSES
