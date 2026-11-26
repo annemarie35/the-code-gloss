@@ -51,3 +51,45 @@ INSERT INTO gloses
 VALUES
     ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Complexité accidentelle vs essentielle', 'Design, Complexity', ARRAY['DESIGN'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Team sizing rule from Amazon: a team should be small enough to be fed by two pizzas. Fewer people means fewer communication paths, so the team can decide quickly and own its service end to end with little coordination overhead. The rule is attributed to Jeff Bezos in the early 2000s, when Amazon reorganised into small autonomous teams.', 'Two-pizza team', 'Team, Organisation', ARRAY['AGILE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Organisations that design systems produce designs that copy their own communication structures: the boundaries between modules follow the boundaries between teams. Team organisation is therefore an architecture decision. Stated by Melvin Conway in his 1968 paper How Do Committees Invent? and named Conway''s law by Fred Brooks in The Mythical Man-Month (1975).', 'Conway''s law', 'Architecture, Organisation, Team', ARRAY['ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Development practice where code is written in short cycles driven by tests: write a failing test (red), write the simplest code that makes it pass (green), then improve the design while keeping the tests green (refactor). Tests become a safety net and a guide for design. Kent Beck developed it as part of Extreme Programming and described it in Test-Driven Development: By Example (2002).', 'Test-Driven Development (TDD)', 'Testing, XP, Design', ARRAY['TEST', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Migration pattern that replaces a legacy system gradually instead of rewriting it in one go: a new system grows around the old one, features are moved over one at a time behind a routing layer, until the legacy system can be switched off. Each step delivers value and keeps the risk small. Named by Martin Fowler in 2004 after the strangler fig, a plant that grows around its host tree until it replaces it.', 'Strangler fig', 'Legacy, Migration, Architecture', ARRAY['ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Technique that turns a feature on or off at runtime through configuration, without deploying new code. It separates deployment from release: unfinished code can be merged and shipped hidden, then rolled out progressively, tested on a subset of users or switched off in an incident. Each flag adds branching to the code, so it should be removed once no longer needed. Pete Hodgson classifies the kinds of flags in Feature Toggles (aka Feature Flags) (2017).', 'Feature flag', 'Deployment, Release, Continuous Delivery', ARRAY['OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Persistence pattern that stores every change to the application state as an immutable event in an append-only log, instead of overwriting the current state. The current state is rebuilt by replaying the events, which gives a full audit trail and lets you reconstruct the state at any past moment. Described by Martin Fowler in his 2005 article Event Sourcing, and popularised by Greg Young together with CQRS.', 'Event sourcing', 'Architecture, Persistence, CQRS', ARRAY['ARCHITECTURE', 'DDD'], NOW())
+;
