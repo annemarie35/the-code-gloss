@@ -315,5 +315,5 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Understanding how the underlying hardware works, such as CPU caches, memory access and disks, in order to write software that works with it rather than against it. Data laid out to fit cache lines and read sequentially can run orders of magnitude faster. The phrase comes from the racing driver Jackie Stewart, who said drivers need it with their car; Martin Thompson brought it to software, notably with the LMAX Disruptor.', 'Mechanical sympathy', 'Performance, Hardware, Low latency', ARRAY['SOFTWARE ENGINEERING'], NOW())
+    ('Understanding how the underlying hardware works, such as CPU caches, memory access and disks, in order to write software that works with it rather than against it. Data laid out to fit cache lines and read sequentially can run orders of magnitude faster. The phrase comes from the racing driver Jackie Stewart, who said drivers need it with their car; Martin Thompson brought it to software, notably with the LMAX Disruptor.', 'Mechanical sympathy', 'Performance, Hardware, Low latency', ARRAY['SOFTWARE_ENGINEERING'], NOW())
 ;

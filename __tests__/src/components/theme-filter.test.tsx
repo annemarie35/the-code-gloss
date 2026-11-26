@@ -2,14 +2,21 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ThemeFilter from '@/src/components/theme-filter'
-import { THEMES, Theme } from '@/src/core/domain/models/Glose'
+import { THEMES, Theme, themeLabel } from '@/src/core/domain/models/Glose'
 
 describe('ThemeFilter', () => {
     it('devrait afficher un bouton pour chaque thème', () => {
         render(<ThemeFilter selectedThemes={[]} onToggle={vi.fn()} />)
         THEMES.forEach((theme) => {
-            expect(screen.getByRole('button', { name: theme })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: themeLabel(theme) })).toBeInTheDocument()
         })
+    })
+
+    it('devrait afficher SOFTWARE ENGINEERING avec un espace et renvoyer la valeur stockée au clic', async () => {
+        const onToggle = vi.fn()
+        render(<ThemeFilter selectedThemes={[]} onToggle={onToggle} />)
+        await userEvent.click(screen.getByRole('button', { name: 'SOFTWARE ENGINEERING' }))
+        expect(onToggle).toHaveBeenCalledWith('SOFTWARE_ENGINEERING')
     })
 
     it('devrait marquer les thèmes sélectionnés avec aria-pressed=true', () => {

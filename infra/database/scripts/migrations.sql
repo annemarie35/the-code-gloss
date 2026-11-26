@@ -31,9 +31,13 @@ DO $$
 BEGIN
     ALTER TABLE gloses
         DROP CONSTRAINT IF EXISTS gloses_themes_check;
+    -- SOFTWARE ENGINEERING was first stored with a space
+    UPDATE gloses
+    SET themes = array_replace(themes, 'SOFTWARE ENGINEERING', 'SOFTWARE_ENGINEERING')
+    WHERE 'SOFTWARE ENGINEERING' = ANY (themes);
     ALTER TABLE gloses
         ADD CONSTRAINT gloses_themes_check
-            CHECK (themes <@ ARRAY['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB', 'ARCHITECTURE', 'SOFTWARE ENGINEERING']::text[]);
+            CHECK (themes <@ ARRAY['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB', 'ARCHITECTURE', 'SOFTWARE_ENGINEERING']::text[]);
 END
 $$;
 
