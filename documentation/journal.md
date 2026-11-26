@@ -27,6 +27,38 @@
 - clean/reset mocks in tests with before each
 - do not import types from db ?
 
+## 26/11/2026
+
+- Pourquoi la review de la GitHub Action ne dit jamais rien alors que `/code-review` en local trouve de vrais bugs ? Note [code-review-local-vs-github-action](second-brain/20-notes/code-review-local-vs-github-action.md) dans le second brain (PR #124)
+    - Pas le même outil (plugin `code-review` contre commande intégrée), pas le même modèle (Sonnet contre Opus), et l'Action n'avait presque rien lu sur la PR #120 : 19 s, 5 tours, 0,11 $ pour ~1 500 lignes
+    - Sources ajoutées : The Tech Away #17, Matt Pocock sur le goulot des PR, Greptile sur les modèles qui relisent mal leur propre code
+- Fin de la garde d'origine partagée (PR #122) : `isSameOrigin` passe **avant** le rate limit sur people et feeds. Une requête d'une autre origine consommait le quota de l'IP avant d'être refusée, donc un site tiers pouvait épuiser la limite d'un visiteur
+    - :clown_face: Le diff de feeds supprimait au passage le test de non-régression SSRF (`?url=http://169.254.169.254/...`). Remis en place
+- Suites de la revue locale de la PR #122 (PR #125), un commit par point
+    - Test de refus d'origine pour gloses : le seul test vérifiait l'appel à `isSameOrigin`, pas le 403. Vérifié en retirant la garde : le test casse
+    - En-tête `Allow` sur le 405 de people, import d'`origin-check` sans `.ts` partout, gloses répond directement sans `let` inutiles
+    - `setHeader` fourni par `createMockApiResponse` au lieu d'être ajouté à la main dans chaque test
+    - **Choix assumé** : plus de limite de débit sur les écritures (POST, DELETE) de gloses, people et feeds. Seule la garde d'origine reste, et elle ne protège que du CSRF depuis un navigateur : un script qui envoie `Origin` et `Host` identiques n'est plus limité. Seuls les GET restent limités
+    - Reportés dans le [plan des correctifs feeds](../plans/feed-subscriptions-correctifs.md) : `getIp` fait confiance à `X-Forwarded-For` (point 16), `JSON.parse(req.body)` sans garde donne 500 au lieu de 400 (point 17)
+- Nouvelle review Claude dans la GitHub Action (PR #126, ouverte)
+    - Même sur Opus, l'Action a répondu « No issues found » sur la PR #125 (9 tours, 0,86 $), alors que la revue locale signalait les écritures sans limite
+    - Le plugin `code-review` écarte ce dont il n'est pas sûr, les problèmes antérieurs à la PR et ce qui semble voulu. Remplacé par un prompt propre au repo : suivre le flux entre les couches, signaler les régressions de sécurité même voulues, gravité sur chaque remarque, toujours une synthèse de ce qui a été lu
+    - Leçon : un « No issues found » ne prouve rien tant qu'on ne sait pas ce que l'agent a lu
+
+## 25/11/2026
+
+- Mutation testing : PR #117 mergée (mutants survivants tués dans le client HTTP, les routes API, les pages et les composants)
+- Correction des vulnérabilités des dépendances Node, PR Dependabot #118 (22 mises à jour) encore ouverte
+- Les seeds insèrent aussi les personnes depuis `seeds.json` (PR #119)
+- Abonnements aux flux RSS stockés en base au lieu du `localStorage` (PR #120), premier morceau construit selon l'[architecture cible](architecture-cible.md) : entités → ports → use cases → adapters → `container.ts` → route fine
+    - `CLAUDE.md` pointe maintenant le code neuf vers l'architecture cible
+    - Correctifs après la revue locale : 409 au lieu de 500 quand deux abonnements au même flux arrivent en même temps (code pg `23505`), URLs normalisées avant stockage, flux supprimé qui ne réapparaît plus quand son chargement finit en retard, appel de l'API en URL relative, tests de contrat des ports
+    - **SSRF corrigée** : le serveur ne va plus chercher n'importe quelle URL passée en `?url=`. Lecteur HTTP qui refuse les IP privées et de lien local (y compris après résolution DNS et redirections), timeout de 5 s, corps plafonné à 2 Mo, et articles servis seulement pour les flux enregistrés (`/api/feeds/[id]/items`)
+    - Diagrammes d'architecture et suivi dans le [plan des correctifs feeds](../plans/feed-subscriptions-correctifs.md)
+- Review de la GitHub Action passée sur Opus avec tout l'historique git (`fetch-depth: 0`) (PR #121), après le faux négatif de Sonnet sur la PR #120
+- Désactivation de la génération des règles d'agent par Next.js (PR #123)
+- Début de la garde d'origine partagée (`src/infrastructure/http/origin-check.ts`) pour gloses et people, et gloses refuse les méthodes non gérées (PR #122)
+
 ## 24/11/2026
 
 - Ajout d'un [second brain](second-brain/README.md) pour organiser ma veille technique (PR #105)
