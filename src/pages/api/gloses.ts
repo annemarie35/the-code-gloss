@@ -5,7 +5,6 @@ import { AddGlose } from '@/src/lib/service/add-glose'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { isSameOrigin } from '@/src/infrastructure/http/origin-check'
 
-const POST_LIMIT = 10
 const GET_LIMIT = 60
 const WINDOW_MS = 60_000
 
@@ -15,9 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (req.method === 'POST') {
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
-        }
-        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
-            return res.status(429).json({ error: 'Too Many Requests' })
         }
         await AddGlose(JSON.parse(req.body))
         return res.status(201).json({ message: 'Glose ajouté avec succès', gloses: [] })
