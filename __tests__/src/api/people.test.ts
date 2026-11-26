@@ -66,7 +66,7 @@ describe('People API', () => {
             expect(json).toHaveBeenCalledWith({ message: 'Voici vos personnes', people })
         })
 
-        it('should rate limit requests by ip to 60 per minute', async () => {
+        it('should rate limit GET requests by ip to 60 per minute', async () => {
             vi.mocked(rateLimit).mockReturnValueOnce(false)
             const { res, json } = createMockApiResponse()
 
