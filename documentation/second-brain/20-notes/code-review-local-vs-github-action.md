@@ -64,3 +64,9 @@ Dans `.github/workflows/claude-code-review.yml` :
 - Sources : réponse de Claude Code à « pourquoi /code-review renvoie plus de demandes de modifications que la code review de la GitHub Action ? » (PR #120)
 - Area : [[ai-engineering]]
 - Voir aussi : [[claude-code-pr-review-agent]], [[agent-harness-guides-and-sensors]]
+
+## Sources
+
+- https://thetechaway.substack.com/p/the-tech-away-issue-17
+- [Matt Pocock — Fixing the PR Bottleneck](https://www.youtube.com/watch?v=g0vqT_wZtXA&t=26238s)
+- [Models are worse at reviewing their own code](https://www.greptile.com/blog/model-inversion)
