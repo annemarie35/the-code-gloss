@@ -29,7 +29,6 @@ describe('Gloses API', () => {
         it('should create a glose when request method is POST with valid origin', async () => {
             const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
             const { res, json } = createMockApiResponse()
-            const setHeader = vi.fn()
             const request = {
                 method: 'POST',
                 headers: { origin: 'http://localhost:3000', host: 'localhost:3000' },
@@ -37,7 +36,7 @@ describe('Gloses API', () => {
             }
 
             // @ts-expect-error -- partial request mock
-            await handler(request, { ...res, setHeader })
+            await handler(request, res)
 
             expect(createGlosesSpy).toHaveBeenCalledWith({
                 title: 'TDD',
@@ -50,10 +49,9 @@ describe('Gloses API', () => {
 
         it('should check the origin of POST requests', async () => {
             const { res } = createMockApiResponse()
-            const setHeader = vi.fn()
 
             // @ts-expect-error -- partial request mock
-            await handler({ method: 'POST', headers: validOriginHeaders, body }, { ...res, setHeader })
+            await handler({ method: 'POST', headers: validOriginHeaders, body }, res)
 
             expect(isSameOrigin).toHaveBeenCalledWith(validOriginHeaders)
         })
@@ -62,10 +60,9 @@ describe('Gloses API', () => {
             vi.mocked(isSameOrigin).mockReturnValueOnce(false)
             const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
             const { res, json } = createMockApiResponse()
-            const setHeader = vi.fn()
 
             // @ts-expect-error -- partial request mock
-            await handler({ method: 'POST', headers: validOriginHeaders, body }, { ...res, setHeader })
+            await handler({ method: 'POST', headers: validOriginHeaders, body }, res)
 
             expect(createGlosesSpy).not.toHaveBeenCalled()
             expect(rateLimit).not.toHaveBeenCalled()
@@ -78,10 +75,9 @@ describe('Gloses API', () => {
         it('should get gloses when request method is GET', async () => {
             const getGlosesInMemorySpy = vi.spyOn(getGlosesModTOI, 'getGlosesInMemory').mockResolvedValue(gloses)
             const { res, json } = createMockApiResponse()
-            const setHeader = vi.fn()
 
             // @ts-expect-error -- partial request mock
-            await handler({ method: 'GET', headers: validOriginHeaders }, { ...res, setHeader })
+            await handler({ method: 'GET', headers: validOriginHeaders }, res)
 
             expect(getGlosesInMemorySpy).toHaveBeenCalledOnce()
             expect(res.status).toHaveBeenLastCalledWith(200)
@@ -91,21 +87,19 @@ describe('Gloses API', () => {
         it('should rate limit GET requests by ip to 60 per minute', async () => {
             vi.mocked(rateLimit).mockReturnValueOnce(false)
             const { res } = createMockApiResponse()
-            const setHeader = vi.fn()
 
             // @ts-expect-error -- partial request mock
-            await handler({ method: 'GET', headers: validOriginHeaders, body }, { ...res, setHeader })
+            await handler({ method: 'GET', headers: validOriginHeaders, body }, res)
 
             expect(rateLimit).toHaveBeenCalledWith('127.0.0.1', 60, 60_000)
             expect(res.status).toHaveBeenCalledWith(429)
         })
     })
     it('should return 405 with the allowed methods for any other method', async () => {
-        const { res, json } = createMockApiResponse()
-        const setHeader = vi.fn()
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method: 'PUT', query: {} }, { ...res, setHeader })
+        await handler({ method: 'PUT', query: {} }, res)
 
         expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST')
         expect(res.status).toHaveBeenCalledWith(405)

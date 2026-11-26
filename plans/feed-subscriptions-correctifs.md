@@ -104,10 +104,10 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 
 - [x] **18. ~~Factoriser la garde « origine puis limite »~~** : sans objet. Depuis le retrait des limites d'écriture sur les trois routes, la garde « origine puis limite » n'existe plus nulle part. Il n'y a plus de copie à factoriser.
 
-- [ ] **19. Ajouter `setHeader` au mock de réponse** (priorité basse)
+- [x] **19. Ajouter `setHeader` au mock de réponse** (priorité basse)
     - **Problème** : `createMockApiResponse` (`__tests__/test-helpers.ts`) ne fournit pas `setHeader`. Les tests de gloses ajoutent `{ ...res, setHeader }` à la main dans chaque test, et people en a maintenant besoin pour le 405.
-    - **Préconisation** : renvoyer `setHeader: vi.fn()` dans le `res` du helper (et l'exposer), puis retirer les copies dans les tests de gloses et de people.
+    - **Préconisation** : renvoyer `setHeader: vi.fn()` dans le `res` du helper (et l'exposer), puis retirer les copies dans les tests de gloses et de people. Fait aussi pour feeds et `feeds/[id]/items`.
 
 ## Ordre conseillé
 
-1 → 2 (avec 16) → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Le point 12 est indépendant et rapide ; 13 se fait avec 6, 15 après 2 et 8, et 14 quand on veut. Les points 10 et 11 suivent la migration des gloses et des personnes, comme 17. Le point 19 se fait quand on veut ; le 18 est sans objet.
+1 → 2 (avec 16) → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Le point 12 est indépendant et rapide ; 13 se fait avec 6, 15 après 2 et 8, et 14 quand on veut. Les points 10 et 11 suivent la migration des gloses et des personnes, comme 17. Le point 18 est sans objet.

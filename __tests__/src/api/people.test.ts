@@ -122,11 +122,10 @@ describe('People API', () => {
     })
 
     it('should return 405 with the allowed methods for unsupported methods', async () => {
-        const { res, json } = createMockApiResponse()
-        const setHeader = vi.fn()
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method: 'PUT' }, { ...res, setHeader })
+        await handler({ method: 'PUT' }, res)
 
         expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST, DELETE')
         expect(res.status).toHaveBeenCalledWith(405)

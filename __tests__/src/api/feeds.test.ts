@@ -110,11 +110,10 @@ describe('Feeds API', () => {
     })
 
     it('should return 405 with the allowed methods for any other method', async () => {
-        const { res, json } = createMockApiResponse()
-        const setHeader = vi.fn()
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method: 'PUT', query: {} }, { ...res, setHeader })
+        await handler({ method: 'PUT', query: {} }, res)
 
         expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST, DELETE')
         expect(res.status).toHaveBeenCalledWith(405)
