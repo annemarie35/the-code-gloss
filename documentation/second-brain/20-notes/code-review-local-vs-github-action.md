@@ -44,8 +44,8 @@ En 5 tours, impossible de suivre l'enchaînement page → client → route → c
 
 Dans `.github/workflows/claude-code-review.yml` :
 
-- forcer le modèle : `claude_args: '--model claude-opus-5-5 --allowedTools "…"'` ;
-- passer `fetch-depth: 0` au checkout (aujourd'hui il ne récupère qu'un seul commit) pour que l'agent ait l'historique.
+- forcer le modèle : `claude_args: '--model claude-opus-5-5 --allowedTools "…"'` (fait, commit `a7b9e9e`) ;
+- passer `fetch-depth: 0` au checkout (auparavant il ne récupérait qu'un seul commit) pour que l'agent ait l'historique (fait, commit `a7b9e9e`).
 
 ## Quand l'utiliser / ne pas l'utiliser
 
