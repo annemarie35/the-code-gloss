@@ -89,6 +89,27 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
     - **Préconisation** : d'abord les points 2 (compteurs séparés) et 8 (cache serveur). Ensuite, soit limiter la concurrence côté client (par exemple 4 requêtes à la fois), soit un endpoint qui renvoie les articles de tous les flux enregistrés en un seul appel (à concevoir avec le point 1 et `GET /api/feeds/[id]/items`).
     - **Tests** : avec 10 abonnements et une limite de 4, jamais plus de 4 appels `getFeed` en cours ; tous les flux finissent chargés.
 
+## Relevés par la revue de `refactor/shared-origin-check`
+
+- [ ] **16. Ne plus faire confiance à `X-Forwarded-For` dans `getIp`** (priorité haute)
+    - **Problème** : `getIp` (`src/lib/rate-limiter.ts`) prend la première adresse de `X-Forwarded-For`, que le client choisit librement. En envoyant une valeur différente à chaque requête, il obtient un nouveau compteur à chaque fois et n'est jamais limité, même pour les écritures (10 par minute).
+    - **Préconisation** : ne lire `X-Forwarded-For` que derrière un proxy de confiance (variable `TRUSTED_PROXY_HOPS`, par exemple 1 sur Scalingo), et prendre l'adresse ajoutée par ce proxy, c'est-à-dire la n-ième en partant de la fin, pas la première. Sans proxy configuré, utiliser `req.socket.remoteAddress`. À faire avec le point 2, en même temps que le déplacement dans `src/infrastructure/http/rate-limiter.ts`.
+    - **Tests** : sans proxy configuré, un `X-Forwarded-For` forgé est ignoré ; avec un proxy, `X-Forwarded-For: forgée, réelle` donne `réelle` ; deux valeurs forgées différentes depuis la même socket partagent le même compteur.
+
+- [ ] **17. Répondre 400 à un corps JSON invalide** (priorité moyenne)
+    - **Problème** : `JSON.parse(req.body)` n'est protégé par aucun try/catch dans `src/pages/api/gloses.ts` et `people.ts`. Un corps mal formé, ou une requête en `Content-Type: application/json` (que Next a déjà transformée en objet), fait planter le handler : 500 au lieu de 400.
+    - **Préconisation** : un `parseJsonBody(req.body)` partagé, à côté de `origin-check.ts`, qui accepte une chaîne ou un objet déjà parsé et renvoie `null` si le corps est invalide ; la route répond alors 400 `{ error: 'Invalid body' }`. À intégrer dans la migration de ces routes vers l'architecture cible.
+    - **Tests** : corps mal formé → 400 sans appel au use case ; corps déjà objet → traité comme la chaîne équivalente.
+
+- [ ] **18. Factoriser la garde « origine puis limite »** (priorité basse)
+    - **Problème** : le même bloc (`isSameOrigin` → 403, puis `rateLimit` → 429) est copié 5 fois : gloses (POST), people (POST et DELETE) et feeds (POST et DELETE). Corriger l'ordre de ces deux vérifications a demandé trois commits, un par route.
+    - **Préconisation** : un helper `guardWrite(req, res, ip)` dans `src/infrastructure/http/`, qui répond 403 ou 429 et renvoie `false`, ou renvoie `true` pour continuer. À faire après le point 2, pour qu'il utilise directement le compteur d'écriture.
+    - **Tests** : du helper (autre origine → 403 sans consommer le quota ; quota épuisé → 429 ; sinon `true`), puis un seul test par route qui vérifie qu'elle passe par le helper.
+
+- [ ] **19. Ajouter `setHeader` au mock de réponse** (priorité basse)
+    - **Problème** : `createMockApiResponse` (`__tests__/test-helpers.ts`) ne fournit pas `setHeader`. Les tests de gloses ajoutent `{ ...res, setHeader }` à la main dans chaque test, et people en a maintenant besoin pour le 405.
+    - **Préconisation** : renvoyer `setHeader: vi.fn()` dans le `res` du helper (et l'exposer), puis retirer les copies dans les tests de gloses et de people.
+
 ## Ordre conseillé
 
-1 → 2 → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Le point 12 est indépendant et rapide ; 13 se fait avec 6, 15 après 2 et 8, et 14 quand on veut. Les points 10 et 11 suivent la migration des gloses et des personnes.
+1 → 2 (avec 16) → 3 (qui débloque de meilleurs messages pour 1 et 2) → 4 → 5, puis 6 à 9 selon le besoin. Le point 12 est indépendant et rapide ; 13 se fait avec 6, 15 après 2 et 8, et 14 quand on veut. Les points 10 et 11 suivent la migration des gloses et des personnes, comme 17. Le point 18 vient après 2, et 19 quand on veut.
