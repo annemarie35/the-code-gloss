@@ -4,7 +4,6 @@ import { isSameOrigin } from '@/src/infrastructure/http/origin-check'
 import { container } from '@/src/composition/container'
 
 const GET_LIMIT = 30
-const WRITE_LIMIT = 10
 const WINDOW_MS = 60_000
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -21,9 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
         }
-        if (!rateLimit(ip, WRITE_LIMIT, WINDOW_MS)) {
-            return res.status(429).json({ error: 'Too Many Requests' })
-        }
+
         if (req.method === 'POST') return container.feedsController.subscribe(req, res)
         return container.feedsController.unsubscribe(req, res)
     }
