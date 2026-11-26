@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
-import { GloseComplete } from '@/src/core/domain/models/Glose'
+import { GloseComplete, areValidThemes } from '@/src/core/domain/models/Glose'
 import { AddGlose } from '@/src/lib/service/add-glose'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { isSameOrigin } from '@/src/infrastructure/http/origin-check'
@@ -15,7 +15,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
         }
-        await AddGlose(JSON.parse(req.body))
+        const glose = JSON.parse(req.body)
+        if (!areValidThemes(glose.themes)) {
+            // TODO Pourrait être remplacé par la verif typescript et/ou zod
+            return res.status(400).json({ error: 'Invalid themes' })
+        }
+        await AddGlose(glose)
         return res.status(201).json({ message: 'Glose ajouté avec succès', gloses: [] })
     }
 
