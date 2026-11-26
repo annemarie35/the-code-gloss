@@ -2,7 +2,23 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-import { THEMES, areValidThemes, isTheme } from '@/src/core/domain/models/Glose'
+import { THEMES, areValidThemes, isTheme, themeLabel } from '@/src/core/domain/models/Glose'
+
+describe('themeLabel', () => {
+    it('should display a single-word theme as is', () => {
+        expect(themeLabel('CRAFT')).toBe('CRAFT')
+    })
+
+    it('should display underscores as spaces', () => {
+        expect(themeLabel('SOFTWARE_ENGINEERING')).toBe('SOFTWARE ENGINEERING')
+    })
+})
+
+describe('THEMES values', () => {
+    it('should not contain spaces, so they can be stored and matched as identifiers', () => {
+        THEMES.forEach((theme) => expect(theme).not.toMatch(/\s/))
+    })
+})
 
 describe('isTheme', () => {
     it('should accept a known theme', () => {

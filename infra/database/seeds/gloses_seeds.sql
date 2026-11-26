@@ -42,14 +42,14 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'Théorème de CAP', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
+    ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'CAP theorem', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
 ;
 
 
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Complexité accidentelle vs essentielle', 'Design, Complexity', ARRAY['DESIGN'], NOW())
+    ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Accidental vs essential complexity', 'Design, Complexity', ARRAY['DESIGN'], NOW())
 ;
 
 
@@ -92,4 +92,228 @@ INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
     ('Persistence pattern that stores every change to the application state as an immutable event in an append-only log, instead of overwriting the current state. The current state is rebuilt by replaying the events, which gives a full audit trail and lets you reconstruct the state at any past moment. Described by Martin Fowler in his 2005 article Event Sourcing, and popularised by Greg Young together with CQRS.', 'Event sourcing', 'Architecture, Persistence, CQRS', ARRAY['ARCHITECTURE', 'DDD'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Property of an operation that produces the same result whether it is applied once or several times. It makes retries safe: after a timeout or a lost response, a client can resend the request without creating a duplicate payment or order. In HTTP, RFC 9110 (2022) defines methods such as GET, PUT and DELETE as idempotent, but not POST, which APIs often make safe to retry with an idempotency key.', 'Idempotence', 'HTTP, Distributed systems, Reliability', ARRAY['WEB', 'ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Stability pattern that wraps calls to a remote service and stops calling it once failures pass a threshold. While open, calls fail fast instead of waiting for timeouts, which keeps one failing dependency from exhausting threads and cascading through the system. After a delay, a half-open state lets a trial call through to check whether the service has recovered. Popularised by Michael Nygard in Release It! (2007).', 'Circuit breaker', 'Resilience, Distributed systems, Stability', ARRAY['ARCHITECTURE', 'OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Technique that measures how good a test suite is by injecting small faults (mutants) into the code, such as flipping a condition or changing an operator, then running the tests. A mutant that makes a test fail is killed; one that survives reveals behaviour no test checks, which code coverage alone cannot show. Proposed by Richard Lipton in 1971 and published by DeMillo, Lipton and Sayward in Hints on Test Data Selection (1978).', 'Mutation testing', 'Testing, Quality, Test suite', ARRAY['TEST'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Testing technique for legacy code: run the existing system on a large set of inputs, record its outputs as the reference (the golden master), then check after each change that the outputs are still identical. It builds a safety net for refactoring code that has no tests and whose expected behaviour nobody can fully state. Close to the characterization tests described by Michael Feathers in Working Effectively with Legacy Code (2004).', 'Golden master', 'Testing, Legacy, Refactoring', ARRAY['TEST', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Testing technique where the test produces an output, such as text, JSON or an image, and compares it with a previously approved version stored next to the test. When they differ, a diff shows the change and a person decides whether to approve the new output. It replaces many hand-written assertions on complex results and makes a good safety net for legacy code. Popularised by Llewellyn Falco through the ApprovalTests libraries.', 'Approval testing', 'Testing, Legacy, Refactoring', ARRAY['TEST'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Practice of separating programmers from the code they write, so that the code belongs to the team and its defects can be discussed openly. Developers ask others to read their code to find errors, and criticism targets the code, never the person. It laid the ground for code reviews and collective code ownership. Described by Gerald Weinberg in The Psychology of Computer Programming (1971).', 'Egoless programming', 'Code review, Team, Collaboration', ARRAY['CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Research programme that measures software delivery performance with four key metrics: deployment frequency, lead time for changes, change failure rate and time to restore service. Its studies show that speed and stability go together instead of trading off. Founded by Nicole Forsgren, Jez Humble and Gene Kim, it publishes its findings in the yearly Accelerate State of DevOps report; they are summarised in the book Accelerate (2018).', 'DORA (DevOps Research and Assessment)', 'DevOps, Metrics, Continuous Delivery', ARRAY['OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Reusable solutions to recurring design problems, each described by a name, the problem it solves, its solution and its trade-offs. A shared name such as Strategy or Observer lets developers discuss a design in a few words. Catalogued for object-oriented software in Design Patterns (1994) by Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides, the Gang of Four, inspired by the architect Christopher Alexander''s A Pattern Language (1977).', 'Design Patterns', 'Design, OOP, Patterns', ARRAY['DESIGN'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Agile method that pushes good engineering practices to the extreme so that software can change at low cost: pair programming, test-driven development, continuous integration, refactoring, simple design, small releases and close work with the customer. It rests on values such as communication, simplicity, feedback and courage. Created by Kent Beck in the late 1990s and described in Extreme Programming Explained (1999).', 'Extreme Programming (XP)', 'Agile, XP, Practices', ARRAY['AGILE', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Practice where two developers work on the same code at one workstation: the driver writes the code while the navigator reviews each line and thinks about the overall direction, and they switch roles often. Code is reviewed as it is written, knowledge spreads across the team and fewer defects get through. A core practice of Extreme Programming; Laurie Williams and Robert Kessler studied its effects in Pair Programming Illuminated (2002).', 'Pair programming', 'XP, Collaboration, Code review', ARRAY['CRAFT', 'AGILE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Practice where the whole team works on the same thing, at the same time, on the same computer. One person, the driver, types while the others navigate and decide what to write, and the driver changes every few minutes. Knowledge is shared continuously, decisions are made together and work no longer waits for reviews or hand-offs. Also called ensemble programming, it was popularised by Woody Zuill and his team at Hunter Industries in the early 2010s.', 'Mob programming', 'Collaboration, Team, XP', ARRAY['CRAFT', 'AGILE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Principle of always leaving the code a little cleaner than you found it: rename an unclear variable, extract a function, remove dead code while working on a change. Many small improvements made continuously stop the code from rotting, without waiting for a big refactoring project. Adapted from the scouts'' rule of leaving the campground cleaner than you found it, and popularised by Robert C. Martin in Clean Code (2008).', 'Boy Scout Rule', 'Refactoring, Clean code, Craft', ARRAY['CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Practice where every developer merges their work into the shared main branch at least daily, and each merge triggers an automated build and test run. Integration problems show up within minutes, while they are small and easy to fix, instead of piling up before a release. The term was coined by Grady Booch in 1991, made a core practice by Extreme Programming, and described by Martin Fowler in his article Continuous Integration (2000).', 'Continuous integration (CI)', 'CI, Automation, Continuous Delivery', ARRAY['OPS', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Culture and set of practices that bring development and operations together, so that the team building the software also shares responsibility for running it. It relies on automation (continuous integration and delivery, infrastructure as code), monitoring and fast feedback to release often and safely. The term comes from the first DevOpsDays conference, organised by Patrick Debois in Ghent in 2009; its practices are gathered in The DevOps Handbook (2016).', 'DevOps', 'DevOps, Culture, Automation', ARRAY['OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Branching model where all developers integrate their work into a single shared branch, the trunk, at least once a day, using only very short-lived branches if any. It avoids long-lived feature branches and painful merges, and keeps the trunk always releasable; unfinished work is hidden behind feature flags. The DORA research links it to higher delivery performance. Paul Hammant documents the practice on trunkbaseddevelopment.com.', 'Trunk-based development', 'Git, Branching, Continuous Integration', ARRAY['OPS', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Thinnest possible implementation of a system that performs one small function end to end, through every main architectural layer, and is built, tested and deployed automatically. Built first, it validates the architecture and the delivery pipeline early, then features are added onto it. Term coined by Alistair Cockburn; Steve Freeman and Nat Pryce start projects with one in Growing Object-Oriented Software, Guided by Tests (2009).', 'Walking skeleton', 'Architecture, Agile, Delivery', ARRAY['ARCHITECTURE', 'AGILE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Metaphor for the future cost of code that no longer matches what we know about the problem, often because of shortcuts taken to ship faster. Like financial debt, it can be a useful trade-off, but it charges interest: every change in that code takes longer, until the debt is paid back by refactoring. Coined by Ward Cunningham in his 1992 OOPSLA experience report The WyCash Portfolio Management System.', 'Technical debt', 'Refactoring, Quality, Maintenance', ARRAY['CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Disciplined technique for improving the structure of existing code without changing its behaviour, through a series of small steps such as renaming, extracting a function or moving a method, each checked by the tests. It keeps code easy to change and is how technical debt gets paid back. Formalised by William Opdyke in his 1992 PhD thesis, and popularised by Martin Fowler in Refactoring: Improving the Design of Existing Code (1999).', 'Refactoring', 'Refactoring, Design, Clean code', ARRAY['CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Existing code that a team must keep running but is afraid to change, usually because it is hard to understand and nobody knows exactly what it does. Michael Feathers gives a practical definition in Working Effectively with Legacy Code (2004): legacy code is simply code without tests. To change it safely, you first find seams to break dependencies, put it under characterization tests, then refactor in small steps.', 'Legacy code', 'Legacy, Testing, Refactoring', ARRAY['CRAFT', 'TEST'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Design guideline, also called the principle of least knowledge: a method should only talk to its close collaborators (its own object, its parameters, the objects it creates and its fields) and not reach through them, as in a.getB().getC().doSomething(). It reduces coupling, so a change in one class ripples less through the code. Formulated in 1987 on the Demeter project at Northeastern University, and published by Karl Lieberherr and Ian Holland.', 'Law of Demeter', 'Design, OOP, Coupling', ARRAY['DESIGN'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Principle of implementing a feature only when it is actually needed, not when you merely foresee needing it. Speculative code costs time to build, delays what is needed now, and adds complexity to carry and maintain, often for a need that never comes. It relies on simple design and refactoring to add the feature later. A principle of Extreme Programming, associated with Ron Jeffries; Martin Fowler details its costs in his article Yagni (2015).', 'YAGNI (You Aren''t Gonna Need It)', 'XP, Simplicity, Design', ARRAY['CRAFT', 'DESIGN'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Methodology of twelve principles for building web applications that are easy to deploy and scale in the cloud, such as storing config in environment variables, treating backing services as attached resources, running stateless processes, keeping dev and prod close and handling logs as event streams. Published in 2011 by Adam Wiggins, co-founder of Heroku, on 12factor.net.', 'The Twelve-Factor App', 'Cloud, Deployment, Configuration', ARRAY['OPS', 'ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Principle of preferring the simplest solution that works over a clever or general one. Simple code is easier to read, test, debug and change, while every unnecessary layer or abstraction adds a cost that the whole team pays on each change. The phrase is attributed to Kelly Johnson, an aircraft engineer at Lockheed''s Skunk Works, around 1960, and was later adopted as a design principle in software.', 'KISS (Keep It Simple, Stupid)', 'Simplicity, Design, Clean code', ARRAY['DESIGN', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Principle stating that every piece of knowledge must have a single, unambiguous, authoritative representation within a system. It targets duplicated knowledge, such as a business rule written in two places that drift apart, rather than any two similar lines of code, which may well change for different reasons. Formulated by Andy Hunt and Dave Thomas in The Pragmatic Programmer (1999).', 'DRY (Don''t Repeat Yourself)', 'Design, Duplication, Clean code', ARRAY['DESIGN', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Architecture pattern that uses separate models to change data (commands) and to read it (queries), so each side can be designed, stored and scaled for its own needs. It often goes with event sourcing, but adds complexity and is worth it only where reads and writes really differ. Named by Greg Young, it extends the Command-Query Separation principle that Bertrand Meyer described in Object-Oriented Software Construction (1988).', 'CQRS (Command Query Responsibility Segregation)', 'Architecture, DDD, Event sourcing', ARRAY['ARCHITECTURE', 'DDD'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('When a measure becomes a target, it ceases to be a good measure: people optimise the number instead of what it was meant to reflect. In software, a code coverage threshold yields tests without assertions, and a velocity target inflates story points. Metrics stay useful to learn, not to judge. Stated by the economist Charles Goodhart in 1975; the common phrasing comes from the anthropologist Marilyn Strathern in 1997.', 'Goodhart''s law', 'Metrics, Management, Team', ARRAY['AGILE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('With a sufficient number of users of an API, it does not matter what you promise in the contract: all observable behaviours of your system will be depended on by somebody. Even an undocumented detail such as response order, timing or an error message can break clients when it changes, so the real contract is wider than the documented one. Observed by Hyrum Wright at Google and discussed in Software Engineering at Google (2020).', 'Hyrum''s law', 'API, Compatibility, Contract', ARRAY['ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Robustness principle: be conservative in what you send, be liberal in what you accept. Strict output and tolerant input let systems built by different teams keep working together despite small deviations. Too much tolerance has a cost, though: accepted mistakes become de facto standards that everyone must support. Stated by Jon Postel in the IP and TCP specifications, RFC 760 and RFC 761 (1980); RFC 9413 (2023) discusses its limits.', 'Postel''s law', 'Protocols, Interoperability, API', ARRAY['WEB', 'ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Minimum number of team members who would have to suddenly leave, as if hit by a truck, before a project stalls because nobody else knows how a critical part works. A truck factor of one reveals a knowledge silo and a risk for the team. It is raised by spreading knowledge: pair and mob programming, code reviews, collective code ownership and up-to-date documentation. Also called the bus factor.', 'Truck factor', 'Team, Knowledge sharing, Risk', ARRAY['AGILE', 'CRAFT'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Incident review that looks for how the system, tools and processes allowed a failure, instead of who is to blame. Because people are not punished for honest mistakes, they share exactly what they saw and did, which is the only way to learn what really happened and fix the causes. It ends with concrete actions. Popularised by John Allspaw in his 2012 article Blameless PostMortems and a Just Culture, written at Etsy.', 'Blameless postmortem', 'Incident, Culture, Learning', ARRAY['OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Practice of moving testing, quality and security checks earlier in the development cycle, to the left of a timeline that runs from design to production. A defect found while writing the code costs far less to fix than one found after release, so teams test from the start, automate checks in the pipeline and involve testers and security experts in design. The term comes from Larry Smith''s 2001 article Shift-Left Testing.', 'Shift left', 'Testing, Quality, DevSecOps', ARRAY['TEST', 'OPS'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Understanding how the underlying hardware works, such as CPU caches, memory access and disks, in order to write software that works with it rather than against it. Data laid out to fit cache lines and read sequentially can run orders of magnitude faster. The phrase comes from the racing driver Jackie Stewart, who said drivers need it with their car; Martin Thompson brought it to software, notably with the LMAX Disruptor.', 'Mechanical sympathy', 'Performance, Hardware, Low latency', ARRAY['SOFTWARE_ENGINEERING'], NOW())
 ;

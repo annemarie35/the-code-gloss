@@ -3,7 +3,7 @@ import GlossTermsForm from '@/src/components/gloss-terms-form'
 import { cleanup, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMockFetchResponse, gloses } from '@/__tests__/test-helpers'
-import { THEMES } from '@/src/core/domain/models/Glose'
+import { THEMES, themeLabel } from '@/src/core/domain/models/Glose'
 
 describe('Gloss Form Terms', () => {
     beforeEach(() => {
@@ -39,8 +39,15 @@ describe('Gloss Form Terms', () => {
             const themeOptions = options.filter((o) => o.getAttribute('value') !== '')
             expect(themeOptions).toHaveLength(THEMES.length)
             THEMES.forEach((theme) => {
-                expect(select).toHaveTextContent(theme)
+                expect(select).toHaveTextContent(themeLabel(theme))
             })
+        })
+
+        it('should show SOFTWARE ENGINEERING with a space but submit SOFTWARE_ENGINEERING', () => {
+            const { getByRole } = render(<GlossTermsForm />)
+
+            const option = getByRole('option', { name: 'SOFTWARE ENGINEERING' })
+            expect(option).toHaveAttribute('value', 'SOFTWARE_ENGINEERING')
         })
 
         it('should allow selecting a theme', async () => {

@@ -1,7 +1,7 @@
 'use client'
 import { useActionState, useState } from 'react'
 import { addGlossTerm } from '@/src/actions/gloses-actions'
-import { THEMES } from '@/src/core/domain/models/Glose'
+import { THEMES, themeLabel } from '@/src/core/domain/models/Glose'
 
 export type InitialState = {
     message: string | null
@@ -92,7 +92,7 @@ export default function GlossTermsForm() {
                         <option value="">-- Select a theme --</option>
                         {THEMES.map((t) => (
                             <option key={t} value={t}>
-                                {t}
+                                {themeLabel(t)}
                             </option>
                         ))}
                     </select>

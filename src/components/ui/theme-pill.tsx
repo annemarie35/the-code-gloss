@@ -1,4 +1,4 @@
-import { Theme } from '@/src/core/domain/models/Glose'
+import { Theme, themeLabel } from '@/src/core/domain/models/Glose'
 
 type ThemePillProps = {
     theme: Theme
@@ -14,7 +14,7 @@ export function ThemePill({ theme, isSelected = false, onClick }: ThemePillProps
     const stateClasses = isSelected ? selectedClasses : unselectedClasses
 
     if (!onClick) {
-        return <span className={`${baseClasses} ${stateClasses}`}>{theme}</span>
+        return <span className={`${baseClasses} ${stateClasses}`}>{themeLabel(theme)}</span>
     }
 
     return (
@@ -24,7 +24,7 @@ export function ThemePill({ theme, isSelected = false, onClick }: ThemePillProps
             aria-pressed={isSelected}
             className={`${baseClasses} ${stateClasses} ${isSelected ? '' : 'hover:border-gray-500'}`}
         >
-            {theme}
+            {themeLabel(theme)}
         </button>
     )
 }
