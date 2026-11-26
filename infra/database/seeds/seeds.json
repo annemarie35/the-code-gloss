@@ -47,6 +47,12 @@
             "tags": "Design, Complexity",
             "title": "Complexité accidentelle vs essentielle",
             "themes": ["DESIGN"]
+        },
+        {
+            "description": "Team sizing rule from Amazon: a team should be small enough to be fed by two pizzas. Fewer people means fewer communication paths, so the team can decide quickly and own its service end to end with little coordination overhead. The rule is attributed to Jeff Bezos in the early 2000s, when Amazon reorganised into small autonomous teams.",
+            "tags": "Team, Organisation",
+            "title": "Two-pizza team",
+            "themes": ["AGILE"]
         }
     ],
     "people": [

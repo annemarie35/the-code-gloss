@@ -51,3 +51,10 @@ INSERT INTO gloses
 VALUES
     ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Complexité accidentelle vs essentielle', 'Design, Complexity', ARRAY['DESIGN'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Team sizing rule from Amazon: a team should be small enough to be fed by two pizzas. Fewer people means fewer communication paths, so the team can decide quickly and own its service end to end with little coordination overhead. The rule is attributed to Jeff Bezos in the early 2000s, when Amazon reorganised into small autonomous teams.', 'Two-pizza team', 'Team, Organisation', ARRAY['AGILE'], NOW())
+;
