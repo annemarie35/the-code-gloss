@@ -14,22 +14,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const ip = getIp(req)
 
     if (req.method === 'POST') {
-        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
-            return res.status(429).json({ error: 'Too Many Requests' })
-        }
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
+        }
+        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
+            return res.status(429).json({ error: 'Too Many Requests' })
         }
         await addPerson(JSON.parse(req.body))
         return res.status(201).json({ message: 'Personne ajoutée avec succès' })
     }
 
     if (req.method === 'DELETE') {
-        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
-            return res.status(429).json({ error: 'Too Many Requests' })
-        }
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
+        }
+        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
+            return res.status(429).json({ error: 'Too Many Requests' })
         }
         const id = parseInt(req.query.id as string, 10)
         if (isNaN(id)) {
