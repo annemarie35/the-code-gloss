@@ -41,11 +41,10 @@ describe('Feed items API', () => {
     })
 
     it.each([['POST'], ['DELETE'], ['PUT']])('should return 405 for %s', async (method) => {
-        const { res, json } = createMockApiResponse()
-        const setHeader = vi.fn()
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method, query: { id: '3' } }, { ...res, setHeader })
+        await handler({ method, query: { id: '3' } }, res)
 
         expect(setHeader).toHaveBeenCalledWith('Allow', 'GET')
         expect(res.status).toHaveBeenCalledWith(405)

@@ -3,8 +3,9 @@ import { GloseComplete } from '@/src/core/domain/models/Glose'
 
 export function createMockApiResponse() {
     const json = vi.fn()
-    const res = { status: vi.fn().mockReturnValue({ json }) }
-    return { res, json }
+    const setHeader = vi.fn()
+    const res = { status: vi.fn().mockReturnValue({ json }), setHeader }
+    return { res, json, setHeader }
 }
 
 export function createMockFetchResponse(options: Partial<Template> = {}) {

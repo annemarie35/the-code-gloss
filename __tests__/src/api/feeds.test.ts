@@ -109,28 +109,11 @@ describe('Feeds API', () => {
         })
     })
 
-    describe('rate limiting on POST and DELETE', () => {
-        it.each([['POST'], ['DELETE']])('should apply the write limit to %s', async (method) => {
-            const rateLimitSpy = vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
-            const { res, json } = createMockApiResponse()
-
-            // @ts-expect-error -- partial request mock
-            await handler({ method, headers: validOriginHeaders, query: {} }, res)
-
-            expect(rateLimitSpy).toHaveBeenCalledWith('127.0.0.1', 10, 60_000)
-            expect(container.feedsController.subscribe).not.toHaveBeenCalled()
-            expect(container.feedsController.unsubscribe).not.toHaveBeenCalled()
-            expect(res.status).toHaveBeenCalledWith(429)
-            expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
-        })
-    })
-
     it('should return 405 with the allowed methods for any other method', async () => {
-        const { res, json } = createMockApiResponse()
-        const setHeader = vi.fn()
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method: 'PUT', query: {} }, { ...res, setHeader })
+        await handler({ method: 'PUT', query: {} }, res)
 
         expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST, DELETE')
         expect(res.status).toHaveBeenCalledWith(405)

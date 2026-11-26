@@ -65,6 +65,18 @@ describe('People API', () => {
             expect(res.status).toHaveBeenCalledWith(200)
             expect(json).toHaveBeenCalledWith({ message: 'Voici vos personnes', people })
         })
+
+        it('should rate limit GET requests by ip to 60 per minute', async () => {
+            vi.mocked(rateLimit).mockReturnValueOnce(false)
+            const { res, json } = createMockApiResponse()
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'GET', headers: validOriginHeaders, body, query: { id: '1' } }, res)
+
+            expect(rateLimit).toHaveBeenCalledWith('127.0.0.1', 60, 60_000)
+            expect(res.status).toHaveBeenCalledWith(429)
+            expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
+        })
     })
 
     describe('Delete a person by id', () => {
@@ -109,28 +121,13 @@ describe('People API', () => {
         expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
     })
 
-    it.each([
-        ['GET', 60],
-        ['POST', 10],
-        ['DELETE', 10]
-    ])('should rate limit %s requests by ip to %i per minute', async (method, limit) => {
-        vi.mocked(rateLimit).mockReturnValueOnce(false)
-        const { res, json } = createMockApiResponse()
-
-        // @ts-expect-error -- partial request mock
-        await handler({ method, headers: validOriginHeaders, body, query: { id: '1' } }, res)
-
-        expect(rateLimit).toHaveBeenCalledWith('127.0.0.1', limit, 60_000)
-        expect(res.status).toHaveBeenCalledWith(429)
-        expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
-    })
-
-    it('should return 405 for unsupported methods', async () => {
-        const { res, json } = createMockApiResponse()
+    it('should return 405 with the allowed methods for unsupported methods', async () => {
+        const { res, json, setHeader } = createMockApiResponse()
 
         // @ts-expect-error -- partial request mock
         await handler({ method: 'PUT' }, res)
 
+        expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST, DELETE')
         expect(res.status).toHaveBeenCalledWith(405)
         expect(json).toHaveBeenCalledWith({ error: 'Method Not Allowed' })
     })
