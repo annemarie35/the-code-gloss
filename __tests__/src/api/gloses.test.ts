@@ -47,6 +47,31 @@ describe('Gloses API', () => {
             expect(json).toHaveBeenCalledWith({ message: 'Glose ajouté avec succès', gloses: [] })
         })
 
+        it('should refuse a glose with an unknown theme with a 400', async () => {
+            const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
+            const { res, json } = createMockApiResponse()
+            const bodyWithUnknownTheme = JSON.stringify({ ...JSON.parse(body), themes: ['CRAFT', 'FOO'] })
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'POST', headers: validOriginHeaders, body: bodyWithUnknownTheme }, res)
+
+            expect(createGlosesSpy).not.toHaveBeenCalled()
+            expect(res.status).toHaveBeenCalledWith(400)
+            expect(json).toHaveBeenCalledWith({ error: 'Invalid themes' })
+        })
+
+        it('should create a glose with known themes', async () => {
+            const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
+            const { res } = createMockApiResponse()
+            const bodyWithThemes = JSON.stringify({ ...JSON.parse(body), themes: ['TEST', 'CRAFT'] })
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'POST', headers: validOriginHeaders, body: bodyWithThemes }, res)
+
+            expect(createGlosesSpy).toHaveBeenCalledWith(expect.objectContaining({ themes: ['TEST', 'CRAFT'] }))
+            expect(res.status).toHaveBeenCalledWith(201)
+        })
+
         it('should check the origin of POST requests', async () => {
             const { res } = createMockApiResponse()
 
