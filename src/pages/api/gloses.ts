@@ -3,7 +3,7 @@ import { getGlosesInMemory } from '@/src/lib/service/get-gloses'
 import { GloseComplete } from '@/src/core/domain/models/Glose'
 import { AddGlose } from '@/src/lib/service/add-glose'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
-import { isSameOrigin } from '@/src/infrastructure/http/origin-check.ts'
+import { isSameOrigin } from '@/src/infrastructure/http/origin-check'
 
 const POST_LIMIT = 10
 const GET_LIMIT = 60

@@ -4,7 +4,7 @@ import { deletePerson } from '@/src/core/domain/usecases/delete-person.ts'
 import { getPeopleInMemory } from '@/src/lib/service/get-people'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { Person } from '@/src/core/domain/Types/Person'
-import { isSameOrigin } from '@/src/infrastructure/http/origin-check.ts'
+import { isSameOrigin } from '@/src/infrastructure/http/origin-check'
 
 const WRITE_LIMIT = 10
 const GET_LIMIT = 60
