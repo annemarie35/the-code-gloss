@@ -98,7 +98,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Property of an operation that produces the same result whether it is applied once or several times. It makes retries safe: after a timeout or a lost response, a client can resend the request without creating a duplicate payment or order. In HTTP, RFC 9110 (2022) defines GET, PUT and DELETE as idempotent, but not POST, which APIs often make safe to retry with an idempotency key.', 'Idempotence', 'HTTP, Distributed systems, Reliability', ARRAY['WEB', 'ARCHITECTURE'], NOW())
+    ('Property of an operation that produces the same result whether it is applied once or several times. It makes retries safe: after a timeout or a lost response, a client can resend the request without creating a duplicate payment or order. In HTTP, RFC 9110 (2022) defines methods such as GET, PUT and DELETE as idempotent, but not POST, which APIs often make safe to retry with an idempotency key.', 'Idempotence', 'HTTP, Distributed systems, Reliability', ARRAY['WEB', 'ARCHITECTURE'], NOW())
 ;
 
 
@@ -119,7 +119,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Testing technique for legacy code: run the existing system on a large set of inputs, record its outputs as the reference (the golden master), then check after each change that the outputs are still identical. It builds a safety net for refactoring code that has no tests and whose expected behaviour nobody can fully state. Close to the characterization tests described by Michael Feathers in Working Effectively with Legacy Code (2004).', 'Golden Master', 'Testing, Legacy, Refactoring', ARRAY['TEST', 'CRAFT'], NOW())
+    ('Testing technique for legacy code: run the existing system on a large set of inputs, record its outputs as the reference (the golden master), then check after each change that the outputs are still identical. It builds a safety net for refactoring code that has no tests and whose expected behaviour nobody can fully state. Close to the characterization tests described by Michael Feathers in Working Effectively with Legacy Code (2004).', 'Golden master', 'Testing, Legacy, Refactoring', ARRAY['TEST', 'CRAFT'], NOW())
 ;
 
 
@@ -140,7 +140,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Research programme that measures software delivery performance with four key metrics: deployment frequency, lead time for changes, change failure rate and time to restore service. Its studies show that speed and stability go together instead of trading off. Founded by Nicole Forsgren, Jez Humble and Gene Kim, it publishes the yearly State of DevOps report; its findings are summarised in the book Accelerate (2018).', 'DORA (DevOps Research and Assessment)', 'DevOps, Metrics, Continuous Delivery', ARRAY['OPS'], NOW())
+    ('Research programme that measures software delivery performance with four key metrics: deployment frequency, lead time for changes, change failure rate and time to restore service. Its studies show that speed and stability go together instead of trading off. Founded by Nicole Forsgren, Jez Humble and Gene Kim, it publishes its findings in the yearly Accelerate State of DevOps report; they are summarised in the book Accelerate (2018).', 'DORA (DevOps Research and Assessment)', 'DevOps, Metrics, Continuous Delivery', ARRAY['OPS'], NOW())
 ;
 
 
@@ -287,7 +287,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Robustness principle: be conservative in what you send, be liberal in what you accept. Strict output and tolerant input let systems built by different teams keep working together despite small deviations. Too much tolerance has a cost, though: accepted mistakes become de facto standards that everyone must support. Stated by Jon Postel in the TCP specification, RFC 761 (1980); RFC 9413 (2023) discusses its limits.', 'Postel''s law', 'Protocols, Interoperability, API', ARRAY['WEB', 'ARCHITECTURE'], NOW())
+    ('Robustness principle: be conservative in what you send, be liberal in what you accept. Strict output and tolerant input let systems built by different teams keep working together despite small deviations. Too much tolerance has a cost, though: accepted mistakes become de facto standards that everyone must support. Stated by Jon Postel in the IP and TCP specifications, RFC 760 and RFC 761 (1980); RFC 9413 (2023) discusses its limits.', 'Postel''s law', 'Protocols, Interoperability, API', ARRAY['WEB', 'ARCHITECTURE'], NOW())
 ;
 
 

@@ -99,7 +99,8 @@
 ## STANDARDS
 
 - [ ] RFC 9110 — HTTP Semantics, IETF (2022) — définit les méthodes HTTP idempotentes (GET, PUT, DELETE…)
-- [ ] RFC 761 — Transmission Control Protocol, Jon Postel (1980) — spécification de TCP où apparaît le principe de robustesse (loi de Postel)
+- [ ] RFC 760 — DoD Standard Internet Protocol, Jon Postel (1980) — spécification d'IP où apparaît déjà le principe de robustesse (loi de Postel)
+- [ ] RFC 761 — Transmission Control Protocol, Jon Postel (1980) — spécification de TCP, publiée le même mois, qui reprend le principe de robustesse
 - [ ] RFC 9413 — Maintaining Robust Protocols, IETF (2023) — discute les limites de la loi de Postel
 
 ## TOOLS

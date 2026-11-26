@@ -85,7 +85,7 @@
             "themes": ["ARCHITECTURE", "DDD"]
         },
         {
-            "description": "Property of an operation that produces the same result whether it is applied once or several times. It makes retries safe: after a timeout or a lost response, a client can resend the request without creating a duplicate payment or order. In HTTP, RFC 9110 (2022) defines GET, PUT and DELETE as idempotent, but not POST, which APIs often make safe to retry with an idempotency key.",
+            "description": "Property of an operation that produces the same result whether it is applied once or several times. It makes retries safe: after a timeout or a lost response, a client can resend the request without creating a duplicate payment or order. In HTTP, RFC 9110 (2022) defines methods such as GET, PUT and DELETE as idempotent, but not POST, which APIs often make safe to retry with an idempotency key.",
             "tags": "HTTP, Distributed systems, Reliability",
             "title": "Idempotence",
             "themes": ["WEB", "ARCHITECTURE"]
@@ -105,7 +105,7 @@
         {
             "description": "Testing technique for legacy code: run the existing system on a large set of inputs, record its outputs as the reference (the golden master), then check after each change that the outputs are still identical. It builds a safety net for refactoring code that has no tests and whose expected behaviour nobody can fully state. Close to the characterization tests described by Michael Feathers in Working Effectively with Legacy Code (2004).",
             "tags": "Testing, Legacy, Refactoring",
-            "title": "Golden Master",
+            "title": "Golden master",
             "themes": ["TEST", "CRAFT"]
         },
         {
@@ -121,7 +121,7 @@
             "themes": ["CRAFT"]
         },
         {
-            "description": "Research programme that measures software delivery performance with four key metrics: deployment frequency, lead time for changes, change failure rate and time to restore service. Its studies show that speed and stability go together instead of trading off. Founded by Nicole Forsgren, Jez Humble and Gene Kim, it publishes the yearly State of DevOps report; its findings are summarised in the book Accelerate (2018).",
+            "description": "Research programme that measures software delivery performance with four key metrics: deployment frequency, lead time for changes, change failure rate and time to restore service. Its studies show that speed and stability go together instead of trading off. Founded by Nicole Forsgren, Jez Humble and Gene Kim, it publishes its findings in the yearly Accelerate State of DevOps report; they are summarised in the book Accelerate (2018).",
             "tags": "DevOps, Metrics, Continuous Delivery",
             "title": "DORA (DevOps Research and Assessment)",
             "themes": ["OPS"]
@@ -247,7 +247,7 @@
             "themes": ["ARCHITECTURE"]
         },
         {
-            "description": "Robustness principle: be conservative in what you send, be liberal in what you accept. Strict output and tolerant input let systems built by different teams keep working together despite small deviations. Too much tolerance has a cost, though: accepted mistakes become de facto standards that everyone must support. Stated by Jon Postel in the TCP specification, RFC 761 (1980); RFC 9413 (2023) discusses its limits.",
+            "description": "Robustness principle: be conservative in what you send, be liberal in what you accept. Strict output and tolerant input let systems built by different teams keep working together despite small deviations. Too much tolerance has a cost, though: accepted mistakes become de facto standards that everyone must support. Stated by Jon Postel in the IP and TCP specifications, RFC 760 and RFC 761 (1980); RFC 9413 (2023) discusses its limits.",
             "tags": "Protocols, Interoperability, API",
             "title": "Postel's law",
             "themes": ["WEB", "ARCHITECTURE"]
