@@ -55,7 +55,8 @@ Dans `.github/workflows/claude-code-review.yml` :
 
 ## Application concrète
 
-- [ ] Forcer `claude-opus-5-5` et `fetch-depth: 0` dans le workflow, puis comparer sur la prochaine PR.
+- [x] Forcer `claude-opus-5-5` et `fetch-depth: 0` dans le workflow (commit `a7b9e9e`).
+- [ ] Comparer l'Action et `/code-review` en local sur la prochaine PR.
 - [ ] Vérifier le coût par review après le changement de modèle.
 
 ## Liens
