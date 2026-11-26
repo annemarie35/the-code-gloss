@@ -86,3 +86,10 @@ INSERT INTO gloses
 VALUES
     ('Technique that turns a feature on or off at runtime through configuration, without deploying new code. It separates deployment from release: unfinished code can be merged and shipped hidden, then rolled out progressively, tested on a subset of users or switched off in an incident. Each flag adds branching to the code, so it should be removed once no longer needed. Pete Hodgson classifies the kinds of flags in Feature Toggles (aka Feature Flags) (2017).', 'Feature flag', 'Deployment, Release, Continuous Delivery', ARRAY['OPS'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Persistence pattern that stores every change to the application state as an immutable event in an append-only log, instead of overwriting the current state. The current state is rebuilt by replaying the events, which gives a full audit trail and lets you reconstruct the state at any past moment. Described by Martin Fowler in his 2005 article Event Sourcing, and popularised by Greg Young together with CQRS.', 'Event sourcing', 'Architecture, Persistence, CQRS', ARRAY['ARCHITECTURE', 'DDD'], NOW())
+;

@@ -77,6 +77,12 @@
             "tags": "Deployment, Release, Continuous Delivery",
             "title": "Feature flag",
             "themes": ["OPS"]
+        },
+        {
+            "description": "Persistence pattern that stores every change to the application state as an immutable event in an append-only log, instead of overwriting the current state. The current state is rebuilt by replaying the events, which gives a full audit trail and lets you reconstruct the state at any past moment. Described by Martin Fowler in his 2005 article Event Sourcing, and popularised by Greg Young together with CQRS.",
+            "tags": "Architecture, Persistence, CQRS",
+            "title": "Event sourcing",
+            "themes": ["ARCHITECTURE", "DDD"]
         }
     ],
     "people": [
