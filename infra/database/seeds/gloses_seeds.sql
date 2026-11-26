@@ -1,13 +1,13 @@
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Invented by Alistair Cockburn in 2005', 'Hexagonale architecture', 'Craft, Architecture', ARRAY['CRAFT'], NOW())
+    ('Architecture pattern, also called ports and adapters, that isolates the application core from the outside world (user interface, database, external services). The core talks to the outside only through ports, and adapters implement those ports for each technology, so the core can be tested and driven without them. Introduced by Alistair Cockburn in 2005.', 'Hexagonal architecture', 'Craft, Architecture', ARRAY['ARCHITECTURE', 'CRAFT'], NOW())
 ;
 
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Invented by Eric Evans in 2003', 'DDD', 'Architecture', ARRAY['DDD'], NOW())
+    ('Software design approach that models the code on the business domain, built with domain experts through a shared ubiquitous language. Strategic design splits a large system into bounded contexts; tactical patterns include entities, value objects, aggregates, repositories and domain events. Introduced by Eric Evans in his 2003 book Domain-Driven Design: Tackling Complexity in the Heart of Software.', 'Domain-Driven Design (DDD)', 'DDD, Architecture, Design', ARRAY['DDD', 'ARCHITECTURE'], NOW())
 ;
 
 
