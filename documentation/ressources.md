@@ -34,7 +34,7 @@
 - [ ] No Silver Bullet — Essence and Accident in Software Engineering, Fred Brooks (1986) — origine de la distinction entre complexité essentielle et accidentelle
 - [ ] Out of the Tar Pit, Ben Moseley et Peter Marks (2006) — reprend la distinction de Brooks et voit dans l'état mutable la principale source de complexité accidentelle
 - [ ] How Do Committees Invent?, Melvin Conway (1968) — énonce la loi de Conway
-- [ ] Strangler Fig Application, Martin Fowler (2004) — article du bliki qui nomme le pattern de migration progressive
+- [ ] Strangler Fig Application (publié en 2004 sous le titre Strangler Application), Martin Fowler — article du bliki qui nomme le pattern de migration progressive
 - [ ] Feature Toggles (aka Feature Flags), Pete Hodgson (2017) — article de référence sur martinfowler.com, qui classe les feature flags selon leur usage et leur durée de vie
 - [ ] Event Sourcing, Martin Fowler (2005) — article qui décrit le pattern de persistance par événements
 
