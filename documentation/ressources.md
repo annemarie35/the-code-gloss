@@ -15,6 +15,7 @@
 - [ ] Fred Brooks
 - [ ] Ben Moseley
 - [ ] Peter Marks
+- [ ] Jeff Bezos
 
 ## BOOKS
 
