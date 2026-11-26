@@ -14,9 +14,17 @@ const ContentSecurityPolicy = `
     .replace(/\s{2,}/g, ' ')
     .trim()
 
+// Hostnames (e.g. a LAN IP to test from a phone) allowed to reach the dev server, comma-separated.
+// Set in .envrc so the local network address is never committed.
+const allowedDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+
 const nextConfig: NextConfig = {
     poweredByHeader: false,
     agentRules: false,
+    allowedDevOrigins,
     async headers() {
         return [
             {
