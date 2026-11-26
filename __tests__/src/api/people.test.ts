@@ -125,12 +125,14 @@ describe('People API', () => {
         expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
     })
 
-    it('should return 405 for unsupported methods', async () => {
+    it('should return 405 with the allowed methods for unsupported methods', async () => {
         const { res, json } = createMockApiResponse()
+        const setHeader = vi.fn()
 
         // @ts-expect-error -- partial request mock
-        await handler({ method: 'PUT' }, res)
+        await handler({ method: 'PUT' }, { ...res, setHeader })
 
+        expect(setHeader).toHaveBeenCalledWith('Allow', 'GET, POST, DELETE')
         expect(res.status).toHaveBeenCalledWith(405)
         expect(json).toHaveBeenCalledWith({ error: 'Method Not Allowed' })
     })
