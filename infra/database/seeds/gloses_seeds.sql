@@ -72,3 +72,17 @@ INSERT INTO gloses
 VALUES
     ('Development practice where code is written in short cycles driven by tests: write a failing test (red), write the simplest code that makes it pass (green), then improve the design while keeping the tests green (refactor). Tests become a safety net and a guide for design. Kent Beck developed it as part of Extreme Programming and described it in Test-Driven Development: By Example (2002).', 'Test-Driven Development (TDD)', 'Testing, XP, Design', ARRAY['TEST', 'CRAFT'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Migration pattern that replaces a legacy system gradually instead of rewriting it in one go: a new system grows around the old one, features are moved over one at a time behind a routing layer, until the legacy system can be switched off. Each step delivers value and keeps the risk small. Named by Martin Fowler in 2004 after the strangler fig, a plant that grows around its host tree until it replaces it.', 'Strangler fig', 'Legacy, Migration, Architecture', ARRAY['ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Technique that turns a feature on or off at runtime through configuration, without deploying new code. It separates deployment from release: unfinished code can be merged and shipped hidden, then rolled out progressively, tested on a subset of users or switched off in an incident. Each flag adds branching to the code, so it should be removed once no longer needed. Pete Hodgson classifies the kinds of flags in Feature Toggles (aka Feature Flags) (2017).', 'Feature flag', 'Deployment, Release, Continuous Delivery', ARRAY['OPS'], NOW())
+;
