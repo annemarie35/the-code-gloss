@@ -37,3 +37,10 @@ INSERT INTO gloses
 VALUES
     ('Communication protocol that gives a client and a server a persistent, full-duplex channel over a single TCP connection, so the server can push messages without being polled. The connection starts as an HTTP request upgraded through a handshake, then uses the ws:// or wss:// schemes. Standardised by the IETF as RFC 6455 in 2011.', 'WebSocket', 'Web, Network, Real-time', ARRAY['WEB'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'Théorème de CAP', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
+;

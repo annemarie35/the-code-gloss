@@ -35,6 +35,12 @@
             "tags": "Web, Network, Real-time",
             "title": "WebSocket",
             "themes": ["WEB"]
+        },
+        {
+            "description": "A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.",
+            "tags": "Distributed systems, Database",
+            "title": "Théorème de CAP",
+            "themes": ["DATABASE"]
         }
     ],
     "people": [
