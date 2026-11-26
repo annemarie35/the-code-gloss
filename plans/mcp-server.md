@@ -24,8 +24,9 @@ Tous les outils ont `annotations: { readOnlyHint: true }`, un schéma zod en ent
 
 ## Étapes (TDD : test rouge → code → vert)
 
-- [ ] 1. **Dépendances**
-    - `@modelcontextprotocol/sdk` et `zod` en dépendances directes (`zod` n'est aujourd'hui qu'une dépendance transitive).
+- [x] 1. **Dépendances**
+    - SDK MCP **v2** : `@modelcontextprotocol/server` en dépendance et `@modelcontextprotocol/client` en devDependency, utilisé seulement par les tests. Le paquet unique `@modelcontextprotocol/sdk` est la v1, que la v2 remplace. Le paquet serveur n'embarque ni Express ni Hono : les adaptateurs HTTP sont des paquets séparés.
+    - `zod` en dépendance directe (la v2 exige `zod >= 4.2` ; jusqu'ici, il n'était qu'une dépendance transitive). On l'importe avec `import * as z from 'zod/v4'`, comme la doc du SDK.
     - `tsx` en devDependency pour lancer le serveur hors de Next : le repo est en ESM (`"type": "module"`) avec l'alias `@/*`, et ni `tsx` ni `ts-node` ne sont installés.
 - [ ] 2. **Port `src/core/ports/glose-reader.ts`** : `findAll(): Promise<GloseComplete[]>`.
     - Test de type (`expectTypeOf`) dans `__tests__/src/core/ports/glose-reader.test.ts`, comme les autres ports.
@@ -37,16 +38,17 @@ Tous les outils ont `annotations: { readOnlyHint: true }`, un schéma zod en ent
     - Il enveloppe `selectAllGloses` (`infra/database/repositories`), comme `getGlosesInMemory` (`src/lib/service/get-gloses.ts`).
     - Test avec testcontainers, comme le repository des abonnements.
 - [ ] 5. **Adaptateur MCP `src/adapters/mcp/create-mcp-server.ts`**
-    - `createMcpServer(deps)` crée un `McpServer` nommé `code-gloss` et enregistre les trois outils, sans dépendre du transport.
+    - `createMcpServer(deps)` crée un `McpServer` (`@modelcontextprotocol/server`) nommé `code-gloss` et enregistre les trois outils avec `registerTool(name, { description, inputSchema: z.object(...), outputSchema, annotations }, handler)`, sans dépendre du transport. En v2, `server.tool()` n'existe plus, et une forme brute (sans `z.object`) est dépréciée.
     - `list_feed_subscriptions` réutilise `toFeedSubscriptionDto` (`src/adapters/presenters/`).
     - `FeedSubscriptionNotFoundError` et `FeedUnavailableError` deviennent des résultats `isError: true` avec un message lisible, pas des exceptions.
-    - Tests avec un vrai `Client` du SDK relié par `InMemoryTransport.createLinkedPair()` et des faux use cases. Ils vérifient la liste des outils et leur `readOnlyHint`, les résultats, `isError` pour un id inconnu ou un flux inaccessible, la limite d'éléments, et le rejet d'un `id` qui n'est pas un entier.
+    - Le SDK transforme toute exception levée par un handler en `isError: true` avec `err.message`. Il faut donc traduire les erreurs métier en messages lisibles, et ne pas laisser passer une erreur technique comme un message SQL. Avec un `outputSchema`, le SDK valide `structuredContent` à l'exécution.
+    - Tests avec un vrai `Client` et `InMemoryTransport.createLinkedPair()` (tous deux importés de `@modelcontextprotocol/client`), plus des faux use cases. Ils vérifient la liste des outils et leur `readOnlyHint`, les résultats, `isError` pour un id inconnu ou un flux inaccessible, la limite d'éléments, et le rejet d'un `id` qui n'est pas un entier.
 - [ ] 6. **Container** : une entrée `mcp` dans `src/composition/container.ts` avec `searchGloses`, `listFeedSubscriptions` et `readFeed`.
 - [ ] 7. **Point d'entrée `src/mcp/stdio.ts`**
-    - Il construit le serveur depuis le container et le connecte à `StdioServerTransport`.
+    - Il appelle `serveStdio(() => createMcpServer(deps))` (`@modelcontextprotocol/server/stdio`). En v2, c'est le point d'entrée recommandé : il gère la négociation de version, alors que `server.connect(new StdioServerTransport())` ne sert que les clients de l'ère 2025. Il renvoie un handle dont `close()` ferme la connexion. Pour les tests, l'option `transport` permet d'injecter un transport.
     - **Rien sur stdout** en dehors du protocole : les logs vont sur stderr. Il faut vérifier que ce chemin n'importe pas le logger pino de `src/lib/http.ts`.
     - Il ferme le pool pg (`pgConnectionPool.end()`) quand stdin se ferme ou à la réception de SIGINT ou SIGTERM.
-    - Test : avec un transport et un pool injectés, le démarrage connecte le transport et l'arrêt ferme le pool.
+    - Test : avec un transport et un pool injectés, le démarrage connecte le transport, et l'arrêt appelle `handle.close()` puis ferme le pool.
 - [ ] 8. **Lancement**
     - Script `"mcp": "tsx src/mcp/stdio.ts"` dans `package.json`.
     - `.mcp.json` à la racine, en portée projet et versionné : `{"mcpServers": {"code-gloss": {"command": "npm", "args": ["run", "--silent", "mcp"]}}}`. Les variables `POSTGRESQL_*` viennent de direnv, puisque Claude Code est lancé depuis le repo. Aucun secret dans le fichier.
