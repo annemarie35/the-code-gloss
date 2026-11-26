@@ -70,6 +70,21 @@ describe('Gloses API', () => {
         expect(isSameOrigin).toHaveBeenCalledWith(validOriginHeaders)
     })
 
+    it('should refuse POST requests from another origin', async () => {
+        vi.mocked(isSameOrigin).mockReturnValueOnce(false)
+        const createGlosesSpy = vi.spyOn(addGloseMod, 'AddGlose')
+        const { res, json } = createMockApiResponse()
+        const setHeader = vi.fn()
+
+        // @ts-expect-error -- partial request mock
+        await handler({ method: 'POST', headers: validOriginHeaders, body }, { ...res, setHeader })
+
+        expect(createGlosesSpy).not.toHaveBeenCalled()
+        expect(rateLimit).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(403)
+        expect(json).toHaveBeenCalledWith({ error: 'Forbidden' })
+    })
+
     it.each([
         ['GET', 60],
         ['POST', 10]
