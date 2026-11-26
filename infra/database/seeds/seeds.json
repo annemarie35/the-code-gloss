@@ -23,6 +23,18 @@
             "tags": "Testing, Security",
             "title": "Fuzz testing",
             "themes": ["TEST", "CRAFT"]
+        },
+        {
+            "description": "Object-oriented design principle: instead of asking an object for its data and deciding outside of it, tell the object what to do, so that behaviour stays with the data it uses. The phrase comes from Alec Sharp's Smalltalk by Example (1997) and was popularised by Andy Hunt and Dave Thomas, the Pragmatic Programmers.",
+            "tags": "Design, OOP",
+            "title": "Tell, Don't Ask",
+            "themes": ["DESIGN"]
+        },
+        {
+            "description": "Communication protocol that gives a client and a server a persistent, full-duplex channel over a single TCP connection, so the server can push messages without being polled. The connection starts as an HTTP request upgraded through a handshake, then uses the ws:// or wss:// schemes. Standardised by the IETF as RFC 6455 in 2011.",
+            "tags": "Web, Network, Real-time",
+            "title": "WebSocket",
+            "themes": ["WEB"]
         }
     ],
     "people": [
