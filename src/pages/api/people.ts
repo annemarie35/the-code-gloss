@@ -4,42 +4,32 @@ import { deletePerson } from '@/src/core/domain/usecases/delete-person.ts'
 import { getPeopleInMemory } from '@/src/lib/service/get-people'
 import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { Person } from '@/src/core/domain/Types/Person'
+import { isSameOrigin } from '@/src/infrastructure/http/origin-check.ts'
 
 const POST_LIMIT = 10
 const GET_LIMIT = 60
 const WINDOW_MS = 60_000
 
-function isValidOrigin(req: NextApiRequest): boolean {
-    const origin = req.headers['origin']
-    const host = req.headers['host']
-    if (!origin || !host) return false
-    try {
-        return new URL(origin).host === host
-    } catch {
-        return false
-    }
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     const ip = getIp(req)
 
     if (req.method === 'POST') {
+        if (!isSameOrigin(req.headers)) {
+            return res.status(403).json({ error: 'Forbidden' })
+        }
         if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
-        }
-        if (!isValidOrigin(req)) {
-            return res.status(403).json({ error: 'Forbidden' })
         }
         await addPerson(JSON.parse(req.body))
         return res.status(201).json({ message: 'Personne ajoutée avec succès' })
     }
 
     if (req.method === 'DELETE') {
+        if (!isSameOrigin(req.headers)) {
+            return res.status(403).json({ error: 'Forbidden' })
+        }
         if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
-        }
-        if (!isValidOrigin(req)) {
-            return res.status(403).json({ error: 'Forbidden' })
         }
         const id = parseInt(req.query.id as string, 10)
         if (isNaN(id)) {
