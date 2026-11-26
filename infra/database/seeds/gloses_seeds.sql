@@ -310,3 +310,10 @@ INSERT INTO gloses
 VALUES
     ('Practice of moving testing, quality and security checks earlier in the development cycle, to the left of a timeline that runs from design to production. A defect found while writing the code costs far less to fix than one found after release, so teams test from the start, automate checks in the pipeline and involve testers and security experts in design. The term comes from Larry Smith''s 2001 article Shift-Left Testing.', 'Shift left', 'Testing, Quality, DevSecOps', ARRAY['TEST', 'OPS'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Understanding how the underlying hardware works, such as CPU caches, memory access and disks, in order to write software that works with it rather than against it. Data laid out to fit cache lines and read sequentially can run orders of magnitude faster. The phrase comes from the racing driver Jackie Stewart, who said drivers need it with their car; Martin Thompson brought it to software, notably with the LMAX Disruptor.', 'Mechanical sympathy', 'Performance, Hardware, Low latency', ARRAY['SOFTWARE ENGINEERING'], NOW())
+;
