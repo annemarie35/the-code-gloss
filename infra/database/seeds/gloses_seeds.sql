@@ -42,14 +42,14 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'Théorème de CAP', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
+    ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'CAP theorem', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
 ;
 
 
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Complexité accidentelle vs essentielle', 'Design, Complexity', ARRAY['DESIGN'], NOW())
+    ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Accidental vs essential complexity', 'Design, Complexity', ARRAY['DESIGN'], NOW())
 ;
 
 
@@ -182,7 +182,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Practice where every developer merges their work into the shared main branch at least daily, and each merge triggers an automated build and test run. Integration problems show up within minutes, while they are small and easy to fix, instead of piling up before a release. The term was coined by Grady Booch in 1991, made a core practice by Extreme Programming, and described by Martin Fowler in his article Continuous Integration (2000).', 'Intégration continue (CI)', 'CI, Automation, Continuous Delivery', ARRAY['OPS', 'CRAFT'], NOW())
+    ('Practice where every developer merges their work into the shared main branch at least daily, and each merge triggers an automated build and test run. Integration problems show up within minutes, while they are small and easy to fix, instead of piling up before a release. The term was coined by Grady Booch in 1991, made a core practice by Extreme Programming, and described by Martin Fowler in his article Continuous Integration (2000).', 'Continuous integration (CI)', 'CI, Automation, Continuous Delivery', ARRAY['OPS', 'CRAFT'], NOW())
 ;
 
 
@@ -231,7 +231,7 @@ VALUES
 INSERT INTO gloses
 (description, title, tags, themes, created_at)
 VALUES
-    ('Design guideline, also called the principle of least knowledge: a method should only talk to its close collaborators (its own object, its parameters, the objects it creates and its fields) and not reach through them, as in a.getB().getC().doSomething(). It reduces coupling, so a change in one class ripples less through the code. Formulated in 1987 on the Demeter project at Northeastern University, and published by Karl Lieberherr and Ian Holland.', 'Loi de Déméter', 'Design, OOP, Coupling', ARRAY['DESIGN'], NOW())
+    ('Design guideline, also called the principle of least knowledge: a method should only talk to its close collaborators (its own object, its parameters, the objects it creates and its fields) and not reach through them, as in a.getB().getC().doSomething(). It reduces coupling, so a change in one class ripples less through the code. Formulated in 1987 on the Demeter project at Northeastern University, and published by Karl Lieberherr and Ian Holland.', 'Law of Demeter', 'Design, OOP, Coupling', ARRAY['DESIGN'], NOW())
 ;
 
 
