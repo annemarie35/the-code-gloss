@@ -53,6 +53,18 @@
             "tags": "Team, Organisation",
             "title": "Two-pizza team",
             "themes": ["AGILE"]
+        },
+        {
+            "description": "Organisations that design systems produce designs that copy their own communication structures: the boundaries between modules follow the boundaries between teams. Team organisation is therefore an architecture decision. Stated by Melvin Conway in his 1968 paper How Do Committees Invent? and named Conway's law by Fred Brooks in The Mythical Man-Month (1975).",
+            "tags": "Architecture, Organisation, Team",
+            "title": "Conway's law",
+            "themes": ["ARCHITECTURE"]
+        },
+        {
+            "description": "Development practice where code is written in short cycles driven by tests: write a failing test (red), write the simplest code that makes it pass (green), then improve the design while keeping the tests green (refactor). Tests become a safety net and a guide for design. Kent Beck developed it as part of Extreme Programming and described it in Test-Driven Development: By Example (2002).",
+            "tags": "Testing, XP, Design",
+            "title": "Test-Driven Development (TDD)",
+            "themes": ["TEST", "CRAFT"]
         }
     ],
     "people": [

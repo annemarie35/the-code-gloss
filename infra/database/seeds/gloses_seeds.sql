@@ -58,3 +58,17 @@ INSERT INTO gloses
 VALUES
     ('Team sizing rule from Amazon: a team should be small enough to be fed by two pizzas. Fewer people means fewer communication paths, so the team can decide quickly and own its service end to end with little coordination overhead. The rule is attributed to Jeff Bezos in the early 2000s, when Amazon reorganised into small autonomous teams.', 'Two-pizza team', 'Team, Organisation', ARRAY['AGILE'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Organisations that design systems produce designs that copy their own communication structures: the boundaries between modules follow the boundaries between teams. Team organisation is therefore an architecture decision. Stated by Melvin Conway in his 1968 paper How Do Committees Invent? and named Conway''s law by Fred Brooks in The Mythical Man-Month (1975).', 'Conway''s law', 'Architecture, Organisation, Team', ARRAY['ARCHITECTURE'], NOW())
+;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Development practice where code is written in short cycles driven by tests: write a failing test (red), write the simplest code that makes it pass (green), then improve the design while keeping the tests green (refactor). Tests become a safety net and a guide for design. Kent Beck developed it as part of Extreme Programming and described it in Test-Driven Development: By Example (2002).', 'Test-Driven Development (TDD)', 'Testing, XP, Design', ARRAY['TEST', 'CRAFT'], NOW())
+;
