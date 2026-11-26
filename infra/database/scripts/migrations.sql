@@ -25,6 +25,18 @@ CREATE TABLE IF NOT EXISTS gloses
 ALTER TABLE gloses
     ADD COLUMN IF NOT EXISTS themes text[] DEFAULT '{}';
 
+-- Keep in sync with THEMES in src/core/domain/models/Glose.ts
+-- One DO block = one statement: if ADD fails on existing rows, the DROP is rolled back too
+DO $$
+BEGIN
+    ALTER TABLE gloses
+        DROP CONSTRAINT IF EXISTS gloses_themes_check;
+    ALTER TABLE gloses
+        ADD CONSTRAINT gloses_themes_check
+            CHECK (themes <@ ARRAY['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST']::text[]);
+END
+$$;
+
 CREATE TABLE IF NOT EXISTS urls
 (
     id          SERIAL                   NOT NULL PRIMARY KEY,
