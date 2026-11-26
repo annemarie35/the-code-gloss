@@ -3,25 +3,20 @@ name: Claude Code Review
 on:
     pull_request:
         types: [opened, synchronize, ready_for_review, reopened]
-        # Optional: Only run on specific file changes
-        # paths:
-        #   - "src/**/*.ts"
-        #   - "src/**/*.tsx"
-        #   - "src/**/*.js"
-        #   - "src/**/*.jsx"
+
+# A new push cancels the review still running on the previous commit
+concurrency:
+    group: claude-review-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
 
 jobs:
     claude-review:
-        # Optional: Filter by PR author
-        # if: |
-        #   github.event.pull_request.user.login == 'external-contributor' ||
-        #   github.event.pull_request.user.login == 'new-developer' ||
-        #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-
+        if: github.event.pull_request.draft == false
         runs-on: ubuntu-latest
+        timeout-minutes: 20
         permissions:
             contents: read
-            pull-requests: read
+            pull-requests: write
             issues: read
             id-token: write
 
@@ -37,11 +32,55 @@ jobs:
               uses: anthropics/claude-code-action@v1
               with:
                   claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-                  plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
-                  plugins: 'code-review@claude-code-plugins'
-                  prompt: '/code-review:code-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
-                  # Opus instead of the default Sonnet: on PR #120 Sonnet stopped after
-                  # 5 turns and missed bugs spanning several layers
-                  claude_args: '--model claude-opus-5-5 --allowedTools "mcp__github_inline_comment__create_inline_comment"'
+                  # Custom prompt instead of the code-review plugin: the plugin drops anything it is
+                  # not sure of, issues that existed before the PR, and changes that look intentional.
+                  # On PR #125 it answered "No issues found" while a local review flagged write
+                  # endpoints left without any rate limit.
+                  prompt: |
+                      REPO: ${{ github.repository }}
+                      PR NUMBER: ${{ github.event.pull_request.number }}
+                      BASE: origin/${{ github.event.pull_request.base.ref }}
+
+                      Fais la code review de cette pull request. Réponds en français.
+
+                      ## Méthode
+
+                      1. Lis `CLAUDE.md` et, si la PR touche du code neuf, `documentation/architecture-cible.md`.
+                      2. Lis le diff (`gh pr diff`) et la description (`gh pr view`).
+                      3. Pour chaque fichier de code modifié, ouvre le fichier entier, pas seulement le diff,
+                         et suis le flux de bout en bout : page → client/action → route API → contrôleur
+                         → use case/service → repository. Beaucoup de bugs sont entre deux couches.
+                      4. Ouvre les tests correspondants (`__tests__/` miroir de `src/`) et vérifie qu'ils
+                         échoueraient si le comportement cassait.
+
+                      ## Ce qu'il faut signaler
+
+                      - **Bugs** : logique fausse, cas limites, courses (deux requêtes simultanées),
+                        erreurs non gérées qui donnent un 500, état client incohérent.
+                      - **Sécurité** : garde d'origine (`isSameOrigin`), rate limiting, SSRF, validation
+                        des entrées, CSP dans `next.config.ts`, secrets. Signale aussi une régression de
+                        sécurité **même si elle semble volontaire** (tests mis à jour en même temps) :
+                        explique le risque concret et laisse l'auteur trancher.
+                      - **Problèmes existants que la PR aggrave ou rend bloquants** : ils comptent.
+                      - **Tests** : fichier source sans test, test supprimé sans remplaçant, assertion qui
+                        ne peut plus échouer, comportement nouveau non couvert.
+                      - **Conventions de `CLAUDE.md`** : couches, nommage, pas de logique dans les routes.
+
+                      Ne signale pas : le formatage et ce que ESLint/Prettier corrigent déjà.
+
+                      ## Comment répondre
+
+                      - Une remarque par problème, en commentaire inline
+                        (`mcp__github_inline_comment__create_inline_comment`) sur la ligne concernée :
+                        le problème, un scénario concret qui le déclenche, et une correction proposée.
+                      - Commence chaque remarque par sa gravité : **[bloquant]**, **[important]** ou
+                        **[mineur]**, et indique **(à vérifier)** si tu n'es pas sûr.
+                      - Termine par un seul commentaire de synthèse (`gh pr comment`) : la liste des
+                        remarques par gravité, ce que tu as vérifié, et ce que tu n'as pas pu vérifier.
+                        S'il n'y a rien à signaler, dis ce que tu as lu pour arriver à cette conclusion.
+                  claude_args: |
+                      --model claude-opus-5-5
+                      --max-turns 60
+                      --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(git diff:*),Bash(git log:*),Read,Grep,Glob"
                   # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
                   # or https://code.claude.com/docs/en/cli-reference for available options
