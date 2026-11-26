@@ -42,6 +42,19 @@ describe('Feeds API', () => {
             expect(fetchSpy).not.toHaveBeenCalled()
             fetchSpy.mockRestore()
         })
+
+        it('should return 429 when the read limit is exceeded', async () => {
+            const rateLimitSpy = vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
+            const { res, json } = createMockApiResponse()
+
+            // @ts-expect-error -- partial request mock
+            await handler({ method: 'GET', query: {} }, res)
+
+            expect(rateLimitSpy).toHaveBeenCalledWith('127.0.0.1', 30, 60_000)
+            expect(container.feedsController.list).not.toHaveBeenCalled()
+            expect(res.status).toHaveBeenCalledWith(429)
+            expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
+        })
     })
 
     describe('POST: subscribe to a feed', () => {
@@ -96,20 +109,7 @@ describe('Feeds API', () => {
         })
     })
 
-    describe('rate limiting', () => {
-        it('should return 429 when the read limit is exceeded', async () => {
-            const rateLimitSpy = vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
-            const { res, json } = createMockApiResponse()
-
-            // @ts-expect-error -- partial request mock
-            await handler({ method: 'GET', query: {} }, res)
-
-            expect(rateLimitSpy).toHaveBeenCalledWith('127.0.0.1', 30, 60_000)
-            expect(container.feedsController.list).not.toHaveBeenCalled()
-            expect(res.status).toHaveBeenCalledWith(429)
-            expect(json).toHaveBeenCalledWith({ error: 'Too Many Requests' })
-        })
-
+    describe('rate limiting on POST and DELETE', () => {
         it.each([['POST'], ['DELETE']])('should apply the write limit to %s', async (method) => {
             const rateLimitSpy = vi.spyOn(rateLimiterMod, 'rateLimit').mockReturnValueOnce(false)
             const { res, json } = createMockApiResponse()

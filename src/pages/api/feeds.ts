@@ -18,11 +18,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'POST' || req.method === 'DELETE') {
-        if (!rateLimit(ip, WRITE_LIMIT, WINDOW_MS)) {
-            return res.status(429).json({ error: 'Too Many Requests' })
-        }
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
+        }
+        if (!rateLimit(ip, WRITE_LIMIT, WINDOW_MS)) {
+            return res.status(429).json({ error: 'Too Many Requests' })
         }
         if (req.method === 'POST') return container.feedsController.subscribe(req, res)
         return container.feedsController.unsubscribe(req, res)
