@@ -34,7 +34,7 @@ La revue signalait aussi que le SDK v1 (`@modelcontextprotocol/sdk`) ajoutait Ex
     - **Préconisation** : au démarrage de `src/mcp/stdio.ts`, vérifier que les variables `POSTGRESQL_*` sont présentes, et sinon écrire un message clair sur stderr et sortir avec un code non nul. Documenter `direnv exec . npm run --silent mcp` pour les clients qui ne passent pas par le shell du repo.
     - **Tests** : variable manquante → message qui la nomme, et sortie en erreur ; configuration complète → démarrage.
 
-- [ ] **5. Filtrer les gloses en SQL plutôt qu'en mémoire**
+- [x] **5. Filtrer les gloses en SQL plutôt qu'en mémoire** — **tranché : on garde `findAll`**, voir [ADR 002](../documentation/adr/002-glose-reader-find-all-and-filter-in-use-case.md). Le volume est faible, `ILIKE '%…%'` lit toute la table de toute façon, et la règle de correspondance reste dans le use case, testable sans base. L'ADR dit quand revenir sur ce choix.
     - **Problème** : `searchGloses` est prévu comme `GloseReader.findAll()` (`SELECT *`) suivi d'un filtre en JavaScript. Chaque appel de l'agent lit toute la table pour en renvoyer au plus 50 lignes.
     - **Préconisation** : comme le port `GloseReader` est neuf, lui donner directement la bonne forme : `search({ query, themes, limit })`, avec `ILIKE` sur le titre, la description et les tags, `themes && $1` et `LIMIT`, plus un `count` pour le `total` du point 2. Pour une base perso de quelques centaines de gloses, `findAll` reste acceptable : c'est un choix à trancher **avant l'étape 2** du plan MCP.
     - **Tests** : testcontainers pour la requête (casse ignorée, thèmes, limite, total), faux reader pour le use case.
@@ -52,4 +52,4 @@ La revue signalait aussi que le SDK v1 (`@modelcontextprotocol/sdk`) ajoutait Ex
 
 ## Ordre conseillé
 
-Le point 5 se tranche avant l'étape 2 du plan MCP, car il fixe la forme du port. Les points 1, 2, 7, 3 et 4 accompagnent respectivement les étapes 4, 5, 6 et 7. Le point 6 s'ajoute aux vérifications de l'étape 9.
+Le point 5 est tranché (ADR 002). Les points 1, 2, 7, 3 et 4 accompagnent respectivement les étapes 4, 5, 6 et 7. Le point 6 s'ajoute aux vérifications de l'étape 9.
