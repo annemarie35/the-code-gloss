@@ -6,7 +6,7 @@ import { rateLimit, getIp } from '@/src/lib/rate-limiter'
 import { Person } from '@/src/core/domain/Types/Person'
 import { isSameOrigin } from '@/src/infrastructure/http/origin-check.ts'
 
-const POST_LIMIT = 10
+const WRITE_LIMIT = 10
 const GET_LIMIT = 60
 const WINDOW_MS = 60_000
 
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
         }
-        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
+        if (!rateLimit(ip, WRITE_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
         }
         await addPerson(JSON.parse(req.body))
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
         }
-        if (!rateLimit(ip, POST_LIMIT, WINDOW_MS)) {
+        if (!rateLimit(ip, WRITE_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
         }
         const id = parseInt(req.query.id as string, 10)
