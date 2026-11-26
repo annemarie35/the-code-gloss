@@ -38,6 +38,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 
 - [ ] **2. Séparer les compteurs du rate limiter**
     - **Problème** : `src/lib/rate-limiter.ts` garde un seul compteur par IP pour toutes les routes et toutes les méthodes, donc les GET comptent dans la limite de 10 écritures par minute. En dev, React StrictMode double les appels du montage : ouvrir `/feeds` deux ou trois fois suffit pour que le `POST` ou le `DELETE` suivant reçoive un 429. Le problème touche aussi `people` et `gloses`.
+    - **Mise à jour** : les écritures ne sont plus limitées sur aucune route (voir le point 16). Le compteur partagé ne mélange plus que les GET des trois routes ; le point redevient utile si on remet une limite d'écriture.
     - **Préconisation** : préfixer la clé par le type de limite (`${ip}:read` et `${ip}:write`), via un paramètre `bucket` ou deux fonctions. Le déplacer dans `src/infrastructure/http/rate-limiter.ts` en même temps.
     - **Tests** : 30 GET n'empêchent pas un POST ; 10 POST bloquent le 11ᵉ sans bloquer les GET ; chaque compteur se réinitialise à la fin de sa fenêtre.
 
@@ -92,7 +93,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 ## Relevés par la revue de `refactor/shared-origin-check`
 
 - [ ] **16. Ne plus faire confiance à `X-Forwarded-For` dans `getIp`** (priorité haute)
-    - **Problème** : `getIp` (`src/lib/rate-limiter.ts`) prend la première adresse de `X-Forwarded-For`, que le client choisit librement. En envoyant une valeur différente à chaque requête, il obtient un nouveau compteur à chaque fois et n'est jamais limité : ni sur les GET (60 par minute pour gloses et people, 30 pour feeds), ni sur les écritures de feeds (10 par minute). Les écritures de gloses et people ne sont plus limitées depuis `refactor(api): drop write rate limits on gloses and people`.
+    - **Problème** : `getIp` (`src/lib/rate-limiter.ts`) prend la première adresse de `X-Forwarded-For`, que le client choisit librement. En envoyant une valeur différente à chaque requête, il obtient un nouveau compteur à chaque fois et n'est jamais limité : sur les GET (60 par minute pour gloses et people, 30 pour feeds). Les écritures (POST, DELETE) ne sont plus limitées sur aucune route depuis `refactor(api): drop write rate limits on gloses and people` et `refactor(api): drop the write rate limit on feeds` : seule la garde d'origine reste, et un client hors navigateur la passe en envoyant `Origin` et `Host` identiques.
     - **Préconisation** : ne lire `X-Forwarded-For` que derrière un proxy de confiance (variable `TRUSTED_PROXY_HOPS`, par exemple 1 sur Scalingo), et prendre l'adresse ajoutée par ce proxy, c'est-à-dire la n-ième en partant de la fin, pas la première. Sans proxy configuré, utiliser `req.socket.remoteAddress`. À faire avec le point 2, en même temps que le déplacement dans `src/infrastructure/http/rate-limiter.ts`.
     - **Tests** : sans proxy configuré, un `X-Forwarded-For` forgé est ignoré ; avec un proxy, `X-Forwarded-For: forgée, réelle` donne `réelle` ; deux valeurs forgées différentes depuis la même socket partagent le même compteur.
 
@@ -101,7 +102,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
     - **Préconisation** : un `parseJsonBody(req.body)` partagé, à côté de `origin-check.ts`, qui accepte une chaîne ou un objet déjà parsé et renvoie `null` si le corps est invalide ; la route répond alors 400 `{ error: 'Invalid body' }`. À intégrer dans la migration de ces routes vers l'architecture cible.
     - **Tests** : corps mal formé → 400 sans appel au use case ; corps déjà objet → traité comme la chaîne équivalente.
 
-- [x] **18. ~~Factoriser la garde « origine puis limite »~~** : sans objet. Depuis le retrait des limites d'écriture sur gloses et people, la garde « origine puis limite » n'existe plus que dans `src/pages/api/feeds.ts`, une seule fois pour POST et DELETE. Il n'y a plus de copie à factoriser.
+- [x] **18. ~~Factoriser la garde « origine puis limite »~~** : sans objet. Depuis le retrait des limites d'écriture sur les trois routes, la garde « origine puis limite » n'existe plus nulle part. Il n'y a plus de copie à factoriser.
 
 - [ ] **19. Ajouter `setHeader` au mock de réponse** (priorité basse)
     - **Problème** : `createMockApiResponse` (`__tests__/test-helpers.ts`) ne fournit pas `setHeader`. Les tests de gloses ajoutent `{ ...res, setHeader }` à la main dans chaque test, et people en a maintenant besoin pour le 405.
