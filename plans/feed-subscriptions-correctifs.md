@@ -65,7 +65,7 @@ Points relevés pendant la mise en base des abonnements aux flux (`plans/feed-su
 ## Dette volontaire
 
 - [x] **10. Supprimer les copies de `isValidOrigin`** dans `src/pages/api/people.ts` et `gloses.ts` en utilisant `src/infrastructure/http/origin-check.ts`, lors de la migration de ces routes vers l'architecture cible.
-- [x] **11. Anciens flux du `localStorage`** : ils sont abandonnés et à rajouter à la main. Pas de migration prévue, sauf si le besoin apparaît.
+- [ ] **11. Anciens flux du `localStorage`** : ils sont abandonnés et à rajouter à la main. Pas de migration prévue, sauf si le besoin apparaît.
 
 ## Relevés par la seconde revue de code
 
