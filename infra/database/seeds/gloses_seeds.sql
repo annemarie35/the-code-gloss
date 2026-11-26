@@ -44,3 +44,10 @@ INSERT INTO gloses
 VALUES
     ('A distributed data store cannot guarantee Consistency (every read sees the latest write), Availability (every request gets a response) and Partition tolerance all at once: during a network partition it must give up either consistency or availability. Conjectured by Eric Brewer in 2000 and proven by Seth Gilbert and Nancy Lynch in 2002.', 'Théorème de CAP', 'Distributed systems, Database', ARRAY['DATABASE'], NOW())
 ;
+
+
+INSERT INTO gloses
+(description, title, tags, themes, created_at)
+VALUES
+    ('Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).', 'Complexité accidentelle vs essentielle', 'Design, Complexity', ARRAY['DESIGN'], NOW())
+;

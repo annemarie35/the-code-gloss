@@ -41,6 +41,12 @@
             "tags": "Distributed systems, Database",
             "title": "Théorème de CAP",
             "themes": ["DATABASE"]
+        },
+        {
+            "description": "Distinction made by Fred Brooks in his 1986 essay No Silver Bullet: essential complexity is inherent to the problem the software must solve, while accidental complexity comes from the tools, languages and choices used to solve it. Only accidental complexity can be removed, so no single technique can bring an order-of-magnitude gain in productivity. Ben Moseley and Peter Marks revisited it in Out of the Tar Pit (2006).",
+            "tags": "Design, Complexity",
+            "title": "Complexité accidentelle vs essentielle",
+            "themes": ["DESIGN"]
         }
     ],
     "people": [
