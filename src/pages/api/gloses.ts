@@ -11,8 +11,7 @@ const WINDOW_MS = 60_000
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     const ip = getIp(req)
-    let createOrGetGloseResponse: CreateOrGetGloseResponse
-    let statusCode: number
+
     if (req.method === 'POST') {
         if (!isSameOrigin(req.headers)) {
             return res.status(403).json({ error: 'Forbidden' })
@@ -21,30 +20,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             return res.status(429).json({ error: 'Too Many Requests' })
         }
         await AddGlose(JSON.parse(req.body))
-        statusCode = 201
-        createOrGetGloseResponse = { message: 'Glose ajouté avec succès', gloses: [] }
-        return res.status(statusCode).json(createOrGetGloseResponse)
+        return res.status(201).json({ message: 'Glose ajouté avec succès', gloses: [] })
     }
+
     if (req.method === 'GET') {
         if (!rateLimit(ip, GET_LIMIT, WINDOW_MS)) {
             return res.status(429).json({ error: 'Too Many Requests' })
         }
         const gloses = await getGlosesInMemory()
-        statusCode = 200
-        const createOrGetGloseResponse = {
-            message: 'Voici vos gloses',
-            gloses
-        }
-        return res.status(statusCode).json(createOrGetGloseResponse)
+        return res.status(200).json({ message: 'Voici vos gloses', gloses })
     }
 
     res.setHeader('Allow', 'GET, POST')
     return res.status(405).json({ error: 'Method Not Allowed' })
-}
-
-type CreateOrGetGloseResponse = {
-    message: string
-    gloses: GloseComplete[]
 }
 
 type ResponseData = {
