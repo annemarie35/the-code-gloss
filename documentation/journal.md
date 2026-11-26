@@ -32,7 +32,7 @@
 - Pourquoi la review de la GitHub Action ne dit jamais rien alors que `/code-review` en local trouve de vrais bugs ? Note [code-review-local-vs-github-action](second-brain/20-notes/code-review-local-vs-github-action.md) dans le second brain (PR #124)
     - Pas le même outil (plugin `code-review` contre commande intégrée), pas le même modèle (Sonnet contre Opus), et l'Action n'avait presque rien lu sur la PR #120 : 19 s, 5 tours, 0,11 $ pour ~1 500 lignes
     - Sources ajoutées : The Tech Away #17, Matt Pocock sur le goulot des PR, Greptile sur les modèles qui relisent mal leur propre code
-- Fin de la garde d'origine partagée (PR #122) : `isSameOrigin` passe **avant** le rate limit sur people et feeds. Une requête d'une autre origine consommait le quota de l'IP avant d'être refusée, donc un site tiers pouvait épuiser la limite d'un visiteur
+- Fin de la garde d'origine partagée (PR #122) : `isSameOrigin` passe **avant** le rate limit sur people et feeds. Une requête d'une autre origine consommait le quota de l'IP avant d'être refusée, donc un site tiers pouvait épuiser la limite d'un visiteur (état intermédiaire : les limites d'écriture ont été retirées ensuite dans la PR #125, voir plus bas)
     - :clown_face: Le diff de feeds supprimait au passage le test de non-régression SSRF (`?url=http://169.254.169.254/...`). Remis en place
 - Suites de la revue locale de la PR #122 (PR #125), un commit par point
     - Test de refus d'origine pour gloses : le seul test vérifiait l'appel à `isSameOrigin`, pas le 403. Vérifié en retirant la garde : le test casse
