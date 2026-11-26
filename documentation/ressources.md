@@ -57,6 +57,8 @@
 - [ ] Jon Postel
 - [ ] John Allspaw
 - [ ] Larry Smith
+- [ ] Martin Thompson
+- [ ] Jackie Stewart
 
 ## BOOKS
 
@@ -106,6 +108,7 @@
 ## TOOLS
 
 - [ ] ApprovalTests, Llewellyn Falco — bibliothèques d'approval testing disponibles pour de nombreux langages
+- [ ] LMAX Disruptor, Martin Thompson et l'équipe LMAX — bibliothèque Java à très faible latence, exemple de mechanical sympathy
 
 ## SITES
 
