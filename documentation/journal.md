@@ -40,7 +40,7 @@
     - `setHeader` fourni par `createMockApiResponse` au lieu d'être ajouté à la main dans chaque test
     - **Choix assumé** : plus de limite de débit sur les écritures (POST, DELETE) de gloses, people et feeds. Seule la garde d'origine reste, et elle ne protège que du CSRF depuis un navigateur : un script qui envoie `Origin` et `Host` identiques n'est plus limité. Seuls les GET restent limités
     - Reportés dans le [plan des correctifs feeds](../plans/feed-subscriptions-correctifs.md) : `getIp` fait confiance à `X-Forwarded-For` (point 16), `JSON.parse(req.body)` sans garde donne 500 au lieu de 400 (point 17)
-- Nouvelle review Claude dans la GitHub Action (PR #126, ouverte)
+- Nouvelle review Claude dans la GitHub Action (PR #126)
     - Même sur Opus, l'Action a répondu « No issues found » sur la PR #125 (9 tours, 0,86 $), alors que la revue locale signalait les écritures sans limite
     - Le plugin `code-review` écarte ce dont il n'est pas sûr, les problèmes antérieurs à la PR et ce qui semble voulu. Remplacé par un prompt propre au repo : suivre le flux entre les couches, signaler les régressions de sécurité même voulues, gravité sur chaque remarque, toujours une synthèse de ce qui a été lu
     - Leçon : un « No issues found » ne prouve rien tant qu'on ne sait pas ce que l'agent a lu
