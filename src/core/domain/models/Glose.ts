@@ -1,4 +1,4 @@
-export const THEMES = ['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB'] as const
+export const THEMES = ['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB', 'ARCHITECTURE'] as const
 export type Theme = (typeof THEMES)[number]
 
 export const isTheme = (value: unknown): value is Theme =>

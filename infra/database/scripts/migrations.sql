@@ -33,7 +33,7 @@ BEGIN
         DROP CONSTRAINT IF EXISTS gloses_themes_check;
     ALTER TABLE gloses
         ADD CONSTRAINT gloses_themes_check
-            CHECK (themes <@ ARRAY['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB']::text[]);
+            CHECK (themes <@ ARRAY['OPS', 'CRAFT', 'DATABASE', 'DDD', 'AGILE', 'DESIGN', 'TEST', 'WEB', 'ARCHITECTURE']::text[]);
 END
 $$;
 
