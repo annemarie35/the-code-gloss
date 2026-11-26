@@ -17,6 +17,12 @@
             "tags": "Design, OOP",
             "title": "SOLID",
             "themes": ["DESIGN"]
+        },
+        {
+            "description": "Automated testing technique that feeds a program large amounts of random, malformed or unexpected inputs to find crashes, assertion failures and security vulnerabilities. Coined by Barton Miller at the University of Wisconsin in 1988, in a class project that sent random input to Unix utilities.",
+            "tags": "Testing, Security",
+            "title": "Fuzz testing",
+            "themes": ["TEST", "CRAFT"]
         }
     ],
     "people": [
@@ -59,6 +65,16 @@
             "biography": "Author of Working Effectively with Legacy Code (2004), he coined the SOLID acronym.",
             "year_of_birth": null,
             "tags": "Craft, Legacy, Design"
+        },
+        {
+            "first_name": "Barton",
+            "last_name": "Miller",
+            "nickname": null,
+            "blog_url": "https://pages.cs.wisc.edu/~bart/",
+            "linkedin_url": null,
+            "biography": "Professor of computer sciences at the University of Wisconsin-Madison, he coined fuzz testing in 1988 and published An Empirical Study of the Reliability of UNIX Utilities (1990). He also leads the Paradyn project, which created the Dyninst binary instrumentation library.",
+            "year_of_birth": null,
+            "tags": "Testing, Security, Reliability"
         }
     ]
 }
